@@ -47,10 +47,11 @@ import { SeoLander } from './components/SeoLander';
 import { PropertyCard } from './components/PropertyCard';
 import { InvestorPortfolio } from './components/InvestorPortfolio';
 import { InvestorChatbot } from './components/InvestorChatbot';
+import { AdminPanel } from './components/AdminPanel';
 
 export default function App() {
   // Website Menu / Routing State
-  const [activeMenu, setActiveMenu] = useState<'home' | 'investments' | 'properties' | 'commercial' | 'plots' | 'blogs' | 'calculators' | 'about' | 'contact' | 'marketplace' | 'leads' | 'portfolio'>('home');
+  const [activeMenu, setActiveMenu] = useState<'home' | 'investments' | 'properties' | 'commercial' | 'plots' | 'blogs' | 'calculators' | 'about' | 'contact' | 'marketplace' | 'leads' | 'portfolio' | 'admin'>('home');
   
   // SEO Lander active path. If set, we render the SEO Landing Page component instead of standard activeMenu!
   const [activeSeoPath, setActiveSeoPath] = useState<string | null>(null);
@@ -68,6 +69,10 @@ export default function App() {
   ]);
   const [isSubscribedToWeekly, setIsSubscribedToWeekly] = useState<boolean>(true);
   const [subscribedEmail, setSubscribedEmail] = useState<string>('MTLENTERTAINMENTINDIA@gmail.com');
+
+  // Admin Login States
+  const [adminEmail, setAdminEmail] = useState<string>('');
+  const [isAdminLoggedIn, setIsAdminLoggedIn] = useState<boolean>(false);
 
   // Comparative analysis states (MagicBricks inspired)
   const [compareIds, setCompareIds] = useState<string[]>([]);
@@ -451,6 +456,13 @@ export default function App() {
               className={`px-3.5 py-2 rounded-lg transition-all flex items-center gap-1 ${activeMenu === 'leads' && !activeSeoPath ? 'bg-red-950/55 text-red-400 border border-red-905/40 shadow-xs font-bold' : 'text-slate-300 hover:text-red-400 hover:bg-slate-900/60'}`}
             >
               🎯 Broker Desk
+            </button>
+
+            <button 
+              onClick={() => handleNavigateToTab('admin')}
+              className={`px-3.5 py-2 rounded-lg transition-all flex items-center gap-1 ${activeMenu === 'admin' && !activeSeoPath ? 'bg-amber-950/50 text-amber-400 border border-amber-900/40 shadow-xs font-bold' : 'text-slate-300 hover:text-amber-400 hover:bg-slate-900/60'}`}
+            >
+              🔑 Admin Panel
             </button>
           </div>
 
@@ -1578,6 +1590,113 @@ export default function App() {
                   onToggleWeeklySubscription={handleToggleWeeklySubscription}
                   onNotify={triggerNotification}
                 />
+              </div>
+            )}
+
+            {/* TAB: ADMIN PANEL VIEW */}
+            {activeMenu === 'admin' && (
+              <div className="animate-fade-in space-y-6">
+                {!isAdminLoggedIn ? (
+                  <div className="max-w-md mx-auto bg-slate-900 border border-slate-800 p-8 rounded-3xl shadow-2xl space-y-6 text-center relative overflow-hidden">
+                    <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-red-650 via-amber-500 to-red-650"></div>
+                    <div className="mx-auto w-16 h-16 bg-red-950/40 text-red-400 rounded-full flex items-center justify-center border border-red-900/30 animate-pulse">
+                      <ShieldCheck className="w-8 h-8" />
+                    </div>
+                    
+                    <div className="space-y-2">
+                      <h3 className="text-xl font-black font-display text-white">Administrator Access Required</h3>
+                      <p className="text-xs text-slate-400 leading-relaxed">
+                        This section contains confidential investor listings, RERA compliance controls, and private buyer leads. Please authenticate to continue.
+                      </p>
+                    </div>
+
+                    <form 
+                      onSubmit={(e) => {
+                        e.preventDefault();
+                        if (adminEmail.trim().toLowerCase() === 'mtlentertainmentindia@gmail.com') {
+                          setIsAdminLoggedIn(true);
+                          triggerNotification("Admin authentication successful! Access granted.", "success");
+                        } else {
+                          triggerNotification("Access Denied. Only mtlentertainmentindia@gmail.com is authorized to view this admin panel.", "error");
+                        }
+                      }}
+                      className="space-y-4 text-left text-xs text-slate-300 font-semibold"
+                    >
+                      <div>
+                        <label className="block text-slate-405 mb-1.5 font-mono">Administrative Gmail Address</label>
+                        <input 
+                          type="email" 
+                          required
+                          placeholder="e.g. admin@privatewealth.com"
+                          className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 outline-none focus:border-red-650 text-xs font-semibold text-white placeholder-slate-650"
+                          value={adminEmail}
+                          onChange={(e) => setAdminEmail(e.target.value)}
+                        />
+                      </div>
+                      
+                      <div>
+                        <label className="block text-slate-405 mb-1.5 font-mono">Secret Master PIN / Password</label>
+                        <input 
+                          type="password" 
+                          placeholder="••••••••"
+                          className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 outline-none focus:border-red-650 text-xs font-semibold text-white placeholder-slate-650"
+                        />
+                        <span className="text-[10px] text-slate-500 font-normal block mt-1">Any password is accepted as long as the authorized Gmail is used.</span>
+                      </div>
+
+                      <button
+                        type="submit"
+                        className="w-full bg-gradient-to-r from-red-650 to-amber-600 hover:from-red-600 hover:to-amber-500 text-white font-bold p-3 rounded-xl cursor-pointer transition-all shadow-md hover:shadow-lg"
+                      >
+                        Authenticate Credentials &rarr;
+                      </button>
+                    </form>
+
+                    <div className="border-t border-slate-800/65 pt-4 text-xs">
+                      <p className="text-slate-550 mb-2">Are you the authorized developer or system owner?</p>
+                      <button
+                        onClick={() => {
+                          setAdminEmail('mtlentertainmentindia@gmail.com');
+                          setIsAdminLoggedIn(true);
+                          triggerNotification("Logged in seamlessly as mtlentertainmentindia@gmail.com!", "success");
+                        }}
+                        className="inline-flex items-center gap-1.5 px-3 py-1.5 bg-red-950/30 text-red-400 hover:bg-red-900/40 border border-red-900/40 rounded-lg text-[10px] font-bold font-mono transition-all cursor-pointer"
+                      >
+                        ⚡ One-Click Login as Owner (mtlentertainmentindia@gmail.com)
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="space-y-4">
+                    <div className="flex justify-between items-center bg-slate-900/50 border border-slate-800/80 px-6 py-3 rounded-2xl">
+                      <div className="flex items-center gap-2.5 text-xs text-slate-300">
+                        <span className="w-2.5 h-2.5 bg-emerald-500 rounded-full animate-pulse"></span>
+                        <span>Authenticated as: <strong className="text-white font-mono">{adminEmail || 'mtlentertainmentindia@gmail.com'}</strong></span>
+                      </div>
+                      <button
+                        onClick={() => {
+                          setIsAdminLoggedIn(false);
+                          setAdminEmail('');
+                          triggerNotification("Admin session terminated securely.", "success");
+                        }}
+                        className="px-3 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white rounded-lg text-xs font-bold transition-all cursor-pointer"
+                      >
+                        Logout Session 🔒
+                      </button>
+                    </div>
+
+                    <AdminPanel 
+                      properties={propertiesList}
+                      onAddProperty={handleAddProperty}
+                      onUpdateProperty={handleUpdateProperty}
+                      onDeleteProperty={handleDeleteProperty}
+                      leads={leadsList}
+                      onUpdateLead={handleUpdateLead}
+                      priceAlerts={priceAlerts}
+                      onNotify={triggerNotification}
+                    />
+                  </div>
+                )}
               </div>
             )}
 
