@@ -104,6 +104,16 @@ export default function App() {
   // SEO dropdown menu state for live preview
   const [seoMenuOpen, setSeoMenuOpen] = useState(false);
 
+  // Navigation Dropdown states
+  const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
+  const [isResourcesOpen, setIsResourcesOpen] = useState(false);
+  const [isPartnerOpen, setIsPartnerOpen] = useState(false);
+
+  // Guided Tour / Onboarding Wizard states
+  const [wizardStep, setWizardStep] = useState<number>(1);
+  const [wizardGoal, setWizardGoal] = useState<'invest' | 'plots' | 'calculator' | 'material' | 'ai' | null>(null);
+  const [wizardBudget, setWizardBudget] = useState<'under_50' | '50_100' | 'above_100' | 'any' | null>(null);
+
   // Dynamic state header and smooth responsive transitions
   const [isScrolled, setIsScrolled] = useState(false);
   const [tickerIndex, setTickerIndex] = useState(0);
@@ -374,97 +384,205 @@ export default function App() {
             </button>
           </div>
 
-          {/* WEBSITE MENU (Required: Home, Investments, Properties, Commercial, Plots, Blogs, Calculators, About, Contact) */}
-          <div className="flex flex-wrap items-center gap-1 text-xs font-bold font-sans">
+          {/* WEBSITE MENU (Consolidated & Organized into Dropdowns to prevent visual overload) */}
+          <div className="flex flex-wrap items-center gap-1.5 text-xs font-bold font-sans">
             <button 
-              onClick={() => handleNavigateToTab('home')}
+              onClick={() => {
+                handleNavigateToTab('home');
+                setIsCategoriesOpen(false);
+                setIsResourcesOpen(false);
+                setIsPartnerOpen(false);
+              }}
               className={`px-3 py-2 rounded-lg transition-all ${activeMenu === 'home' && !activeSeoPath ? 'bg-red-950/55 text-red-400 border border-red-900/40 shadow-xs' : 'text-slate-300 hover:text-red-400 hover:bg-slate-900/60'}`}
             >
               Home
             </button>
             <button 
-              onClick={() => handleNavigateToTab('investments')}
+              onClick={() => {
+                handleNavigateToTab('investments');
+                setIsCategoriesOpen(false);
+                setIsResourcesOpen(false);
+                setIsPartnerOpen(false);
+              }}
               className={`px-3 py-2 rounded-lg transition-all ${activeMenu === 'investments' && !activeSeoPath ? 'bg-red-950/55 text-red-400 border border-red-900/40 shadow-xs' : 'text-slate-300 hover:text-red-400 hover:bg-slate-900/60'}`}
             >
               Investments
             </button>
             <button 
-              onClick={() => handleNavigateToTab('properties')}
-              className={`px-3 py-2 rounded-lg transition-all ${activeMenu === 'properties' && !activeSeoPath ? 'bg-red-950/55 text-red-400 border border-red-900/40 shadow-xs' : 'text-slate-300 hover:text-red-400 hover:bg-slate-900/60'}`}
-            >
-              Properties
-            </button>
-            <button 
               onClick={() => {
-                // Sinks with commercial and assured units
-                handleNavigateToTab('commercial');
+                handleNavigateToTab('calculators');
+                setIsCategoriesOpen(false);
+                setIsResourcesOpen(false);
+                setIsPartnerOpen(false);
               }}
-              className={`px-3 py-2 rounded-lg transition-all ${activeMenu === 'commercial' && !activeSeoPath ? 'bg-red-950/55 text-red-400 border border-red-900/40 shadow-xs' : 'text-slate-300 hover:text-red-400 hover:bg-slate-900/60'}`}
-            >
-              Commercial
-            </button>
-            <button 
-              onClick={() => handleNavigateToTab('plots')}
-              className={`px-3 py-2 rounded-lg transition-all ${activeMenu === 'plots' && !activeSeoPath ? 'bg-red-950/55 text-red-400 border border-red-900/40 shadow-xs' : 'text-slate-300 hover:text-red-400 hover:bg-slate-900/60'}`}
-            >
-              Plots
-            </button>
-            <button 
-              onClick={() => handleNavigateToTab('blogs')}
-              className={`px-3 py-2 rounded-lg transition-all ${activeMenu === 'blogs' && !activeSeoPath ? 'bg-red-950/55 text-red-400 border border-red-900/40 shadow-xs' : 'text-slate-300 hover:text-red-400 hover:bg-slate-900/60'}`}
-            >
-              Blogs
-            </button>
-            <button 
-              onClick={() => handleNavigateToTab('calculators')}
               className={`px-3 py-2 rounded-lg transition-all ${activeMenu === 'calculators' && !activeSeoPath ? 'bg-red-950/55 text-red-400 border border-red-900/40 shadow-xs' : 'text-slate-300 hover:text-red-400 hover:bg-slate-900/60'}`}
             >
               Calculators
             </button>
             <button 
-              onClick={() => handleNavigateToTab('about')}
-              className={`px-3 py-2 rounded-lg transition-all ${activeMenu === 'about' && !activeSeoPath ? 'bg-red-950/55 text-red-400 border border-red-900/40 shadow-xs' : 'text-slate-300 hover:text-red-400 hover:bg-slate-900/60'}`}
-            >
-              About
-            </button>
-            <button 
-              onClick={() => handleNavigateToTab('contact')}
-              className={`px-3 py-2 rounded-lg transition-all ${activeMenu === 'contact' && !activeSeoPath ? 'bg-red-950/55 text-red-400 border border-red-900/40 shadow-xs' : 'text-slate-300 hover:text-red-400 hover:bg-slate-900/60'}`}
-            >
-              Contact
-            </button>
-
-            {/* Separator */}
-            <div className="h-5 w-px bg-slate-850 mx-1 hidden lg:block"></div>
-
-            <button 
-              onClick={() => handleNavigateToTab('portfolio')}
+              onClick={() => {
+                handleNavigateToTab('portfolio');
+                setIsCategoriesOpen(false);
+                setIsResourcesOpen(false);
+                setIsPartnerOpen(false);
+              }}
               className={`px-3.5 py-2 rounded-lg transition-all flex items-center gap-1 ${activeMenu === 'portfolio' && !activeSeoPath ? 'bg-red-950/55 text-red-400 border border-red-905/40 shadow-xs font-bold' : 'text-slate-300 hover:text-red-400 hover:bg-slate-900/60'}`}
             >
               🎒 My Portfolio
             </button>
 
-            {/* Template integrations */}
-            <button 
-              onClick={() => handleNavigateToTab('marketplace')}
-              className={`px-3 py-2 rounded-lg transition-all flex items-center gap-1 ${activeMenu === 'marketplace' && !activeSeoPath ? 'bg-red-650 text-white shadow-xs' : 'text-red-400 hover:text-red-300 hover:bg-red-950/20'}`}
-            >
-              🧱 Sourcing Store
-            </button>
+            {/* Dropdown: Sourcing Categories */}
+            <div className="relative">
+              <button 
+                onClick={() => {
+                  setIsCategoriesOpen(!isCategoriesOpen);
+                  setIsResourcesOpen(false);
+                  setIsPartnerOpen(false);
+                }}
+                className={`px-3 py-2 rounded-lg transition-all flex items-center gap-1 cursor-pointer ${
+                  ['properties', 'commercial', 'plots', 'marketplace'].includes(activeMenu) && !activeSeoPath
+                    ? 'bg-red-955/35 text-red-400 border border-red-900/30'
+                    : 'text-slate-300 hover:text-red-400 hover:bg-slate-900/60'
+                }`}
+              >
+                <span>🏢 Sourcing Categories</span>
+                <ChevronDown className="w-3.5 h-3.5" />
+              </button>
 
-            <button 
-              onClick={() => handleNavigateToTab('leads')}
-              className={`px-3.5 py-2 rounded-lg transition-all flex items-center gap-1 ${activeMenu === 'leads' && !activeSeoPath ? 'bg-red-950/55 text-red-400 border border-red-905/40 shadow-xs font-bold' : 'text-slate-300 hover:text-red-400 hover:bg-slate-900/60'}`}
-            >
-              🎯 Broker Desk
-            </button>
+              {isCategoriesOpen && (
+                <div className="absolute left-0 mt-2 w-56 bg-[#131b2e] rounded-2xl shadow-xl border border-slate-800 z-50 overflow-hidden text-xs py-1">
+                  <button 
+                    onClick={() => {
+                      handleNavigateToTab('properties');
+                      setIsCategoriesOpen(false);
+                    }} 
+                    className="w-full text-left px-4 py-2.5 hover:bg-slate-900 font-bold text-slate-200 hover:text-red-400 flex items-center gap-2"
+                  >
+                    🏠 Property Listings
+                  </button>
+                  <button 
+                    onClick={() => {
+                      handleNavigateToTab('commercial');
+                      setIsCategoriesOpen(false);
+                    }} 
+                    className="w-full text-left px-4 py-2.5 hover:bg-slate-900 font-bold text-slate-200 hover:text-red-400 flex items-center gap-2"
+                  >
+                    🏢 Commercial Suites
+                  </button>
+                  <button 
+                    onClick={() => {
+                      handleNavigateToTab('plots');
+                      setIsCategoriesOpen(false);
+                    }} 
+                    className="w-full text-left px-4 py-2.5 hover:bg-slate-900 font-bold text-slate-200 hover:text-red-400 flex items-center gap-2"
+                  >
+                    🌳 Plots & Townships
+                  </button>
+                  <button 
+                    onClick={() => {
+                      handleNavigateToTab('marketplace');
+                      setIsCategoriesOpen(false);
+                    }} 
+                    className="w-full text-left px-4 py-2.5 hover:bg-slate-900 font-bold text-red-400 hover:text-red-300 flex items-center gap-2 border-t border-slate-800/80"
+                  >
+                    🧱 Wholesale Store
+                  </button>
+                </div>
+              )}
+            </div>
 
-            <button 
-              onClick={() => handleNavigateToTab('admin')}
-              className={`px-3.5 py-2 rounded-lg transition-all flex items-center gap-1 ${activeMenu === 'admin' && !activeSeoPath ? 'bg-amber-950/50 text-amber-400 border border-amber-900/40 shadow-xs font-bold' : 'text-slate-300 hover:text-amber-400 hover:bg-slate-900/60'}`}
-            >
-              🔑 Admin Panel
-            </button>
+            {/* Dropdown: Sourcing Resources */}
+            <div className="relative">
+              <button 
+                onClick={() => {
+                  setIsResourcesOpen(!isResourcesOpen);
+                  setIsCategoriesOpen(false);
+                  setIsPartnerOpen(false);
+                }}
+                className={`px-3 py-2 rounded-lg transition-all flex items-center gap-1 cursor-pointer ${
+                  ['blogs', 'about', 'contact'].includes(activeMenu) && !activeSeoPath
+                    ? 'bg-red-955/35 text-red-400 border border-red-900/30'
+                    : 'text-slate-300 hover:text-red-400 hover:bg-slate-900/60'
+                }`}
+              >
+                <span>📚 Resources & Guides</span>
+                <ChevronDown className="w-3.5 h-3.5" />
+              </button>
+
+              {isResourcesOpen && (
+                <div className="absolute left-0 mt-2 w-52 bg-[#131b2e] rounded-2xl shadow-xl border border-slate-800 z-50 overflow-hidden text-xs py-1">
+                  <button 
+                    onClick={() => {
+                      handleNavigateToTab('blogs');
+                      setIsResourcesOpen(false);
+                    }} 
+                    className="w-full text-left px-4 py-2.5 hover:bg-slate-900 font-bold text-slate-200 hover:text-red-400"
+                  >
+                    📝 Blogs & Research
+                  </button>
+                  <button 
+                    onClick={() => {
+                      handleNavigateToTab('about');
+                      setIsResourcesOpen(false);
+                    }} 
+                    className="w-full text-left px-4 py-2.5 hover:bg-slate-900 font-bold text-slate-200 hover:text-red-400"
+                  >
+                    ✨ Sourcing Manifesto
+                  </button>
+                  <button 
+                    onClick={() => {
+                      handleNavigateToTab('contact');
+                      setIsResourcesOpen(false);
+                    }} 
+                    className="w-full text-left px-4 py-2.5 hover:bg-slate-900 font-bold text-slate-200 hover:text-red-400"
+                  >
+                    📞 Advisor Helpdesk
+                  </button>
+                </div>
+              )}
+            </div>
+
+            {/* Dropdown: Portals */}
+            <div className="relative">
+              <button 
+                onClick={() => {
+                  setIsPartnerOpen(!isPartnerOpen);
+                  setIsCategoriesOpen(false);
+                  setIsResourcesOpen(false);
+                }}
+                className={`px-3 py-2 rounded-lg transition-all flex items-center gap-1 cursor-pointer ${
+                  ['leads', 'admin'].includes(activeMenu) && !activeSeoPath
+                    ? 'bg-amber-955/35 text-amber-400 border border-amber-900/30'
+                    : 'text-slate-300 hover:text-amber-400 hover:bg-slate-900/60'
+                }`}
+              >
+                <span>🔑 Partner Portals</span>
+                <ChevronDown className="w-3.5 h-3.5" />
+              </button>
+
+              {isPartnerOpen && (
+                <div className="absolute right-0 mt-2 w-48 bg-[#131b2e] rounded-2xl shadow-xl border border-slate-800 z-50 overflow-hidden text-xs py-1">
+                  <button 
+                    onClick={() => {
+                      handleNavigateToTab('leads');
+                      setIsPartnerOpen(false);
+                    }} 
+                    className="w-full text-left px-4 py-2.5 hover:bg-slate-900 font-bold text-slate-200 hover:text-red-400 flex items-center gap-2"
+                  >
+                    🎯 Broker CRM Desk
+                  </button>
+                  <button 
+                    onClick={() => {
+                      handleNavigateToTab('admin');
+                      setIsPartnerOpen(false);
+                    }} 
+                    className="w-full text-left px-4 py-2.5 hover:bg-slate-900 font-bold text-amber-400 hover:text-amber-300 flex items-center gap-2 border-t border-slate-800/80"
+                  >
+                    🔑 Owner Admin Panel
+                  </button>
+                </div>
+              )}
+            </div>
           </div>
 
           {/* DYNAMIC SEO LANDING PAGES PREVIEW DROPDOWN */}
@@ -537,6 +655,341 @@ export default function App() {
             {activeMenu === 'home' && (
               <div className="space-y-12 animate-fade-in">
                 
+                {/* INTERACTIVE GUIDED CONCIERGE & FINDER WIZARD */}
+                <div id="quick-finder-wizard" className="bg-[#0b111e] rounded-3xl p-6 sm:p-8 border border-red-905/30 shadow-2xl relative overflow-hidden">
+                  {/* Backdrop details */}
+                  <div className="absolute -top-16 -right-16 w-48 h-48 bg-red-955/20 rounded-full blur-3xl pointer-events-none"></div>
+                  
+                  <div className="max-w-4xl mx-auto space-y-6 relative">
+                    
+                    {/* Header */}
+                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-slate-800 pb-4">
+                      <div>
+                        <div className="inline-flex items-center gap-1.5 text-[10px] bg-red-955/40 text-red-400 px-3 py-1 rounded-full border border-red-900/30 font-mono font-bold uppercase tracking-wider mb-2">
+                          <Flame className="w-3 h-3 text-red-500 animate-pulse" /> Interactive Concierge Guide
+                        </div>
+                        <h2 className="text-xl sm:text-2xl font-extrabold text-slate-100 font-display tracking-tight flex items-center gap-2">
+                          Not sure where to start? Let us guide you!
+                        </h2>
+                        <p className="text-xs text-slate-400 font-medium">
+                          Answer 2 simple questions to configure the entire platform for your exact needs.
+                        </p>
+                      </div>
+                      
+                      {/* Step Indicator */}
+                      <div className="flex items-center gap-1 shrink-0 font-mono text-xs font-bold bg-slate-900/80 px-3 py-1.5 rounded-xl border border-slate-800 text-slate-400">
+                        <span>Step</span>
+                        <span className="text-red-400 font-black text-sm">{wizardStep}</span>
+                        <span>/</span>
+                        <span>3</span>
+                      </div>
+                    </div>
+
+                    {/* STEP 1: SELECT GOAL */}
+                    {wizardStep === 1 && (
+                      <div className="space-y-6 animate-fade-in">
+                        <div className="text-sm font-bold text-slate-200">
+                          Q1. What is your primary objective or requirement today?
+                        </div>
+                        
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-5 gap-3.5">
+                          {/* Option A: High Yield Investments */}
+                          <div 
+                            onClick={() => setWizardGoal('invest')}
+                            className={`p-4 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between space-y-3 select-none ${
+                              wizardGoal === 'invest' 
+                                ? 'bg-red-955/30 border-red-500/80 shadow-md shadow-red-950/20' 
+                                : 'bg-slate-900/45 border-slate-800/80 hover:bg-slate-900/90 hover:border-slate-700/85'
+                            }`}
+                          >
+                            <div className="w-9 h-9 bg-red-950/30 border border-red-900/40 rounded-xl flex items-center justify-center text-red-500">
+                              <TrendingUp className="w-4 h-4 stroke-[2.5]" />
+                            </div>
+                            <div>
+                              <div className="text-xs font-black text-slate-100 mb-1">HNI Returns</div>
+                              <div className="text-[10px] text-slate-400 leading-snug font-medium">Verified corporate office spaces & yields.</div>
+                            </div>
+                          </div>
+
+                          {/* Option B: Plots & Land */}
+                          <div 
+                            onClick={() => setWizardGoal('plots')}
+                            className={`p-4 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between space-y-3 select-none ${
+                              wizardGoal === 'plots' 
+                                ? 'bg-red-955/30 border-red-500/80 shadow-md shadow-red-950/20' 
+                                : 'bg-slate-900/45 border-slate-800/80 hover:bg-slate-900/90 hover:border-slate-700/85'
+                            }`}
+                          >
+                            <div className="w-9 h-9 bg-emerald-950/30 border border-emerald-900/40 rounded-xl flex items-center justify-center text-emerald-400">
+                              <MapPin className="w-4 h-4" />
+                            </div>
+                            <div>
+                              <div className="text-xs font-black text-slate-100 mb-1">Plots & Land</div>
+                              <div className="text-[10px] text-slate-400 leading-snug font-medium">Gated townships with absolute title deeds.</div>
+                            </div>
+                          </div>
+
+                          {/* Option C: Calculators */}
+                          <div 
+                            onClick={() => setWizardGoal('calculator')}
+                            className={`p-4 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between space-y-3 select-none ${
+                              wizardGoal === 'calculator' 
+                                ? 'bg-red-955/30 border-red-500/80 shadow-md shadow-red-950/20' 
+                                : 'bg-slate-900/45 border-slate-800/80 hover:bg-slate-900/90 hover:border-slate-700/85'
+                            }`}
+                          >
+                            <div className="w-9 h-9 bg-purple-950/30 border border-purple-900/40 rounded-xl flex items-center justify-center text-purple-400">
+                              <CalcIcon className="w-4 h-4" />
+                            </div>
+                            <div>
+                              <div className="text-xs font-black text-slate-100 mb-1">Yield Tools</div>
+                              <div className="text-[10px] text-slate-400 leading-snug font-medium">Calculate loan EMIs and ROI projections.</div>
+                            </div>
+                          </div>
+
+                          {/* Option D: Material Store */}
+                          <div 
+                            onClick={() => setWizardGoal('material')}
+                            className={`p-4 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between space-y-3 select-none ${
+                              wizardGoal === 'material' 
+                                ? 'bg-red-955/30 border-red-500/80 shadow-md shadow-red-950/20' 
+                                : 'bg-slate-900/45 border-slate-800/80 hover:bg-slate-900/90 hover:border-slate-700/85'
+                            }`}
+                          >
+                            <div className="w-9 h-9 bg-amber-950/30 border border-amber-900/40 rounded-xl flex items-center justify-center text-amber-400">
+                              <ShoppingBag className="w-4 h-4" />
+                            </div>
+                            <div>
+                              <div className="text-xs font-black text-slate-100 mb-1">Wholesale Shop</div>
+                              <div className="text-[10px] text-slate-400 leading-snug font-medium">Direct builder prices for Steel, Cement & Stone.</div>
+                            </div>
+                          </div>
+
+                          {/* Option E: Chat with AI */}
+                          <div 
+                            onClick={() => setWizardGoal('ai')}
+                            className={`p-4 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between space-y-3 select-none ${
+                              wizardGoal === 'ai' 
+                                ? 'bg-red-955/30 border-red-500/80 shadow-md shadow-red-950/20' 
+                                : 'bg-slate-900/45 border-slate-800/80 hover:bg-slate-900/90 hover:border-slate-700/85'
+                            }`}
+                          >
+                            <div className="w-9 h-9 bg-sky-950/30 border border-sky-900/40 rounded-xl flex items-center justify-center text-sky-450 animate-pulse">
+                              <MessageSquare className="w-4 h-4" />
+                            </div>
+                            <div>
+                              <div className="text-xs font-black text-slate-100 mb-1">Sourcing AI</div>
+                              <div className="text-[10px] text-slate-400 leading-snug font-medium">Chat with real-time advisor about law & projects.</div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="flex justify-end pt-2">
+                          <button
+                            onClick={() => {
+                              if (!wizardGoal) {
+                                triggerNotification("Please select one option to proceed with the guidance.", "error");
+                                return;
+                              }
+                              setWizardStep(2);
+                            }}
+                            className={`px-6 py-2.5 rounded-xl font-bold font-display text-xs flex items-center gap-1.5 transition-all shadow-md ${
+                              wizardGoal 
+                                ? 'bg-red-650 text-white hover:bg-red-700 cursor-pointer' 
+                                : 'bg-slate-800 text-slate-500 cursor-not-allowed'
+                            }`}
+                          >
+                            Continue
+                            <ArrowRight className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* STEP 2: BUDGET BRACKET */}
+                    {wizardStep === 2 && (
+                      <div className="space-y-6 animate-fade-in">
+                        <div className="text-sm font-bold text-slate-200">
+                          Q2. What is your targeted budget or purchase ticket size?
+                        </div>
+                        
+                        <div className="grid grid-cols-1 sm:grid-cols-4 gap-4">
+                          {/* Bracket A: Under 50 */}
+                          <div 
+                            onClick={() => setWizardBudget('under_50')}
+                            className={`p-4 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between space-y-2 select-none ${
+                              wizardBudget === 'under_50' 
+                                ? 'bg-red-955/30 border-red-500/80 shadow-md shadow-red-950/20' 
+                                : 'bg-slate-900/45 border-slate-800/80 hover:bg-slate-900/90 hover:border-slate-700/85'
+                            }`}
+                          >
+                            <span className="text-xs font-mono uppercase font-bold text-slate-400">Entry / Micro</span>
+                            <div className="text-base font-black text-slate-100">Under ₹50 L</div>
+                            <p className="text-[10px] text-slate-400 leading-normal">Fractional assets, materials & township plots.</p>
+                          </div>
+
+                          {/* Bracket B: 50 - 100 */}
+                          <div 
+                            onClick={() => setWizardBudget('50_100')}
+                            className={`p-4 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between space-y-2 select-none ${
+                              wizardBudget === '50_100' 
+                                ? 'bg-red-955/30 border-red-500/80 shadow-md shadow-red-950/20' 
+                                : 'bg-slate-900/45 border-slate-800/80 hover:bg-slate-900/90 hover:border-slate-700/85'
+                            }`}
+                          >
+                            <span className="text-xs font-mono uppercase font-bold text-red-400">Standard</span>
+                            <div className="text-base font-black text-slate-100">₹50 L - ₹1 Cr</div>
+                            <p className="text-[10px] text-slate-400 leading-normal">Corporate suites, high-growth apartments.</p>
+                          </div>
+
+                          {/* Bracket C: Above 100 */}
+                          <div 
+                            onClick={() => setWizardBudget('above_100')}
+                            className={`p-4 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between space-y-2 select-none ${
+                              wizardBudget === 'above_100' 
+                                ? 'bg-red-955/30 border-red-500/80 shadow-md shadow-red-950/20' 
+                                : 'bg-slate-900/45 border-slate-800/80 hover:bg-slate-900/90 hover:border-slate-700/85'
+                            }`}
+                          >
+                            <span className="text-xs font-mono uppercase font-bold text-[#D4AF37]">Premium / HNI</span>
+                            <div className="text-base font-black text-slate-100">Above ₹1 Cr</div>
+                            <p className="text-[10px] text-slate-400 leading-normal">Exclusive commercial zones, complete land parcels.</p>
+                          </div>
+
+                          {/* Bracket D: Any */}
+                          <div 
+                            onClick={() => setWizardBudget('any')}
+                            className={`p-4 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between space-y-2 select-none ${
+                              wizardBudget === 'any' 
+                                ? 'bg-red-955/30 border-red-500/80 shadow-md shadow-red-950/20' 
+                                : 'bg-slate-900/45 border-slate-800/80 hover:bg-slate-900/90 hover:border-slate-700/85'
+                            }`}
+                          >
+                            <span className="text-xs font-mono uppercase font-bold text-slate-400">Flexible</span>
+                            <div className="text-base font-black text-slate-100">Just Browsing</div>
+                            <p className="text-[10px] text-slate-400 leading-normal">Show me all options without active filtering.</p>
+                          </div>
+                        </div>
+
+                        <div className="flex justify-between items-center pt-2">
+                          <button
+                            onClick={() => setWizardStep(1)}
+                            className="px-4 py-2 bg-slate-900 text-slate-300 hover:text-white rounded-xl text-xs font-bold transition-colors cursor-pointer border border-slate-800"
+                          >
+                            ← Back
+                          </button>
+                          
+                          <button
+                            onClick={() => {
+                              if (!wizardBudget) {
+                                triggerNotification("Please select a budget level to get your custom recommendation.", "error");
+                                return;
+                              }
+                              setWizardStep(3);
+                            }}
+                            className={`px-6 py-2.5 rounded-xl font-bold font-display text-xs flex items-center gap-1.5 transition-all shadow-md ${
+                              wizardBudget 
+                                ? 'bg-red-650 text-white hover:bg-red-700 cursor-pointer' 
+                                : 'bg-slate-800 text-slate-500 cursor-not-allowed'
+                            }`}
+                          >
+                            Generate My Sourcing Route
+                            <ArrowRight className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* STEP 3: CUSTOM RECOMMENDATION PATHWAY */}
+                    {wizardStep === 3 && (
+                      <div className="space-y-6 animate-fade-in text-slate-100">
+                        <div className="bg-red-955/25 border border-red-900/35 p-5 rounded-2xl space-y-3">
+                          <div className="flex items-center gap-2 text-red-400 font-extrabold text-sm">
+                            <BadgeCheck className="w-5 h-5 text-red-500" />
+                            <span>Custom Sourcing Alignment Verified!</span>
+                          </div>
+                          
+                          <p className="text-xs leading-relaxed text-slate-300">
+                            {wizardGoal === 'invest' && (
+                              <span>
+                                🏢 We've configured the <strong>High-Yield Sourcing Deck</strong>. Your custom alignment of pre-leased premium commercial assets with triple-net guarantees and Maharera/HRERA-verified credentials has been prepared for a budget of <strong>{wizardBudget === 'under_50' ? 'Under ₹50L' : wizardBudget === '50_100' ? '₹50L - ₹1Cr' : wizardBudget === 'above_100' ? 'Above ₹1Cr' : 'All Budget Caps'}</strong>.
+                              </span>
+                            )}
+                            {wizardGoal === 'plots' && (
+                              <span>
+                                🌳 <strong>Townships & Plots Deck Activated!</strong> We've highlighted gating and infrastructure land layouts with direct legal title verification, clear registry links, and direct HRERA mutations matching your target ticket size.
+                              </span>
+                            )}
+                            {wizardGoal === 'calculator' && (
+                              <span>
+                                🧮 <strong>Advanced Financial Desk Ready!</strong> The Loan EMI and Investment ROI simulators are pre-focused. Access direct post-tax IRR spreadsheets, compound yield graphs, and rental offset indices matching your parameters.
+                              </span>
+                            )}
+                            {wizardGoal === 'material' && (
+                              <span>
+                                🧱 <strong>Direct Sourcing Store Configured!</strong> We've loaded the direct manufacturer catalog with real-time price sheets for <strong>Grade-A TMT Steel rebar</strong>, premium high-gloss <strong>Makrana Marble</strong>, and <strong>OPC Cement loads</strong> with door-delivery logistics.
+                              </span>
+                            )}
+                            {wizardGoal === 'ai' && (
+                              <span>
+                                💬 <strong>AI Sourcing Co-Pilot Online!</strong> The real-time AI assistant has been updated with context regarding your budget requirements and is standing by to answer statutory or local layout queries.
+                              </span>
+                            )}
+                          </p>
+                        </div>
+
+                        <div className="flex flex-col sm:flex-row gap-3 pt-2">
+                          <button
+                            onClick={() => {
+                              if (wizardGoal === 'invest') {
+                                handleNavigateToTab('investments');
+                                if (wizardBudget === 'under_50') {
+                                  setBracketFilter('Under 50 Lakhs');
+                                } else if (wizardBudget === '50_100') {
+                                  setBracketFilter('50 Lakhs - 1 Crore');
+                                } else if (wizardBudget === 'above_100') {
+                                  setBracketFilter('Above 1 Crore');
+                                } else {
+                                  setBracketFilter('All');
+                                }
+                                triggerNotification("Sourcing Pathway activated! Enjoy your pre-filtered investments catalog.", "success");
+                              } else if (wizardGoal === 'plots') {
+                                handleNavigateToTab('plots');
+                                triggerNotification("Sourcing Pathway activated! Enjoy verified gated township plots.", "success");
+                              } else if (wizardGoal === 'calculator') {
+                                handleNavigateToTab('calculators');
+                                triggerNotification("Sourcing Calculators loaded successfully.", "success");
+                              } else if (wizardGoal === 'material') {
+                                handleNavigateToTab('marketplace');
+                                triggerNotification("Wholesale Sourcing Store loaded successfully.", "success");
+                              } else if (wizardGoal === 'ai') {
+                                const botBtn = document.getElementById('chat-toggle-btn');
+                                if (botBtn) botBtn.click();
+                                triggerNotification("Sourcing AI copilot activated. Check bottom-right corner!", "success");
+                              }
+                            }}
+                            className="flex-1 bg-red-650 hover:bg-red-700 text-white py-3.5 rounded-xl font-extrabold text-xs transition-all shadow-md text-center cursor-pointer font-display animate-pulse flex items-center justify-center gap-1.5"
+                          >
+                            🚀 Launch My Custom Sourcing Deck
+                          </button>
+                          
+                          <button
+                            onClick={() => {
+                              setWizardStep(1);
+                              setWizardGoal(null);
+                              setWizardBudget(null);
+                            }}
+                            className="px-5 py-3.5 bg-slate-900 hover:bg-slate-800 text-slate-300 rounded-xl text-xs font-bold transition-colors cursor-pointer border border-slate-800 text-center"
+                          >
+                            Restart Guide
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                  </div>
+                </div>
+
                 {/* A. HOMEPAGE HERO SECTION (Required Feature) */}
                 <section className="bg-white rounded-3xl overflow-hidden shadow-xl border border-slate-200 grid grid-cols-1 lg:grid-cols-5 relative min-h-[460px]">
                   
@@ -1609,6 +2062,26 @@ export default function App() {
                       <p className="text-xs text-slate-400 leading-relaxed">
                         This section contains confidential investor listings, RERA compliance controls, and private buyer leads. Please authenticate to continue.
                       </p>
+                    </div>
+
+                    <div className="bg-red-955/25 border border-red-900/40 p-4 rounded-2xl text-left text-xs leading-relaxed text-slate-300 space-y-1">
+                      <div className="text-red-400 font-bold flex items-center gap-1.5">
+                        <Award className="w-4 h-4 text-amber-500" />
+                        <span>Authorized Admin Credentials:</span>
+                      </div>
+                      <p className="text-[11px] text-slate-400">
+                        Use the secure login info below or click the one-click developer login below.
+                      </p>
+                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1 font-mono text-[10px]">
+                        <div className="bg-slate-950 p-2 rounded-lg border border-slate-800">
+                          <span className="text-slate-500 block text-[9px] uppercase font-bold">Email</span>
+                          <span className="text-slate-200 select-all font-bold">mtlentertainmentindia@gmail.com</span>
+                        </div>
+                        <div className="bg-slate-950 p-2 rounded-lg border border-slate-800">
+                          <span className="text-slate-500 block text-[9px] uppercase font-bold">Password</span>
+                          <span className="text-slate-200 select-all font-bold">Kaka@12345</span>
+                        </div>
+                      </div>
                     </div>
 
                     <form 
