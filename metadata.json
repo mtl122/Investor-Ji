@@ -1,0 +1,8 @@
+{
+  "name": "InvestorJi.com | India's Trusted Real Estate & Investment Platform",
+  "description": "Find verified investment opportunities, commercial properties, residential projects, plots, and rental income assets across India. Expert guidance by InvestorJi.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
