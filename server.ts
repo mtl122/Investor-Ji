@@ -1,7 +1,6 @@
 import express from "express";
 import path from "path";
 import dotenv from "dotenv";
-import { createServer as createViteServer } from "vite";
 import { GoogleGenAI } from "@google/genai";
 
 dotenv.config();
@@ -177,6 +176,7 @@ How can I assist your real estate capital deployment strategy today? Ask me abou
 async function startServer() {
   if (process.env.NODE_ENV !== "production") {
     // Vite Developer server mode
+    const { createServer: createViteServer } = await import("vite");
     const vite = await createViteServer({
       server: { middlewareMode: true },
       appType: "spa",
@@ -192,9 +192,18 @@ async function startServer() {
     });
   }
 
-  app.listen(PORT, "0.0.0.0", () => {
-    console.log(`InvestorJi Full-Stack Server running on http://0.0.0.0:${PORT}`);
-  });
+  // Socket-safe listen configuration for shared hosting environments (Hostinger/cPanel/Passenger)
+  if (isNaN(Number(PORT))) {
+    // If PORT is a Unix socket path or named pipe, do not specify the host
+    app.listen(PORT, () => {
+      console.log(`InvestorJi Full-Stack Server running on socket/pipe: ${PORT}`);
+    });
+  } else {
+    // Standard TCP port
+    app.listen(Number(PORT), "0.0.0.0", () => {
+      console.log(`InvestorJi Full-Stack Server running on port: ${PORT}`);
+    });
+  }
 }
 
 startServer();
