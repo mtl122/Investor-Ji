@@ -72,6 +72,7 @@ export default function App() {
 
   // Admin Login States
   const [adminEmail, setAdminEmail] = useState<string>('');
+  const [adminPassword, setAdminPassword] = useState<string>('');
   const [isAdminLoggedIn, setIsAdminLoggedIn] = useState<boolean>(false);
 
   // Comparative analysis states (MagicBricks inspired)
@@ -1613,11 +1614,16 @@ export default function App() {
                     <form 
                       onSubmit={(e) => {
                         e.preventDefault();
-                        if (adminEmail.trim().toLowerCase() === 'mtlentertainmentindia@gmail.com') {
+                        const isAuthorizedEmail = adminEmail.trim().toLowerCase() === 'mtlentertainmentindia@gmail.com';
+                        const isCorrectPassword = adminPassword === 'Kaka@12345';
+                        
+                        if (isAuthorizedEmail && isCorrectPassword) {
                           setIsAdminLoggedIn(true);
                           triggerNotification("Admin authentication successful! Access granted.", "success");
-                        } else {
+                        } else if (!isAuthorizedEmail) {
                           triggerNotification("Access Denied. Only mtlentertainmentindia@gmail.com is authorized to view this admin panel.", "error");
+                        } else {
+                          triggerNotification("Invalid master password. Please try again.", "error");
                         }
                       }}
                       className="space-y-4 text-left text-xs text-slate-300 font-semibold"
@@ -1638,10 +1644,13 @@ export default function App() {
                         <label className="block text-slate-405 mb-1.5 font-mono">Secret Master PIN / Password</label>
                         <input 
                           type="password" 
+                          required
                           placeholder="••••••••"
                           className="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 outline-none focus:border-red-650 text-xs font-semibold text-white placeholder-slate-650"
+                          value={adminPassword}
+                          onChange={(e) => setAdminPassword(e.target.value)}
                         />
-                        <span className="text-[10px] text-slate-500 font-normal block mt-1">Any password is accepted as long as the authorized Gmail is used.</span>
+                        <span className="text-[10px] text-slate-500 font-normal block mt-1">Please enter your secret administrative master password to log in.</span>
                       </div>
 
                       <button
