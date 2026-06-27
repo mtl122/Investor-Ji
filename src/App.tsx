@@ -48,6 +48,7 @@ import { PropertyCard } from './components/PropertyCard';
 import { InvestorPortfolio } from './components/InvestorPortfolio';
 import { InvestorChatbot } from './components/InvestorChatbot';
 import { AdminPanel } from './components/AdminPanel';
+import { RegionalGrowthHeatmap } from './components/RegionalGrowthHeatmap';
 
 export default function App() {
   // Website Menu / Routing State
@@ -304,16 +305,16 @@ export default function App() {
   };
 
   return (
-    <div id="investorji-redesign-root" className="min-h-screen bg-[#060B13] text-slate-100 font-sans selection:bg-red-650 selection:text-white flex flex-col justify-between">
+    <div id="investorji-redesign-root" className="min-h-screen bg-[#F8FAFC] text-slate-800 font-sans selection:bg-red-650 selection:text-white flex flex-col justify-between">
       
       {/* 1. DYNAMIC TOAST NOTIFICATIONS */}
       <div className="fixed top-5 right-5 z-50 flex flex-col gap-3 pointer-events-none">
         {notifications.map(n => (
           <div 
             key={n.id} 
-            className="pointer-events-auto p-4 rounded-xl shadow-xl flex items-center gap-3 max-w-sm font-sans text-xs font-bold border animate-in slide-in-from-right duration-200 bg-[#131b2e] text-slate-100 border-[#334155]"
+            className="pointer-events-auto p-4 rounded-xl shadow-xl flex items-center gap-3 max-w-sm font-sans text-xs font-bold border animate-in slide-in-from-right duration-200 bg-white text-slate-805 border-slate-200"
           >
-            <div className="p-1.5 rounded-full bg-red-950/50 text-red-400">
+            <div className="p-1.5 rounded-full bg-red-50 text-red-600">
               <CheckCircle className="w-4 h-4" />
             </div>
             <span>{n.message}</span>
@@ -345,10 +346,10 @@ export default function App() {
       </div>
 
       {/* 3. MAIN HEADER NAVIGATION BAR (NO-BROKER CRIMSON RED THEME WITH DYNAMIC SCROLL TRANSITION) */}
-      <nav className={`sticky top-0 z-40 bg-[#070a13]/95 backdrop-blur-md border-b transition-all duration-300 ${
+      <nav className={`sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b transition-all duration-300 ${
         isScrolled 
-          ? 'py-2.5 border-red-950/40 shadow-xl' 
-          : 'py-4 border-slate-800/80 shadow-md'
+          ? 'py-2.5 border-slate-200/80 shadow-lg shadow-slate-100/40' 
+          : 'py-4 border-slate-150 shadow-xs'
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           
@@ -358,15 +359,15 @@ export default function App() {
               onClick={() => handleNavigateToTab('home')}
               className="cursor-pointer flex items-center gap-2 group select-none"
             >
-              <div className="w-10 h-10 bg-red-950/30 border border-red-900/40 flex items-center justify-center rounded-xl shadow-sm transition-all group-hover:bg-red-950/50">
-                <Building className="text-red-500 w-5 h-5 stroke-2" />
+              <div className="w-10 h-10 bg-red-50 border border-red-200/50 flex items-center justify-center rounded-xl shadow-xs transition-all group-hover:bg-red-100/50">
+                <Building className="text-red-650 w-5 h-5 stroke-2" />
               </div>
               <div>
-                <span className="text-xl font-black text-slate-100 tracking-tight flex items-center gap-1.5 font-display">
+                <span className="text-xl font-black text-slate-900 tracking-tight flex items-center gap-1.5 font-display">
                   InvestorJi
-                  <span className="text-[9px] bg-red-600 text-white px-2 py-0.5 rounded-md font-bold shadow-md">RERA ACTIVE</span>
+                  <span className="text-[9px] bg-red-650 text-white px-2 py-0.5 rounded-md font-bold shadow-xs">RERA ACTIVE</span>
                 </span>
-                <span className="text-[9px] text-red-500 block uppercase font-bold tracking-widest mt-0.5 font-mono">
+                <span className="text-[9px] text-red-600 block uppercase font-bold tracking-widest mt-0.5 font-mono">
                   No-Brokerage Real Estate Portal ⚡
                 </span>
               </div>
@@ -378,7 +379,7 @@ export default function App() {
                 setContactMessage("Drafting sourcing request for the Executive portfolio circle.");
                 setShowInquireDialog(true);
               }}
-              className="lg:hidden text-[10px] bg-red-600 hover:bg-red-700 text-white px-3.5 py-2 rounded-lg font-bold transition-all shadow-md"
+              className="lg:hidden text-[10px] bg-red-650 hover:bg-red-700 text-white px-3.5 py-2 rounded-lg font-bold transition-all shadow-md"
             >
               Consult Desk
             </button>
@@ -393,7 +394,7 @@ export default function App() {
                 setIsResourcesOpen(false);
                 setIsPartnerOpen(false);
               }}
-              className={`px-3 py-2 rounded-lg transition-all ${activeMenu === 'home' && !activeSeoPath ? 'bg-red-950/55 text-red-400 border border-red-900/40 shadow-xs' : 'text-slate-300 hover:text-red-400 hover:bg-slate-900/60'}`}
+              className={`px-3 py-2 rounded-lg transition-all ${activeMenu === 'home' && !activeSeoPath ? 'bg-red-50 text-red-650 border border-red-100 shadow-xs' : 'text-slate-600 hover:text-red-650 hover:bg-slate-50'}`}
             >
               Home
             </button>
@@ -404,7 +405,7 @@ export default function App() {
                 setIsResourcesOpen(false);
                 setIsPartnerOpen(false);
               }}
-              className={`px-3 py-2 rounded-lg transition-all ${activeMenu === 'investments' && !activeSeoPath ? 'bg-red-950/55 text-red-400 border border-red-900/40 shadow-xs' : 'text-slate-300 hover:text-red-400 hover:bg-slate-900/60'}`}
+              className={`px-3 py-2 rounded-lg transition-all ${activeMenu === 'investments' && !activeSeoPath ? 'bg-red-50 text-red-650 border border-red-100 shadow-xs' : 'text-slate-600 hover:text-red-650 hover:bg-slate-50'}`}
             >
               Investments
             </button>
@@ -415,7 +416,7 @@ export default function App() {
                 setIsResourcesOpen(false);
                 setIsPartnerOpen(false);
               }}
-              className={`px-3 py-2 rounded-lg transition-all ${activeMenu === 'calculators' && !activeSeoPath ? 'bg-red-950/55 text-red-400 border border-red-900/40 shadow-xs' : 'text-slate-300 hover:text-red-400 hover:bg-slate-900/60'}`}
+              className={`px-3 py-2 rounded-lg transition-all ${activeMenu === 'calculators' && !activeSeoPath ? 'bg-red-50 text-red-650 border border-red-100 shadow-xs' : 'text-slate-600 hover:text-red-650 hover:bg-slate-50'}`}
             >
               Calculators
             </button>
@@ -426,7 +427,7 @@ export default function App() {
                 setIsResourcesOpen(false);
                 setIsPartnerOpen(false);
               }}
-              className={`px-3.5 py-2 rounded-lg transition-all flex items-center gap-1 ${activeMenu === 'portfolio' && !activeSeoPath ? 'bg-red-950/55 text-red-400 border border-red-905/40 shadow-xs font-bold' : 'text-slate-300 hover:text-red-400 hover:bg-slate-900/60'}`}
+              className={`px-3.5 py-2 rounded-lg transition-all flex items-center gap-1 ${activeMenu === 'portfolio' && !activeSeoPath ? 'bg-red-50 text-red-650 border border-red-100 shadow-xs font-bold' : 'text-slate-600 hover:text-red-650 hover:bg-slate-50'}`}
             >
               🎒 My Portfolio
             </button>
@@ -441,8 +442,8 @@ export default function App() {
                 }}
                 className={`px-3 py-2 rounded-lg transition-all flex items-center gap-1 cursor-pointer ${
                   ['properties', 'commercial', 'plots', 'marketplace'].includes(activeMenu) && !activeSeoPath
-                    ? 'bg-red-955/35 text-red-400 border border-red-900/30'
-                    : 'text-slate-300 hover:text-red-400 hover:bg-slate-900/60'
+                    ? 'bg-red-50 text-red-650 border border-red-100 shadow-xs'
+                    : 'text-slate-600 hover:text-red-650 hover:bg-slate-50'
                 }`}
               >
                 <span>🏢 Sourcing Categories</span>
@@ -450,13 +451,13 @@ export default function App() {
               </button>
 
               {isCategoriesOpen && (
-                <div className="absolute left-0 mt-2 w-56 bg-[#131b2e] rounded-2xl shadow-xl border border-slate-800 z-50 overflow-hidden text-xs py-1">
+                <div className="absolute left-0 mt-2 w-56 bg-white rounded-2xl shadow-xl border border-slate-150 z-50 overflow-hidden text-xs py-1">
                   <button 
                     onClick={() => {
                       handleNavigateToTab('properties');
                       setIsCategoriesOpen(false);
                     }} 
-                    className="w-full text-left px-4 py-2.5 hover:bg-slate-900 font-bold text-slate-200 hover:text-red-400 flex items-center gap-2"
+                    className="w-full text-left px-4 py-2.5 hover:bg-slate-50 font-bold text-slate-700 hover:text-red-655 flex items-center gap-2"
                   >
                     🏠 Property Listings
                   </button>
@@ -465,7 +466,7 @@ export default function App() {
                       handleNavigateToTab('commercial');
                       setIsCategoriesOpen(false);
                     }} 
-                    className="w-full text-left px-4 py-2.5 hover:bg-slate-900 font-bold text-slate-200 hover:text-red-400 flex items-center gap-2"
+                    className="w-full text-left px-4 py-2.5 hover:bg-slate-50 font-bold text-slate-700 hover:text-red-655 flex items-center gap-2"
                   >
                     🏢 Commercial Suites
                   </button>
@@ -474,7 +475,7 @@ export default function App() {
                       handleNavigateToTab('plots');
                       setIsCategoriesOpen(false);
                     }} 
-                    className="w-full text-left px-4 py-2.5 hover:bg-slate-900 font-bold text-slate-200 hover:text-red-400 flex items-center gap-2"
+                    className="w-full text-left px-4 py-2.5 hover:bg-slate-50 font-bold text-slate-700 hover:text-red-655 flex items-center gap-2"
                   >
                     🌳 Plots & Townships
                   </button>
@@ -483,7 +484,7 @@ export default function App() {
                       handleNavigateToTab('marketplace');
                       setIsCategoriesOpen(false);
                     }} 
-                    className="w-full text-left px-4 py-2.5 hover:bg-slate-900 font-bold text-red-400 hover:text-red-300 flex items-center gap-2 border-t border-slate-800/80"
+                    className="w-full text-left px-4 py-2.5 hover:bg-slate-50 font-bold text-red-650 hover:text-red-700 flex items-center gap-2 border-t border-slate-100"
                   >
                     🧱 Wholesale Store
                   </button>
@@ -501,8 +502,8 @@ export default function App() {
                 }}
                 className={`px-3 py-2 rounded-lg transition-all flex items-center gap-1 cursor-pointer ${
                   ['blogs', 'about', 'contact'].includes(activeMenu) && !activeSeoPath
-                    ? 'bg-red-955/35 text-red-400 border border-red-900/30'
-                    : 'text-slate-300 hover:text-red-400 hover:bg-slate-900/60'
+                    ? 'bg-red-50 text-red-650 border border-red-100 shadow-xs'
+                    : 'text-slate-600 hover:text-red-650 hover:bg-slate-50'
                 }`}
               >
                 <span>📚 Resources & Guides</span>
@@ -510,13 +511,13 @@ export default function App() {
               </button>
 
               {isResourcesOpen && (
-                <div className="absolute left-0 mt-2 w-52 bg-[#131b2e] rounded-2xl shadow-xl border border-slate-800 z-50 overflow-hidden text-xs py-1">
+                <div className="absolute left-0 mt-2 w-52 bg-white rounded-2xl shadow-xl border border-slate-150 z-50 overflow-hidden text-xs py-1">
                   <button 
                     onClick={() => {
                       handleNavigateToTab('blogs');
                       setIsResourcesOpen(false);
                     }} 
-                    className="w-full text-left px-4 py-2.5 hover:bg-slate-900 font-bold text-slate-200 hover:text-red-400"
+                    className="w-full text-left px-4 py-2.5 hover:bg-slate-50 font-bold text-slate-700 hover:text-red-655"
                   >
                     📝 Blogs & Research
                   </button>
@@ -525,7 +526,7 @@ export default function App() {
                       handleNavigateToTab('about');
                       setIsResourcesOpen(false);
                     }} 
-                    className="w-full text-left px-4 py-2.5 hover:bg-slate-900 font-bold text-slate-200 hover:text-red-400"
+                    className="w-full text-left px-4 py-2.5 hover:bg-slate-50 font-bold text-slate-700 hover:text-red-655"
                   >
                     ✨ Sourcing Manifesto
                   </button>
@@ -534,7 +535,7 @@ export default function App() {
                       handleNavigateToTab('contact');
                       setIsResourcesOpen(false);
                     }} 
-                    className="w-full text-left px-4 py-2.5 hover:bg-slate-900 font-bold text-slate-200 hover:text-red-400"
+                    className="w-full text-left px-4 py-2.5 hover:bg-slate-50 font-bold text-slate-700 hover:text-red-655"
                   >
                     📞 Advisor Helpdesk
                   </button>
@@ -552,8 +553,8 @@ export default function App() {
                 }}
                 className={`px-3 py-2 rounded-lg transition-all flex items-center gap-1 cursor-pointer ${
                   ['leads', 'admin'].includes(activeMenu) && !activeSeoPath
-                    ? 'bg-amber-955/35 text-amber-400 border border-amber-900/30'
-                    : 'text-slate-300 hover:text-amber-400 hover:bg-slate-900/60'
+                    ? 'bg-amber-50 text-amber-700 border border-amber-100 shadow-xs'
+                    : 'text-slate-600 hover:text-amber-600 hover:bg-slate-50'
                 }`}
               >
                 <span>🔑 Partner Portals</span>
@@ -561,13 +562,13 @@ export default function App() {
               </button>
 
               {isPartnerOpen && (
-                <div className="absolute right-0 mt-2 w-48 bg-[#131b2e] rounded-2xl shadow-xl border border-slate-800 z-50 overflow-hidden text-xs py-1">
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-2xl shadow-xl border border-slate-150 z-50 overflow-hidden text-xs py-1">
                   <button 
                     onClick={() => {
                       handleNavigateToTab('leads');
                       setIsPartnerOpen(false);
                     }} 
-                    className="w-full text-left px-4 py-2.5 hover:bg-slate-900 font-bold text-slate-200 hover:text-red-400 flex items-center gap-2"
+                    className="w-full text-left px-4 py-2.5 hover:bg-slate-50 font-bold text-slate-700 hover:text-red-655 flex items-center gap-2"
                   >
                     🎯 Broker CRM Desk
                   </button>
@@ -576,7 +577,7 @@ export default function App() {
                       handleNavigateToTab('admin');
                       setIsPartnerOpen(false);
                     }} 
-                    className="w-full text-left px-4 py-2.5 hover:bg-slate-900 font-bold text-amber-400 hover:text-amber-300 flex items-center gap-2 border-t border-slate-800/80"
+                    className="w-full text-left px-4 py-2.5 hover:bg-slate-50 font-bold text-amber-600 hover:text-amber-700 flex items-center gap-2 border-t border-slate-100"
                   >
                     🔑 Owner Admin Panel
                   </button>
@@ -589,7 +590,7 @@ export default function App() {
           <div className="relative">
             <button
               onClick={() => setSeoMenuOpen(!seoMenuOpen)}
-              className="w-full lg:w-auto bg-red-950/50 hover:bg-red-900/30 text-red-400 transition-all text-xs font-bold px-4 py-2.5 rounded-xl flex items-center justify-between gap-1.5 shadow-xs cursor-pointer border border-red-900/50 whitespace-nowrap"
+              className="w-full lg:w-auto bg-red-50 hover:bg-red-100/50 text-red-650 transition-all text-xs font-bold px-4 py-2.5 rounded-xl flex items-center justify-between gap-1.5 shadow-xs cursor-pointer border border-red-200/50 whitespace-nowrap"
             >
               <Globe className="w-4 h-4" />
               <span>Property Sourcing Hubs (11)</span>
@@ -597,27 +598,27 @@ export default function App() {
             </button>
 
             {seoMenuOpen && (
-              <div className="absolute right-0 mt-2 w-72 bg-[#131b2e] rounded-2xl shadow-xl border border-slate-800 z-50 overflow-hidden text-xs py-2 divide-y divide-slate-800">
-                <div className="px-3.5 py-1.5 text-[10px] uppercase font-bold text-slate-400 font-mono bg-slate-950/40">
+              <div className="absolute right-0 mt-2 w-72 bg-white rounded-2xl shadow-xl border border-slate-150 z-50 overflow-hidden text-xs py-2 divide-y divide-slate-100">
+                <div className="px-3.5 py-1.5 text-[10px] uppercase font-bold text-slate-500 font-mono bg-slate-50">
                   Main Sourcing Pages
                 </div>
                 <div className="py-1">
-                  <button onClick={() => { handleNavigateToSeoPage('/commercial-property-india'); setSeoMenuOpen(false); }} className="w-full text-left px-4 py-2 hover:bg-slate-900 font-bold text-slate-200 hover:text-red-400">🏢 Commercial Properties</button>
-                  <button onClick={() => { handleNavigateToSeoPage('/residential-property-india'); setSeoMenuOpen(false); }} className="w-full text-left px-4 py-2 hover:bg-slate-900 font-bold text-slate-200 hover:text-red-400">🏠 Residential Homes</button>
-                  <button onClick={() => { handleNavigateToSeoPage('/plots-for-sale-india'); setSeoMenuOpen(false); }} className="w-full text-left px-4 py-2 hover:bg-slate-900 font-bold text-slate-200 hover:text-red-400">🌳 Plots & Land</button>
-                  <button onClick={() => { handleNavigateToSeoPage('/investment-property-india'); setSeoMenuOpen(false); }} className="w-full text-left px-4 py-2 hover:bg-slate-900 font-bold text-slate-200 hover:text-red-400">💰 Investment Property</button>
-                  <button onClick={() => { handleNavigateToSeoPage('/rental-income-properties'); setSeoMenuOpen(false); }} className="w-full text-left px-4 py-2 hover:bg-slate-900 font-bold text-slate-200 hover:text-red-400">💸 Rental Income Properties</button>
+                  <button onClick={() => { handleNavigateToSeoPage('/commercial-property-india'); setSeoMenuOpen(false); }} className="w-full text-left px-4 py-2 hover:bg-slate-50 font-bold text-slate-700 hover:text-red-650">🏢 Commercial Properties</button>
+                  <button onClick={() => { handleNavigateToSeoPage('/residential-property-india'); setSeoMenuOpen(false); }} className="w-full text-left px-4 py-2 hover:bg-slate-50 font-bold text-slate-700 hover:text-red-650">🏠 Residential Homes</button>
+                  <button onClick={() => { handleNavigateToSeoPage('/plots-for-sale-india'); setSeoMenuOpen(false); }} className="w-full text-left px-4 py-2 hover:bg-slate-50 font-bold text-slate-700 hover:text-red-650">🌳 Plots & Land</button>
+                  <button onClick={() => { handleNavigateToSeoPage('/investment-property-india'); setSeoMenuOpen(false); }} className="w-full text-left px-4 py-2 hover:bg-slate-50 font-bold text-slate-700 hover:text-red-650">💰 Investment Property</button>
+                  <button onClick={() => { handleNavigateToSeoPage('/rental-income-properties'); setSeoMenuOpen(false); }} className="w-full text-left px-4 py-2 hover:bg-slate-50 font-bold text-slate-700 hover:text-red-650">💸 Rental Income Properties</button>
                 </div>
-                <div className="px-3.5 py-1.5 text-[10px] uppercase font-bold text-slate-400 font-mono bg-slate-950/40">
+                <div className="px-3.5 py-1.5 text-[10px] uppercase font-bold text-slate-500 font-mono bg-slate-50">
                   Target City Guides
                 </div>
                 <div className="py-1">
-                  <button onClick={() => { handleNavigateToSeoPage('/property-in-vrindavan'); setSeoMenuOpen(false); }} className="w-full text-left px-4 py-2 hover:bg-slate-900 text-slate-300 font-semibold hover:text-red-400">• Sourcing in Vrindavan</button>
-                  <button onClick={() => { handleNavigateToSeoPage('/property-in-gurgaon'); setSeoMenuOpen(false); }} className="w-full text-left px-4 py-2 hover:bg-slate-900 text-slate-300 font-semibold hover:text-red-400">• Sourcing in Gurgaon</button>
-                  <button onClick={() => { handleNavigateToSeoPage('/property-in-noida'); setSeoMenuOpen(false); }} className="w-full text-left px-4 py-2 hover:bg-slate-900 text-slate-300 font-semibold hover:text-red-400">• Sourcing in Noida</button>
-                  <button onClick={() => { handleNavigateToSeoPage('/property-in-delhi'); setSeoMenuOpen(false); }} className="w-full text-left px-4 py-2 hover:bg-slate-900 text-slate-300 font-semibold hover:text-red-400">• Sourcing in Delhi</button>
-                  <button onClick={() => { handleNavigateToSeoPage('/property-in-faridabad'); setSeoMenuOpen(false); }} className="w-full text-left px-4 py-2 hover:bg-slate-900 text-slate-300 font-semibold hover:text-red-400">• Sourcing in Faridabad</button>
-                  <button onClick={() => { handleNavigateToSeoPage('/property-in-mathura'); setSeoMenuOpen(false); }} className="w-full text-left px-4 py-2 hover:bg-slate-900 text-slate-300 font-semibold hover:text-red-400">• Sourcing in Mathura</button>
+                  <button onClick={() => { handleNavigateToSeoPage('/property-in-vrindavan'); setSeoMenuOpen(false); }} className="w-full text-left px-4 py-2 hover:bg-slate-50 text-slate-600 font-semibold hover:text-red-650">• Sourcing in Vrindavan</button>
+                  <button onClick={() => { handleNavigateToSeoPage('/property-in-gurgaon'); setSeoMenuOpen(false); }} className="w-full text-left px-4 py-2 hover:bg-slate-50 text-slate-600 font-semibold hover:text-red-650">• Sourcing in Gurgaon</button>
+                  <button onClick={() => { handleNavigateToSeoPage('/property-in-noida'); setSeoMenuOpen(false); }} className="w-full text-left px-4 py-2 hover:bg-slate-50 text-slate-600 font-semibold hover:text-red-650">• Sourcing in Noida</button>
+                  <button onClick={() => { handleNavigateToSeoPage('/property-in-delhi'); setSeoMenuOpen(false); }} className="w-full text-left px-4 py-2 hover:bg-slate-50 text-slate-600 font-semibold hover:text-red-650">• Sourcing in Delhi</button>
+                  <button onClick={() => { handleNavigateToSeoPage('/property-in-faridabad'); setSeoMenuOpen(false); }} className="w-full text-left px-4 py-2 hover:bg-slate-50 text-slate-600 font-semibold hover:text-red-650">• Sourcing in Faridabad</button>
+                  <button onClick={() => { handleNavigateToSeoPage('/property-in-mathura'); setSeoMenuOpen(false); }} className="w-full text-left px-4 py-2 hover:bg-slate-50 text-slate-600 font-semibold hover:text-red-650">• Sourcing in Mathura</button>
                 </div>
               </div>
             )}
@@ -656,30 +657,30 @@ export default function App() {
               <div className="space-y-12 animate-fade-in">
                 
                 {/* INTERACTIVE GUIDED CONCIERGE & FINDER WIZARD */}
-                <div id="quick-finder-wizard" className="bg-[#0b111e] rounded-3xl p-6 sm:p-8 border border-red-905/30 shadow-2xl relative overflow-hidden">
+                <div id="quick-finder-wizard" className="bg-white rounded-3xl p-6 sm:p-8 border border-slate-200/80 shadow-md relative overflow-hidden">
                   {/* Backdrop details */}
-                  <div className="absolute -top-16 -right-16 w-48 h-48 bg-red-955/20 rounded-full blur-3xl pointer-events-none"></div>
+                  <div className="absolute -top-16 -right-16 w-48 h-48 bg-red-100/20 rounded-full blur-3xl pointer-events-none"></div>
                   
                   <div className="max-w-4xl mx-auto space-y-6 relative">
                     
                     {/* Header */}
-                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-slate-800 pb-4">
+                    <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-slate-100 pb-4">
                       <div>
-                        <div className="inline-flex items-center gap-1.5 text-[10px] bg-red-955/40 text-red-400 px-3 py-1 rounded-full border border-red-900/30 font-mono font-bold uppercase tracking-wider mb-2">
+                        <div className="inline-flex items-center gap-1.5 text-[10px] bg-red-50 text-red-650 px-3 py-1 rounded-full border border-red-100 font-mono font-bold uppercase tracking-wider mb-2">
                           <Flame className="w-3 h-3 text-red-500 animate-pulse" /> Interactive Concierge Guide
                         </div>
-                        <h2 className="text-xl sm:text-2xl font-extrabold text-slate-100 font-display tracking-tight flex items-center gap-2">
+                        <h2 className="text-xl sm:text-2xl font-extrabold text-slate-900 font-display tracking-tight flex items-center gap-2">
                           Not sure where to start? Let us guide you!
                         </h2>
-                        <p className="text-xs text-slate-400 font-medium">
+                        <p className="text-xs text-slate-500 font-medium">
                           Answer 2 simple questions to configure the entire platform for your exact needs.
                         </p>
                       </div>
                       
                       {/* Step Indicator */}
-                      <div className="flex items-center gap-1 shrink-0 font-mono text-xs font-bold bg-slate-900/80 px-3 py-1.5 rounded-xl border border-slate-800 text-slate-400">
+                      <div className="flex items-center gap-1 shrink-0 font-mono text-xs font-bold bg-slate-50 px-3 py-1.5 rounded-xl border border-slate-100 text-slate-500">
                         <span>Step</span>
-                        <span className="text-red-400 font-black text-sm">{wizardStep}</span>
+                        <span className="text-red-655 font-black text-sm">{wizardStep}</span>
                         <span>/</span>
                         <span>3</span>
                       </div>
@@ -688,7 +689,7 @@ export default function App() {
                     {/* STEP 1: SELECT GOAL */}
                     {wizardStep === 1 && (
                       <div className="space-y-6 animate-fade-in">
-                        <div className="text-sm font-bold text-slate-200">
+                        <div className="text-sm font-bold text-slate-800">
                           Q1. What is your primary objective or requirement today?
                         </div>
                         
@@ -698,16 +699,16 @@ export default function App() {
                             onClick={() => setWizardGoal('invest')}
                             className={`p-4 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between space-y-3 select-none ${
                               wizardGoal === 'invest' 
-                                ? 'bg-red-955/30 border-red-500/80 shadow-md shadow-red-950/20' 
-                                : 'bg-slate-900/45 border-slate-800/80 hover:bg-slate-900/90 hover:border-slate-700/85'
+                                ? 'bg-red-50/70 border-red-500/80 shadow-md shadow-red-100/50' 
+                                : 'bg-slate-50 border-slate-150 hover:bg-slate-100/50 hover:border-slate-300'
                             }`}
                           >
-                            <div className="w-9 h-9 bg-red-950/30 border border-red-900/40 rounded-xl flex items-center justify-center text-red-500">
+                            <div className="w-9 h-9 bg-red-50 border border-red-100 rounded-xl flex items-center justify-center text-red-650">
                               <TrendingUp className="w-4 h-4 stroke-[2.5]" />
                             </div>
                             <div>
-                              <div className="text-xs font-black text-slate-100 mb-1">HNI Returns</div>
-                              <div className="text-[10px] text-slate-400 leading-snug font-medium">Verified corporate office spaces & yields.</div>
+                              <div className="text-xs font-black text-slate-800 mb-1">HNI Returns</div>
+                              <div className="text-[10px] text-slate-500 leading-snug font-medium">Verified corporate office spaces & yields.</div>
                             </div>
                           </div>
 
@@ -716,16 +717,16 @@ export default function App() {
                             onClick={() => setWizardGoal('plots')}
                             className={`p-4 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between space-y-3 select-none ${
                               wizardGoal === 'plots' 
-                                ? 'bg-red-955/30 border-red-500/80 shadow-md shadow-red-950/20' 
-                                : 'bg-slate-900/45 border-slate-800/80 hover:bg-slate-900/90 hover:border-slate-700/85'
+                                ? 'bg-red-50/70 border-red-500/80 shadow-md shadow-red-100/50' 
+                                : 'bg-slate-50 border-slate-150 hover:bg-slate-100/50 hover:border-slate-300'
                             }`}
                           >
-                            <div className="w-9 h-9 bg-emerald-950/30 border border-emerald-900/40 rounded-xl flex items-center justify-center text-emerald-400">
+                            <div className="w-9 h-9 bg-emerald-50 border border-emerald-100 rounded-xl flex items-center justify-center text-emerald-650">
                               <MapPin className="w-4 h-4" />
                             </div>
                             <div>
-                              <div className="text-xs font-black text-slate-100 mb-1">Plots & Land</div>
-                              <div className="text-[10px] text-slate-400 leading-snug font-medium">Gated townships with absolute title deeds.</div>
+                              <div className="text-xs font-black text-slate-800 mb-1">Plots & Land</div>
+                              <div className="text-[10px] text-slate-500 leading-snug font-medium">Gated townships with absolute title deeds.</div>
                             </div>
                           </div>
 
@@ -734,16 +735,16 @@ export default function App() {
                             onClick={() => setWizardGoal('calculator')}
                             className={`p-4 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between space-y-3 select-none ${
                               wizardGoal === 'calculator' 
-                                ? 'bg-red-955/30 border-red-500/80 shadow-md shadow-red-950/20' 
-                                : 'bg-slate-900/45 border-slate-800/80 hover:bg-slate-900/90 hover:border-slate-700/85'
+                                ? 'bg-red-50/70 border-red-500/80 shadow-md shadow-red-100/50' 
+                                : 'bg-slate-50 border-slate-150 hover:bg-slate-100/50 hover:border-slate-300'
                             }`}
                           >
-                            <div className="w-9 h-9 bg-purple-950/30 border border-purple-900/40 rounded-xl flex items-center justify-center text-purple-400">
+                            <div className="w-9 h-9 bg-purple-50 border border-purple-100 rounded-xl flex items-center justify-center text-purple-650">
                               <CalcIcon className="w-4 h-4" />
                             </div>
                             <div>
-                              <div className="text-xs font-black text-slate-100 mb-1">Yield Tools</div>
-                              <div className="text-[10px] text-slate-400 leading-snug font-medium">Calculate loan EMIs and ROI projections.</div>
+                              <div className="text-xs font-black text-slate-800 mb-1">Yield Tools</div>
+                              <div className="text-[10px] text-slate-500 leading-snug font-medium">Calculate loan EMIs and ROI projections.</div>
                             </div>
                           </div>
 
@@ -752,16 +753,16 @@ export default function App() {
                             onClick={() => setWizardGoal('material')}
                             className={`p-4 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between space-y-3 select-none ${
                               wizardGoal === 'material' 
-                                ? 'bg-red-955/30 border-red-500/80 shadow-md shadow-red-950/20' 
-                                : 'bg-slate-900/45 border-slate-800/80 hover:bg-slate-900/90 hover:border-slate-700/85'
+                                ? 'bg-red-50/70 border-red-500/80 shadow-md shadow-red-100/50' 
+                                : 'bg-slate-50 border-slate-150 hover:bg-slate-100/50 hover:border-slate-300'
                             }`}
                           >
-                            <div className="w-9 h-9 bg-amber-950/30 border border-amber-900/40 rounded-xl flex items-center justify-center text-amber-400">
+                            <div className="w-9 h-9 bg-amber-50 border border-amber-100 rounded-xl flex items-center justify-center text-amber-650">
                               <ShoppingBag className="w-4 h-4" />
                             </div>
                             <div>
-                              <div className="text-xs font-black text-slate-100 mb-1">Wholesale Shop</div>
-                              <div className="text-[10px] text-slate-400 leading-snug font-medium">Direct builder prices for Steel, Cement & Stone.</div>
+                              <div className="text-xs font-black text-slate-800 mb-1">Wholesale Shop</div>
+                              <div className="text-[10px] text-slate-500 leading-snug font-medium">Direct builder prices for Steel, Cement & Stone.</div>
                             </div>
                           </div>
 
@@ -770,16 +771,16 @@ export default function App() {
                             onClick={() => setWizardGoal('ai')}
                             className={`p-4 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between space-y-3 select-none ${
                               wizardGoal === 'ai' 
-                                ? 'bg-red-955/30 border-red-500/80 shadow-md shadow-red-950/20' 
-                                : 'bg-slate-900/45 border-slate-800/80 hover:bg-slate-900/90 hover:border-slate-700/85'
+                                ? 'bg-red-50/70 border-red-500/80 shadow-md shadow-red-100/50' 
+                                : 'bg-slate-50 border-slate-150 hover:bg-slate-100/50 hover:border-slate-300'
                             }`}
                           >
-                            <div className="w-9 h-9 bg-sky-950/30 border border-sky-900/40 rounded-xl flex items-center justify-center text-sky-450 animate-pulse">
+                            <div className="w-9 h-9 bg-sky-50 border border-sky-100 rounded-xl flex items-center justify-center text-sky-650 animate-pulse">
                               <MessageSquare className="w-4 h-4" />
                             </div>
                             <div>
-                              <div className="text-xs font-black text-slate-100 mb-1">Sourcing AI</div>
-                              <div className="text-[10px] text-slate-400 leading-snug font-medium">Chat with real-time advisor about law & projects.</div>
+                              <div className="text-xs font-black text-slate-800 mb-1">Sourcing AI</div>
+                              <div className="text-[10px] text-slate-500 leading-snug font-medium">Chat with real-time advisor about law & projects.</div>
                             </div>
                           </div>
                         </div>
@@ -796,7 +797,7 @@ export default function App() {
                             className={`px-6 py-2.5 rounded-xl font-bold font-display text-xs flex items-center gap-1.5 transition-all shadow-md ${
                               wizardGoal 
                                 ? 'bg-red-650 text-white hover:bg-red-700 cursor-pointer' 
-                                : 'bg-slate-800 text-slate-500 cursor-not-allowed'
+                                : 'bg-slate-100 text-slate-400 cursor-not-allowed'
                             }`}
                           >
                             Continue
@@ -809,7 +810,7 @@ export default function App() {
                     {/* STEP 2: BUDGET BRACKET */}
                     {wizardStep === 2 && (
                       <div className="space-y-6 animate-fade-in">
-                        <div className="text-sm font-bold text-slate-200">
+                        <div className="text-sm font-bold text-slate-800">
                           Q2. What is your targeted budget or purchase ticket size?
                         </div>
                         
@@ -819,13 +820,13 @@ export default function App() {
                             onClick={() => setWizardBudget('under_50')}
                             className={`p-4 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between space-y-2 select-none ${
                               wizardBudget === 'under_50' 
-                                ? 'bg-red-955/30 border-red-500/80 shadow-md shadow-red-950/20' 
-                                : 'bg-slate-900/45 border-slate-800/80 hover:bg-slate-900/90 hover:border-slate-700/85'
+                                ? 'bg-red-50/70 border-red-500/80 shadow-md shadow-red-100/50' 
+                                : 'bg-slate-50 border-slate-150 hover:bg-slate-100/50 hover:border-slate-300'
                             }`}
                           >
                             <span className="text-xs font-mono uppercase font-bold text-slate-400">Entry / Micro</span>
-                            <div className="text-base font-black text-slate-100">Under ₹50 L</div>
-                            <p className="text-[10px] text-slate-400 leading-normal">Fractional assets, materials & township plots.</p>
+                            <div className="text-base font-black text-slate-800">Under ₹50 L</div>
+                            <p className="text-[10px] text-slate-500 leading-normal">Fractional assets, materials & township plots.</p>
                           </div>
 
                           {/* Bracket B: 50 - 100 */}
@@ -833,13 +834,13 @@ export default function App() {
                             onClick={() => setWizardBudget('50_100')}
                             className={`p-4 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between space-y-2 select-none ${
                               wizardBudget === '50_100' 
-                                ? 'bg-red-955/30 border-red-500/80 shadow-md shadow-red-950/20' 
-                                : 'bg-slate-900/45 border-slate-800/80 hover:bg-slate-900/90 hover:border-slate-700/85'
+                                ? 'bg-red-50/70 border-red-500/80 shadow-md shadow-red-100/50' 
+                                : 'bg-slate-50 border-slate-150 hover:bg-slate-100/50 hover:border-slate-300'
                             }`}
                           >
-                            <span className="text-xs font-mono uppercase font-bold text-red-400">Standard</span>
-                            <div className="text-base font-black text-slate-100">₹50 L - ₹1 Cr</div>
-                            <p className="text-[10px] text-slate-400 leading-normal">Corporate suites, high-growth apartments.</p>
+                            <span className="text-xs font-mono uppercase font-bold text-red-600">Standard</span>
+                            <div className="text-base font-black text-slate-800">₹50 L - ₹1 Cr</div>
+                            <p className="text-[10px] text-slate-500 leading-normal">Corporate suites, high-growth apartments.</p>
                           </div>
 
                           {/* Bracket C: Above 100 */}
@@ -847,13 +848,13 @@ export default function App() {
                             onClick={() => setWizardBudget('above_100')}
                             className={`p-4 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between space-y-2 select-none ${
                               wizardBudget === 'above_100' 
-                                ? 'bg-red-955/30 border-red-500/80 shadow-md shadow-red-950/20' 
-                                : 'bg-slate-900/45 border-slate-800/80 hover:bg-slate-900/90 hover:border-slate-700/85'
+                                ? 'bg-red-50/70 border-red-500/80 shadow-md shadow-red-100/50' 
+                                : 'bg-slate-50 border-slate-150 hover:bg-slate-100/50 hover:border-slate-300'
                             }`}
                           >
-                            <span className="text-xs font-mono uppercase font-bold text-[#D4AF37]">Premium / HNI</span>
-                            <div className="text-base font-black text-slate-100">Above ₹1 Cr</div>
-                            <p className="text-[10px] text-slate-400 leading-normal">Exclusive commercial zones, complete land parcels.</p>
+                            <span className="text-xs font-mono uppercase font-bold text-amber-600">Premium / HNI</span>
+                            <div className="text-base font-black text-slate-800">Above ₹1 Cr</div>
+                            <p className="text-[10px] text-slate-500 leading-normal">Exclusive commercial zones, complete land parcels.</p>
                           </div>
 
                           {/* Bracket D: Any */}
@@ -861,20 +862,20 @@ export default function App() {
                             onClick={() => setWizardBudget('any')}
                             className={`p-4 rounded-2xl border transition-all cursor-pointer flex flex-col justify-between space-y-2 select-none ${
                               wizardBudget === 'any' 
-                                ? 'bg-red-955/30 border-red-500/80 shadow-md shadow-red-950/20' 
-                                : 'bg-slate-900/45 border-slate-800/80 hover:bg-slate-900/90 hover:border-slate-700/85'
+                                ? 'bg-red-50/70 border-red-500/80 shadow-md shadow-red-100/50' 
+                                : 'bg-slate-50 border-slate-150 hover:bg-slate-100/50 hover:border-slate-300'
                             }`}
                           >
                             <span className="text-xs font-mono uppercase font-bold text-slate-400">Flexible</span>
-                            <div className="text-base font-black text-slate-100">Just Browsing</div>
-                            <p className="text-[10px] text-slate-400 leading-normal">Show me all options without active filtering.</p>
+                            <div className="text-base font-black text-slate-800">Just Browsing</div>
+                            <p className="text-[10px] text-slate-500 leading-normal">Show me all options without active filtering.</p>
                           </div>
                         </div>
 
                         <div className="flex justify-between items-center pt-2">
                           <button
                             onClick={() => setWizardStep(1)}
-                            className="px-4 py-2 bg-slate-900 text-slate-300 hover:text-white rounded-xl text-xs font-bold transition-colors cursor-pointer border border-slate-800"
+                            className="px-4 py-2 bg-slate-50 text-slate-600 hover:text-slate-800 rounded-xl text-xs font-bold transition-colors cursor-pointer border border-slate-200"
                           >
                             ← Back
                           </button>
@@ -890,7 +891,7 @@ export default function App() {
                             className={`px-6 py-2.5 rounded-xl font-bold font-display text-xs flex items-center gap-1.5 transition-all shadow-md ${
                               wizardBudget 
                                 ? 'bg-red-650 text-white hover:bg-red-700 cursor-pointer' 
-                                : 'bg-slate-800 text-slate-500 cursor-not-allowed'
+                                : 'bg-slate-100 text-slate-400 cursor-not-allowed'
                             }`}
                           >
                             Generate My Sourcing Route
@@ -902,14 +903,14 @@ export default function App() {
 
                     {/* STEP 3: CUSTOM RECOMMENDATION PATHWAY */}
                     {wizardStep === 3 && (
-                      <div className="space-y-6 animate-fade-in text-slate-100">
-                        <div className="bg-red-955/25 border border-red-900/35 p-5 rounded-2xl space-y-3">
-                          <div className="flex items-center gap-2 text-red-400 font-extrabold text-sm">
+                      <div className="space-y-6 animate-fade-in text-slate-800">
+                        <div className="bg-red-50/50 border border-red-100 p-5 rounded-2xl space-y-3">
+                          <div className="flex items-center gap-2 text-red-650 font-extrabold text-sm">
                             <BadgeCheck className="w-5 h-5 text-red-500" />
                             <span>Custom Sourcing Alignment Verified!</span>
                           </div>
                           
-                          <p className="text-xs leading-relaxed text-slate-300">
+                          <p className="text-xs leading-relaxed text-slate-600">
                             {wizardGoal === 'invest' && (
                               <span>
                                 🏢 We've configured the <strong>High-Yield Sourcing Deck</strong>. Your custom alignment of pre-leased premium commercial assets with triple-net guarantees and Maharera/HRERA-verified credentials has been prepared for a budget of <strong>{wizardBudget === 'under_50' ? 'Under ₹50L' : wizardBudget === '50_100' ? '₹50L - ₹1Cr' : wizardBudget === 'above_100' ? 'Above ₹1Cr' : 'All Budget Caps'}</strong>.
@@ -979,7 +980,7 @@ export default function App() {
                               setWizardGoal(null);
                               setWizardBudget(null);
                             }}
-                            className="px-5 py-3.5 bg-slate-900 hover:bg-slate-800 text-slate-300 rounded-xl text-xs font-bold transition-colors cursor-pointer border border-slate-800 text-center"
+                            className="px-5 py-3.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-xl text-xs font-bold transition-colors cursor-pointer border border-slate-200 text-center"
                           >
                             Restart Guide
                           </button>
@@ -1355,34 +1356,43 @@ export default function App() {
 
             {/* TAB: INVESTMENTS / CATALOG GRID */}
             {activeMenu === 'investments' && (
-              <div className="space-y-8 animate-fade-in">
+              <div className="space-y-8 animate-fade-in text-slate-800">
                 
-                {/* 1. MAGICBRICKS INSPIRED INVESTOR DISCOVERY PORTAL (DEEP DARK PREMIUM DESIGN) */}
-                <div className="bg-[#111726]/90 border border-slate-800 p-6 md:p-8 rounded-3xl shadow-2xl relative overflow-hidden space-y-6">
+                {/* INTERACTIVE REGIONAL GROWTH HEATMAP (D3.JS VISUALIZATION) */}
+                <RegionalGrowthHeatmap
+                  onFilterByCity={setCityFilter}
+                  properties={propertiesList}
+                  onSelectProperty={setSelectedProperty}
+                  onNavigateToTab={handleNavigateToTab}
+                  onNotify={triggerNotification}
+                />
+                
+                {/* 1. MAGICBRICKS INSPIRED INVESTOR DISCOVERY PORTAL (POLISHED PREMIUM LIGHT DESIGN) */}
+                <div className="bg-white border border-slate-200 p-6 md:p-8 rounded-3xl shadow-xs relative overflow-hidden space-y-6">
                   
-                  {/* Subtle amber visual backing spot */}
-                  <div className="absolute top-0 right-0 w-80 h-80 bg-red-955/10 rounded-full blur-3xl pointer-events-none"></div>
+                  {/* Subtle red visual backing spot */}
+                  <div className="absolute top-0 right-0 w-80 h-80 bg-red-50/50 rounded-full blur-3xl pointer-events-none"></div>
                   
                   {/* Sourcing portal header details */}
-                  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-[#334155]/30 pb-5 font-sans">
+                  <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4 border-b border-slate-100 pb-5 font-sans">
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
-                        <Sliders className="w-5 h-5 text-[#D4AF37]" />
-                        <h2 className="text-lg md:text-xl font-extrabold text-white font-display tracking-tight">
+                        <Sliders className="w-5 h-5 text-red-650" />
+                        <h2 className="text-lg md:text-xl font-extrabold text-slate-900 font-display tracking-tight">
                           Elite Sourcing & Discovery Dashboard
                         </h2>
                       </div>
-                      <p className="text-slate-400 text-[11px] leading-relaxed">
+                      <p className="text-slate-500 text-[11px] leading-relaxed font-semibold">
                         Adaptively search, filter, and compare high-yield real estate projects with instantaneous RERA verification and Ji-Score ranking audits.
                       </p>
                     </div>
                     {/* Active counters badge */}
                     <div className="flex items-center gap-2 font-mono text-[10px]">
-                      <span className="text-emerald-400 bg-emerald-950/40 border border-emerald-900/40 px-2.5 py-1 rounded-full font-bold">
+                      <span className="text-emerald-700 bg-emerald-50 border border-emerald-100 px-2.5 py-1 rounded-full font-bold">
                         ● {filteredProperties.length} Assets Matches
                       </span>
                       {compareIds.length > 0 && (
-                        <span className="text-[#D4AF37] bg-amber-955/40 border border-amber-900/40 px-2.5 py-1 rounded-full font-bold">
+                        <span className="text-amber-800 bg-amber-50 border border-amber-100 px-2.5 py-1 rounded-full font-bold">
                           ★ {compareIds.length}/3 Compares
                         </span>
                       )}
@@ -1394,7 +1404,7 @@ export default function App() {
                     
                     {/* Search string field */}
                     <div className="lg:col-span-4 space-y-1">
-                      <label className="block text-[10px] font-mono font-extrabold text-slate-400 uppercase tracking-wider">
+                      <label className="block text-[10px] font-mono font-extrabold text-slate-500 uppercase tracking-wider">
                         Search Identifier
                       </label>
                       <div className="relative">
@@ -1403,26 +1413,35 @@ export default function App() {
                           placeholder="Search builders, locations, amenities..."
                           value={searchQuery}
                           onChange={(e) => setSearchQuery(e.target.value)}
-                          className="w-full text-xs font-semibold bg-slate-950 text-slate-100 border border-slate-800 p-3 pl-9 rounded-xl outline-none focus:border-[#D4AF37] placeholder-slate-500 transition-colors"
+                          className="w-full text-xs font-semibold bg-white text-slate-800 border border-slate-200 p-3 pl-9 rounded-xl outline-none focus:border-red-600 placeholder-slate-400 transition-colors shadow-xs"
                         />
-                        <Search className="absolute left-3 top-3.5 w-4 h-4 text-slate-500" />
+                        <Search className="absolute left-3 top-3.5 w-4 h-4 text-slate-400" />
                       </div>
                     </div>
 
                     {/* Micro market city filter */}
                     <div className="lg:col-span-4 space-y-1">
-                      <label className="block text-[10px] font-mono font-extrabold text-slate-400 uppercase tracking-wider">
+                      <label className="block text-[10px] font-mono font-extrabold text-slate-500 uppercase tracking-wider">
                         Micro-Market City
                       </label>
                       <select
                         value={cityFilter}
                         onChange={(e) => setCityFilter(e.target.value)}
-                        className="w-full text-xs font-bold bg-slate-950 text-slate-100 border border-slate-800 p-3 rounded-xl outline-none focus:border-[#D4AF37] transition-colors cursor-pointer"
+                        className="w-full text-xs font-bold bg-white text-slate-800 border border-slate-200 p-3 rounded-xl outline-none focus:border-red-600 transition-colors cursor-pointer shadow-xs"
                       >
-                        <option value="All">All Cities (NCR & Temples)</option>
+                        <option value="All">All Cities (Pan India Portfolio)</option>
+                        <option value="Dholera SIR">Dholera SIR (Smart Investment Region)</option>
                         <option value="Gurgaon">Gurgaon (High-yield Hub)</option>
                         <option value="Vrindavan">Vrindavan (Heritage freehold)</option>
                         <option value="Noida">Noida (Industrial & IT)</option>
+                        <option value="Mumbai">Mumbai (Financial Capital)</option>
+                        <option value="Bengaluru">Bengaluru (Silicon Valley Tech-Hub)</option>
+                        <option value="Pune">Pune (Automobile & Tech Sector)</option>
+                        <option value="Hyderabad">Hyderabad (Cyberabad IT Hub)</option>
+                        <option value="Chennai">Chennai (South Auto & SaaS Hub)</option>
+                        <option value="Kolkata">Kolkata (East Corporate Hub)</option>
+                        <option value="Ahmedabad">Ahmedabad (GIFT City FinTech)</option>
+                        <option value="Goa">Goa (Leisure Luxury Yield)</option>
                         <option value="Delhi">Delhi NCR (Capital Region)</option>
                         <option value="Faridabad">Faridabad (Industrial sector)</option>
                         <option value="Mathura">Mathura (Temple Freehold)</option>
@@ -1431,13 +1450,13 @@ export default function App() {
 
                     {/* Bracket filter */}
                     <div className="lg:col-span-4 space-y-1">
-                      <label className="block text-[10px] font-mono font-extrabold text-slate-400 uppercase tracking-wider">
+                      <label className="block text-[10px] font-mono font-extrabold text-slate-500 uppercase tracking-wider">
                         Investment Bracket
                       </label>
                       <select
                         value={bracketFilter}
                         onChange={(e) => setBracketFilter(e.target.value)}
-                        className="w-full text-xs font-bold bg-slate-950 text-slate-100 border border-slate-800 p-3 rounded-xl outline-none focus:border-[#D4AF37] transition-colors cursor-pointer"
+                        className="w-full text-xs font-bold bg-white text-slate-800 border border-slate-200 p-3 rounded-xl outline-none focus:border-red-600 transition-colors cursor-pointer shadow-xs"
                       >
                         <option value="All">All Brackets</option>
                         <option value="under_50">Under ₹50 Lakhs (Micro/Fractional Slices)</option>
@@ -1450,7 +1469,7 @@ export default function App() {
 
                   {/* High density quick category switcher pills */}
                   <div className="space-y-2 pt-2">
-                    <span className="block text-[9px] font-mono font-extrabold text-slate-400 uppercase tracking-wider">
+                    <span className="block text-[9px] font-mono font-extrabold text-slate-500 uppercase tracking-wider">
                       Sourcing Division
                     </span>
                     <div className="flex flex-wrap gap-2">
@@ -1460,8 +1479,8 @@ export default function App() {
                           onClick={() => setTypeFilter(type)}
                           className={`text-[10px] font-bold px-3 py-1.5 rounded-lg border transition-all cursor-pointer ${
                             typeFilter === type
-                              ? 'bg-red-950/65 text-red-400 border-red-900/60 shadow-xs'
-                              : 'bg-slate-950/40 text-slate-300 border-slate-805/80 hover:text-slate-100 hover:bg-slate-900'
+                              ? 'bg-red-50 text-red-700 border-red-200 shadow-xs'
+                              : 'bg-white text-slate-600 border-slate-200 hover:text-red-655 hover:bg-slate-50'
                           }`}
                         >
                           {type === 'All' ? '🌌 Show All Categories' : type}
@@ -1471,7 +1490,7 @@ export default function App() {
                   </div>
 
                   {/* Sourcing Score Filter slider & Reset desk buttons */}
-                  <div className="flex flex-wrap items-center justify-between gap-4 pt-3 border-t border-slate-800/60 font-sans">
+                  <div className="flex flex-wrap items-center justify-between gap-4 pt-3 border-t border-slate-100 font-sans">
                     <div className="flex items-center gap-3">
                       <button
                         onClick={() => {
@@ -1479,11 +1498,11 @@ export default function App() {
                         }}
                         className={`text-[10px] font-bold px-3.5 py-2 rounded-xl border transition-all flex items-center gap-1.5 cursor-pointer ${
                           minScoreFilter === 9.2
-                            ? 'bg-[#18233c] text-[#D4AF37] border-amber-900/60'
-                            : 'bg-slate-950/30 text-slate-400 border-slate-850 hover:text-slate-200 hover:bg-slate-900/50'
+                            ? 'bg-red-50 text-red-700 border-red-200 shadow-xs'
+                            : 'bg-white text-slate-550 border-slate-200 hover:text-slate-800 hover:bg-slate-55'
                         }`}
                       >
-                        <Award className="w-3.5 h-3.5 text-[#D4AF37]" />
+                        <Award className="w-3.5 h-3.5 text-red-600" />
                         <span>High Grade Only (&ge; 9.2 Score)</span>
                       </button>
                     </div>
@@ -1497,7 +1516,7 @@ export default function App() {
                         setMinScoreFilter(null);
                         triggerNotification('Listing filters have been successfully restored to default parameters.', 'success');
                       }}
-                      className="text-[10px] font-extrabold text-red-400 bg-red-955/20 border border-red-900/40 px-4 py-2 rounded-xl hover:bg-red-950/40 transition-all cursor-pointer flex items-center gap-1"
+                      className="text-[10px] font-extrabold text-red-655 bg-red-50 border border-red-100 px-4 py-2 rounded-xl hover:bg-red-100/50 transition-all cursor-pointer flex items-center gap-1"
                     >
                       <X className="w-3.5 h-3.5" />
                       Restore Default Search
@@ -1528,7 +1547,7 @@ export default function App() {
                 </div>
 
                 {filteredProperties.length === 0 && (
-                  <div className="text-center py-20 bg-[#0f1524] border border-slate-850 rounded-3xl text-slate-400 font-bold text-xs space-y-3 relative overflow-hidden">
+                  <div className="text-center py-20 bg-white border border-slate-200 rounded-3xl text-slate-500 font-bold text-xs space-y-3 relative overflow-hidden shadow-xs">
                     <AlertTriangle className="w-8 h-8 text-amber-500 mx-auto animate-pulse" />
                     <div>No secure real estate assets match your designated filter matrix.</div>
                     <button 
@@ -1539,7 +1558,7 @@ export default function App() {
                         setTypeFilter('All');
                         setMinScoreFilter(null);
                       }}
-                      className="bg-red-650 hover:bg-[#b0171d] text-white px-4 py-2 rounded-xl text-xs font-semibold cursor-pointer transition-all"
+                      className="bg-red-650 hover:bg-[#b0171d] text-white px-4 py-2 rounded-xl text-xs font-semibold cursor-pointer transition-all shadow-xs"
                     >
                       Restructuring Parameters
                     </button>
@@ -2062,26 +2081,6 @@ export default function App() {
                       <p className="text-xs text-slate-400 leading-relaxed">
                         This section contains confidential investor listings, RERA compliance controls, and private buyer leads. Please authenticate to continue.
                       </p>
-                    </div>
-
-                    <div className="bg-red-955/25 border border-red-900/40 p-4 rounded-2xl text-left text-xs leading-relaxed text-slate-300 space-y-1">
-                      <div className="text-red-400 font-bold flex items-center gap-1.5">
-                        <Award className="w-4 h-4 text-amber-500" />
-                        <span>Authorized Admin Credentials:</span>
-                      </div>
-                      <p className="text-[11px] text-slate-400">
-                        Use the secure login info below or click the one-click developer login below.
-                      </p>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 pt-1 font-mono text-[10px]">
-                        <div className="bg-slate-950 p-2 rounded-lg border border-slate-800">
-                          <span className="text-slate-500 block text-[9px] uppercase font-bold">Email</span>
-                          <span className="text-slate-200 select-all font-bold">mtlentertainmentindia@gmail.com</span>
-                        </div>
-                        <div className="bg-slate-950 p-2 rounded-lg border border-slate-800">
-                          <span className="text-slate-500 block text-[9px] uppercase font-bold">Password</span>
-                          <span className="text-slate-200 select-all font-bold">Kaka@12345</span>
-                        </div>
-                      </div>
                     </div>
 
                     <form 

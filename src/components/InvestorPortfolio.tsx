@@ -15,7 +15,6 @@ import {
   Scale,
   Sparkles,
   Sliders,
-  DollarSign as InrIcon,
   HelpCircle,
   Clock
 } from 'lucide-react';
@@ -117,39 +116,39 @@ export function InvestorPortfolio({
   };
 
   return (
-    <div id="investor-portfolio-view" className="space-y-10 animate-fade-in text-slate-100">
+    <div id="investor-portfolio-view" className="space-y-10 animate-fade-in text-slate-800">
       
       {/* HEADER HERO AREA */}
-      <div className="bg-[#111726]/80 border border-slate-800 p-8 rounded-3xl space-y-4 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-80 h-80 bg-red-955/10 rounded-full blur-3xl pointer-events-none"></div>
-        <div className="inline-flex items-center gap-2 bg-red-955/20 border border-red-900/40 px-3.5 py-1.5 rounded-full text-[10px] font-mono font-bold text-red-400 uppercase tracking-wider">
-          <Briefcase className="w-4 h-4 text-red-500" /> My Investor Workspace
+      <div className="bg-white border border-slate-200 p-8 rounded-3xl space-y-4 relative overflow-hidden shadow-xs">
+        <div className="absolute top-0 right-0 w-80 h-80 bg-red-50/50 rounded-full blur-3xl pointer-events-none"></div>
+        <div className="inline-flex items-center gap-2 bg-red-50 border border-red-100 px-3.5 py-1.5 rounded-full text-[10px] font-mono font-bold text-red-655 uppercase tracking-wider">
+          <Briefcase className="w-4 h-4 text-red-600" /> My Investor Workspace
         </div>
-        <h1 className="text-2xl md:text-4xl font-black text-white leading-tight font-display tracking-tight">
+        <h1 className="text-2xl md:text-4xl font-extrabold text-slate-900 leading-tight font-display tracking-tight">
           Sourced Investment Portfolio
         </h1>
-        <p className="text-slate-300 text-xs md:text-sm max-w-2xl leading-relaxed">
+        <p className="text-slate-600 text-xs md:text-sm max-w-2xl leading-relaxed font-semibold">
           Monitor your favorited, compared, and target compliance assets. Explore predictive blended returns, acquisition cost allocations, and live RERA notifications in an institutional single pane.
         </p>
 
         {/* Workspace Sub-tabs */}
-        <div className="flex gap-2 border-t border-slate-800/80 pt-5 mt-4 text-xs font-bold">
+        <div className="flex gap-2 border-t border-slate-100 pt-5 mt-4 text-xs font-bold">
           <button
             onClick={() => setActiveSubTab('analytics')}
-            className={`px-4 py-2 rounded-xl border transition-all ${
+            className={`px-4 py-2 rounded-xl border transition-all cursor-pointer ${
               activeSubTab === 'analytics'
-                ? 'bg-red-650 text-white border-red-650'
-                : 'bg-slate-900/50 text-slate-400 border-slate-800 hover:text-white'
+                ? 'bg-red-650 text-white border-red-655 shadow-xs'
+                : 'bg-slate-50 text-slate-600 border-slate-200 hover:text-red-650'
             }`}
           >
             📊 Portfolio Sourcing Analytics
           </button>
           <button
             onClick={() => setActiveSubTab('settings')}
-            className={`px-4 py-2 rounded-xl border transition-all ${
+            className={`px-4 py-2 rounded-xl border transition-all cursor-pointer ${
               activeSubTab === 'settings'
-                ? 'bg-red-650 text-white border-red-650'
-                : 'bg-slate-900/50 text-slate-400 border-slate-800 hover:text-white'
+                ? 'bg-red-650 text-white border-red-655 shadow-xs'
+                : 'bg-slate-50 text-slate-600 border-slate-200 hover:text-red-650'
             }`}
           >
             ⚙️ Alert Rules & Settings
@@ -161,15 +160,15 @@ export function InvestorPortfolio({
         <div className="space-y-10">
           
           {selectedProperties.length === 0 ? (
-            <div className="bg-slate-950/60 border border-slate-850 rounded-3xl p-16 text-center space-y-4 max-w-3xl mx-auto">
-              <Briefcase className="w-12 h-12 text-slate-600 mx-auto" />
-              <h2 className="text-lg font-bold text-slate-200">Your Portfolio is Empty</h2>
-              <p className="text-xs text-slate-400">
-                To active calculations, simply go to the **Properties Catalog** or **Commercial Sourcing Tab** and click the Compare or Favorite bookmark indices on individual listings.
+            <div className="bg-white border border-slate-200 rounded-3xl p-16 text-center space-y-4 max-w-3xl mx-auto shadow-xs">
+              <Briefcase className="w-12 h-12 text-slate-300 mx-auto" />
+              <h2 className="text-lg font-bold text-slate-850">Your Portfolio is Empty</h2>
+              <p className="text-xs text-slate-500 font-medium">
+                To activate calculations, simply go to the **Properties Catalog** or **Commercial Sourcing Tab** and click the Compare or Favorite bookmark indices on individual listings.
               </p>
               <button
                 onClick={() => onNavigateToTab('properties')}
-                className="bg-red-650 hover:bg-slate-900 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition-all cursor-pointer"
+                className="bg-red-650 hover:bg-slate-900 text-white font-bold text-xs px-5 py-2.5 rounded-xl transition-all cursor-pointer shadow-xs"
               >
                 Assemble Assets Now
               </button>
@@ -181,36 +180,36 @@ export function InvestorPortfolio({
               <div className="lg:col-span-2 space-y-8">
                 
                 {/* 1. AGGREGATE STATS STRIP */}
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-[#111726]/80 p-5 rounded-3xl border border-slate-805">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4 bg-white p-5 rounded-3xl border border-slate-200 shadow-xs">
                   <div className="space-y-1 p-2">
-                    <span className="text-[9px] uppercase font-bold text-slate-400 block tracking-wider">Target Capital</span>
-                    <strong className="text-xl font-bold text-white font-mono">{formatLakhs(totalMinInvestment)}</strong>
+                    <span className="text-[9px] uppercase font-bold text-slate-500 block tracking-wider">Target Capital</span>
+                    <strong className="text-xl font-bold text-slate-900 font-mono">{formatLakhs(totalMinInvestment)}</strong>
                     <div className="text-[10px] text-slate-500 font-sans">Active Sourced Floor</div>
                   </div>
                   
-                  <div className="space-y-1 p-2 border-l border-slate-800/60 pl-4">
-                    <span className="text-[9px] uppercase font-bold text-slate-400 block tracking-wider">Blended ROI</span>
-                    <strong className="text-xl font-bold text-emerald-450 font-mono">{weightedROI.toFixed(2)}%</strong>
+                  <div className="space-y-1 p-2 border-l border-slate-100 pl-4">
+                    <span className="text-[9px] uppercase font-bold text-slate-500 block tracking-wider">Blended ROI</span>
+                    <strong className="text-xl font-bold text-emerald-600 font-mono">+{weightedROI.toFixed(2)}%</strong>
                     <div className="text-[10px] text-slate-500 font-sans">Weighted Projection</div>
                   </div>
 
-                  <div className="space-y-1 p-2 border-l border-slate-800/60 pl-4">
-                    <span className="text-[9px] uppercase font-bold text-slate-400 block tracking-wider">Rental Yield</span>
-                    <strong className="text-xl font-bold text-amber-500 font-mono">{weightedYield.toFixed(2)}%</strong>
+                  <div className="space-y-1 p-2 border-l border-slate-100 pl-4">
+                    <span className="text-[9px] uppercase font-bold text-slate-500 block tracking-wider">Rental Yield</span>
+                    <strong className="text-xl font-bold text-amber-600 font-mono">{weightedYield.toFixed(2)}%</strong>
                     <div className="text-[10px] text-slate-500 font-sans">Gross Post-Escrow</div>
                   </div>
 
-                  <div className="space-y-1 p-2 border-l border-slate-800/60 pl-4">
-                    <span className="text-[9px] uppercase font-bold text-slate-400 block tracking-wider">Avg Appreciation</span>
-                    <strong className="text-xl font-bold text-cyan-400 font-mono">{weightedAppreciation.toFixed(2)}%</strong>
+                  <div className="space-y-1 p-2 border-l border-slate-100 pl-4">
+                    <span className="text-[9px] uppercase font-bold text-slate-500 block tracking-wider">Avg Appreciation</span>
+                    <strong className="text-xl font-bold text-sky-650 font-mono">+{weightedAppreciation.toFixed(2)}%</strong>
                     <div className="text-[10px] text-slate-500 font-sans">Compounded YOY</div>
                   </div>
                 </div>
 
                 {/* 2. SPECIFIC SOURCE LISTINGS */}
-                <div className="bg-[#111726]/40 p-6 rounded-3xl border border-slate-850/70 space-y-4">
-                  <h3 className="text-sm font-extrabold text-white flex items-center gap-2">
-                    <CheckCircle className="w-5 h-5 text-red-500" /> Active Workspace Inventory
+                <div className="bg-white p-6 rounded-3xl border border-slate-200 space-y-4 shadow-xs">
+                  <h3 className="text-sm font-extrabold text-slate-900 flex items-center gap-2">
+                    <CheckCircle className="w-5 h-5 text-red-650" /> Active Workspace Inventory
                   </h3>
 
                   <div className="space-y-4">
@@ -219,40 +218,40 @@ export function InvestorPortfolio({
                       const isComparing = compareIds.includes(p.id);
                       
                       return (
-                        <div key={p.id} className="bg-slate-950/60 rounded-2xl p-4.5 border border-slate-850 hover:border-red-955 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 transition-all">
+                        <div key={p.id} className="bg-slate-50/50 rounded-2xl p-4.5 border border-slate-200 hover:border-red-400 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 transition-all">
                           <div className="flex gap-4 items-center">
-                            <img src={p.image} className="w-16 h-16 rounded-xl object-cover border border-slate-800" alt={p.title} />
+                            <img src={p.image} className="w-16 h-16 rounded-xl object-cover border border-slate-200" alt={p.title} referrerPolicy="no-referrer" />
                             <div>
-                              <div className="text-xs text-slate-400 flex items-center gap-1.5 font-mono">
-                                <MapPin className="w-3.5 h-3.5 text-red-550" /> {p.city} &middot; RERA verified
+                              <div className="text-xs text-slate-500 flex items-center gap-1.5 font-mono">
+                                <MapPin className="w-3.5 h-3.5 text-red-600" /> {p.city} &middot; RERA verified
                               </div>
-                              <h4 onClick={() => onSelectProperty(p)} className="font-bold text-slate-100 hover:text-red-400 transition-colors cursor-pointer text-sm">
+                              <h4 onClick={() => onSelectProperty(p)} className="font-extrabold text-slate-800 hover:text-red-650 transition-colors cursor-pointer text-sm font-sans">
                                 {p.title}
                               </h4>
                               <div className="flex gap-2 mt-1.5 flex-wrap">
-                                <span className="text-[9px] bg-slate-900 border border-slate-800 font-bold px-2 py-0.5 rounded text-white">{p.type}</span>
-                                <span className="text-[9px] bg-red-955/20 border border-red-900/40 text-red-400 font-bold px-2 py-0.5 rounded">RERA ID # {p.reraId.split('-')[2] || p.id}</span>
+                                <span className="text-[9px] bg-slate-100 border border-slate-200 font-bold px-2 py-0.5 rounded text-slate-750 font-sans">{p.type}</span>
+                                <span className="text-[9px] bg-red-50 border border-red-100 text-red-700 font-bold px-2 py-0.5 rounded font-sans">RERA ID # {p.reraId.split('-')[2] || p.id}</span>
                               </div>
                             </div>
                           </div>
 
-                          <div className="flex items-center gap-6 justify-between w-full md:w-auto border-t md:border-0 pt-3 md:pt-0 border-slate-900">
+                          <div className="flex items-center gap-6 justify-between w-full md:w-auto border-t md:border-0 pt-3 md:pt-0 border-slate-100">
                             <div className="text-right">
-                              <span className="text-[9px] block text-slate-400">ALLOCATION</span>
-                              <strong className="text-xs font-mono font-bold text-white">₹{p.minInvestment} Lakhs</strong>
+                              <span className="text-[9px] block text-slate-400 uppercase font-black">Allocation</span>
+                              <strong className="text-xs font-mono font-bold text-slate-900">₹{p.minInvestment} Lakhs</strong>
                             </div>
                             <div className="text-right">
-                              <span className="text-[9px] block text-slate-400">ROI INDEX</span>
-                              <strong className="text-xs font-mono font-bold text-emerald-400">+{p.projectedROI || p.appreciationRate}%</strong>
+                              <span className="text-[9px] block text-slate-400 uppercase font-black">ROI Index</span>
+                              <strong className="text-xs font-mono font-bold text-emerald-600">+{p.projectedROI || p.appreciationRate}%</strong>
                             </div>
                             <div className="flex gap-1.5">
                               {/* Favorite remove */}
                               <button
                                 onClick={() => onToggleFavorite(p.id)}
-                                className={`p-2 rounded-lg border transition-all ${
+                                className={`p-2 rounded-lg border transition-all cursor-pointer ${
                                   isFavorited
-                                    ? 'bg-red-950/40 text-red-400 border-red-900/50'
-                                    : 'bg-slate-900 text-slate-500 border-slate-850 hover:text-slate-300'
+                                    ? 'bg-red-50 text-red-600 border-red-200'
+                                    : 'bg-white text-slate-400 border-slate-200 hover:text-red-600'
                                 }`}
                                 title="Remove favorite bookmark"
                               >
@@ -261,10 +260,10 @@ export function InvestorPortfolio({
                               {/* Compare remove */}
                               <button
                                 onClick={() => onToggleCompare(p.id)}
-                                className={`p-2 rounded-lg border transition-all ${
+                                className={`p-2 rounded-lg border transition-all cursor-pointer ${
                                   isComparing
-                                    ? 'bg-blue-955/40 text-blue-400 border-blue-900/50'
-                                    : 'bg-slate-900 text-slate-500 border-slate-850 hover:text-slate-300'
+                                    ? 'bg-blue-50 text-blue-600 border-blue-200'
+                                    : 'bg-white text-slate-400 border-slate-200 hover:text-blue-600'
                                 }`}
                                 title="Toggle compare tag"
                               >
@@ -279,19 +278,19 @@ export function InvestorPortfolio({
                 </div>
 
                 {/* 3. SIMULATED STRATEGY PLANNING */}
-                <div className="bg-[#111726]/80 p-6 rounded-3xl border border-slate-805 space-y-4">
-                  <h3 className="text-sm font-extrabold text-white flex items-center gap-2">
-                    <Sliders className="w-5 h-5 text-red-500" /> Sourcing Simulation Calculator
+                <div className="bg-white p-6 rounded-3xl border border-slate-200 space-y-4 shadow-xs">
+                  <h3 className="text-sm font-extrabold text-slate-900 flex items-center gap-2">
+                    <Sliders className="w-5 h-5 text-red-650" /> Sourcing Simulation Calculator
                   </h3>
-                  <p className="text-[11px] text-slate-400">
+                  <p className="text-[11px] text-slate-500 font-semibold leading-normal">
                     Use the simulated capital slider below to forecast what happens if you deploy more capital across your selected assets under InvestorJi's weighted return indices.
                   </p>
 
                   <form onSubmit={handleSimulatedBudgetSubmit} className="space-y-4">
                     <div className="space-y-2">
                       <div className="flex justify-between text-xs font-bold font-mono">
-                        <span className="text-slate-300">Simulated Sourcing Budget:</span>
-                        <span className="text-red-400 text-sm font-bold">{formatLakhs(simulatedBudget)}</span>
+                        <span className="text-slate-600">Simulated Sourcing Budget:</span>
+                        <span className="text-red-655 text-sm font-bold">{formatLakhs(simulatedBudget)}</span>
                       </div>
                       <input 
                         type="range" 
@@ -300,18 +299,18 @@ export function InvestorPortfolio({
                         step="5"
                         value={simulatedBudget}
                         onChange={(e) => setSimulatedBudget(Number(e.target.value))}
-                        className="w-full accent-red-650 h-1.5 bg-slate-900 rounded-lg cursor-pointer"
+                        className="w-full accent-red-650 h-1.5 bg-slate-100 rounded-lg cursor-pointer"
                       />
                     </div>
 
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-950 p-4 rounded-2xl border border-slate-850 text-xs font-mono">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 bg-slate-50 p-4 rounded-2xl border border-slate-200 text-xs font-mono">
                       <div className="space-y-1">
-                        <span className="text-[10px] text-slate-400 uppercase font-bold block">Annual Cash Return:</span>
-                        <strong className="text-emerald-400 text-sm">{formatLakhs(simulatedBudget * (weightedROI / 100))}</strong>
+                        <span className="text-[10px] text-slate-500 uppercase font-bold block">Annual Cash Return:</span>
+                        <strong className="text-emerald-700 text-sm">{formatLakhs(simulatedBudget * (weightedROI / 100))}</strong>
                       </div>
                       <div className="space-y-1">
-                        <span className="text-[10px] text-slate-400 uppercase font-bold block">Monthly Cash Stream:</span>
-                        <strong className="text-emerald-400 text-sm">₹{((simulatedBudget * (weightedYield / 100) / 12) * 100000).toLocaleString('en-IN', { maximumFractionDigits: 0 })}/mo</strong>
+                        <span className="text-[10px] text-slate-500 uppercase font-bold block">Monthly Cash Stream:</span>
+                        <strong className="text-emerald-700 text-sm">₹{((simulatedBudget * (weightedYield / 100) / 12) * 100000).toLocaleString('en-IN', { maximumFractionDigits: 0 })}/mo</strong>
                       </div>
                     </div>
                   </form>
@@ -323,70 +322,70 @@ export function InvestorPortfolio({
               <div className="space-y-6">
                 
                 {/* 1. VERIFIED INVESTMENT COSTS SCHEME */}
-                <div className="bg-slate-950 p-6 rounded-3xl border border-slate-850 space-y-5 shadow-xl relative">
-                  <div className="absolute top-0 right-0 w-24 h-24 bg-red-955/5 rounded-full blur-xl pointer-events-none"></div>
+                <div className="bg-white p-6 rounded-3xl border border-slate-200 space-y-5 shadow-xs relative">
+                  <div className="absolute top-0 right-0 w-24 h-24 bg-red-50/50 rounded-full blur-xl pointer-events-none"></div>
                   
-                  <h3 className="text-xs uppercase font-extrabold text-[#D4AF37] tracking-widest border-b border-slate-850 pb-2">
+                  <h3 className="text-xs uppercase font-extrabold text-amber-600 tracking-widest border-b border-slate-100 pb-2">
                     Outlay Cost Assessment
                   </h3>
 
                   <div className="space-y-3.5 text-xs font-medium">
                     <div className="flex justify-between">
-                      <span className="text-slate-400">Total Asset Purchase Value:</span>
-                      <strong className="font-mono text-white">₹{totalMinInvestment.toFixed(1)} Lakhs</strong>
+                      <span className="text-slate-500">Total Asset Purchase Value:</span>
+                      <strong className="font-mono text-slate-800">₹{totalMinInvestment.toFixed(1)} Lakhs</strong>
                     </div>
 
                     <div className="flex justify-between">
-                      <span className="text-slate-400 flex items-center gap-1">
-                        Stamp Duty Estimate <span className="text-[10px] text-slate-500 font-mono">(6%)</span>
+                      <span className="text-slate-500 flex items-center gap-1">
+                        Stamp Duty Estimate <span className="text-[10px] text-slate-400 font-mono">(6%)</span>
                       </span>
-                      <strong className="font-mono text-white">₹{stampDutyEstimate.toFixed(1)} Lakhs</strong>
+                      <strong className="font-mono text-slate-800">₹{stampDutyEstimate.toFixed(1)} Lakhs</strong>
                     </div>
 
                     <div className="flex justify-between">
-                      <span className="text-slate-400 flex items-center gap-1">
-                        RERA Registry Filing <span className="text-[10px] text-slate-500 font-mono">(1%)</span>
+                      <span className="text-slate-500 flex items-center gap-1">
+                        RERA Registry Filing <span className="text-[10px] text-slate-400 font-mono">(1%)</span>
                       </span>
-                      <strong className="font-mono text-white">₹{reraLegalEstimate.toFixed(1)} Lakhs</strong>
+                      <strong className="font-mono text-slate-800">₹{reraLegalEstimate.toFixed(1)} Lakhs</strong>
                     </div>
 
                     <div className="flex justify-between">
-                      <span className="text-slate-400">Sourcing Escrow Protocol:</span>
-                      <strong className="font-mono text-white">₹0.5 Lakhs</strong>
+                      <span className="text-slate-500">Sourcing Escrow Protocol:</span>
+                      <strong className="font-mono text-slate-800">₹0.5 Lakhs</strong>
                     </div>
 
-                    <div className="border-t border-slate-800/80 pt-3 flex justify-between text-sm">
-                      <strong className="text-slate-100 uppercase font-bold">Total Sourcing Outlay:</strong>
-                      <strong className="font-mono text-[#D4AF37] font-black text-sm">{formatLakhs(totalAcquisitionOutlay)}</strong>
+                    <div className="border-t border-slate-150 pt-3 flex justify-between text-sm">
+                      <strong className="text-slate-700 uppercase font-bold">Total Sourcing Outlay:</strong>
+                      <strong className="font-mono text-amber-600 font-black text-sm">{formatLakhs(totalAcquisitionOutlay)}</strong>
                     </div>
                   </div>
 
-                  <div className="bg-[#111726]/70 p-3 rounded-xl border border-slate-850 text-[10px] text-slate-400 leading-normal">
+                  <div className="bg-slate-50 p-3 rounded-xl border border-slate-150 text-[10px] text-slate-500 leading-normal font-semibold">
                     ⚡ <strong>RERA Compliant Shielding active</strong>. Sourcing deposits are routed directly into developer registered escrow accounts with regular verification audits.
                   </div>
                 </div>
 
                 {/* 2. DYNAMIC MONTHLY DISBURSEMENT PANEL */}
-                <div className="bg-[#111726]/80 p-6 rounded-3xl border border-slate-805 space-y-4">
-                  <h3 className="text-xs uppercase font-extrabold text-white tracking-widest block font-mono">
-                    DISBURSEMENT TRACKER
+                <div className="bg-white p-6 rounded-3xl border border-slate-200 space-y-4 shadow-xs">
+                  <h3 className="text-xs uppercase font-extrabold text-slate-800 tracking-widest block font-mono">
+                    Disbursement Tracker
                   </h3>
 
                   <div className="space-y-2">
-                    <span className="text-[10px] text-slate-400 block font-sans">Projected Annual Cash Income:</span>
-                    <div className="text-2xl font-black font-display text-emerald-450 font-mono">
+                    <span className="text-[10px] text-slate-500 block font-sans">Projected Annual Cash Income:</span>
+                    <div className="text-2xl font-black font-display text-emerald-600 font-mono">
                       ₹{annualRentalCashflow.toFixed(2)} <span className="text-xs font-sans text-slate-400 font-bold">Lakhs / year</span>
                     </div>
                   </div>
 
                   <div className="space-y-1">
-                    <span className="text-[10px] text-slate-400 block font-sans">Monthly Passive Run Rate (Est):</span>
-                    <strong className="text-lg font-mono font-bold text-white block">
+                    <span className="text-[10px] text-slate-500 block font-sans">Monthly Passive Run Rate (Est):</span>
+                    <strong className="text-lg font-mono font-bold text-slate-800 block">
                       ₹{monthlyRentalCashflow.toLocaleString('en-IN', { maximumFractionDigits: 0 })} <span className="text-[10px] font-sans text-slate-400 font-bold">/ Month</span>
                     </strong>
                   </div>
 
-                  <p className="text-[9px] text-slate-500 leading-normal pt-2 border-t border-slate-800">
+                  <p className="text-[9px] text-slate-450 leading-normal pt-2 border-t border-slate-100">
                     * Rental payouts are formulated based on pre-leased tenant contracts and active corporate occupancies in Noida, Gurgaon & Mumbai corridors. Actual disbursements verified quarterly.
                   </p>
                 </div>
@@ -402,11 +401,11 @@ export function InvestorPortfolio({
         <div className="max-w-4xl mx-auto space-y-8 animate-fade-in">
           
           {/* SUBSCRIPTION SETTINGS BOARD */}
-          <div className="bg-[#111726]/80 p-8 rounded-3xl border border-slate-805 space-y-6">
-            <h3 className="text-sm font-extrabold text-white flex items-center gap-2">
-              <Mail className="w-5 h-5 text-red-500" /> Sourcing Newsletter Alerts Settings
+          <div className="bg-white p-8 rounded-3xl border border-slate-200 space-y-6 shadow-xs">
+            <h3 className="text-sm font-extrabold text-slate-900 flex items-center gap-2">
+              <Mail className="w-5 h-5 text-red-650" /> Sourcing Newsletter Alerts Settings
             </h3>
-            <p className="text-xs text-slate-300 leading-relaxed max-w-2xl">
+            <p className="text-xs text-slate-550 leading-relaxed max-w-2xl font-semibold">
               Activate the weekly InvestorJi RERA auditing report newsletter. It aggregates construction progress metrics, micro-market pricing trends, and immediate builder resale liquidation opportunities.
             </p>
 
@@ -414,40 +413,40 @@ export function InvestorPortfolio({
               <input 
                 type="email" 
                 required
-                className="bg-slate-950 border border-slate-800 text-slate-100 px-4 py-3 rounded-xl outline-none focus:border-red-600 transition-colors text-xs font-semibold flex-grow"
+                className="bg-white border border-slate-200 text-slate-800 px-4 py-3 rounded-xl outline-none focus:border-red-650 transition-colors text-xs font-semibold flex-grow shadow-xs"
                 placeholder="Enter Sourcing Email Identity"
                 value={newsEmail}
                 onChange={(e) => setNewsEmail(e.target.value)}
               />
               <button
                 type="submit"
-                className="bg-red-650 hover:bg-red-700 text-white font-bold text-xs px-6 py-3 rounded-xl transition-all cursor-pointer whitespace-nowrap"
+                className="bg-red-650 hover:bg-red-700 text-white font-bold text-xs px-6 py-3 rounded-xl transition-all cursor-pointer whitespace-nowrap shadow-xs"
               >
                 {isSubscribedToWeekly ? '📋 Update Subscription Rules' : '🔔 Active Sourcing Digest'}
               </button>
             </form>
 
-            <div className="flex items-center gap-3 bg-slate-950/55 p-4 rounded-xl border border-slate-850 text-xs">
-              <div className="p-1 rounded-full bg-emerald-950/50 text-emerald-400">
+            <div className="flex items-center gap-3 bg-slate-50 p-4 rounded-xl border border-slate-150 text-xs shadow-xs">
+              <div className="p-1 rounded-full bg-emerald-100 text-emerald-700">
                 <CheckCircle className="w-4.5 h-4.5" />
               </div>
-              <div className="text-slate-300 leading-normal">
-                Weekly Dispatch Subscription for: <strong className="text-red-400 font-mono font-bold">{subscribedEmail || '(Not active, complete above!)'}</strong>
+              <div className="text-slate-650 leading-normal font-medium">
+                Weekly Dispatch Subscription for: <strong className="text-red-655 font-mono font-bold">{subscribedEmail || '(Not active, complete above!)'}</strong>
               </div>
             </div>
           </div>
 
           {/* ACTIVE ATOMIC PRICE ALERTS LIST */}
-          <div className="bg-[#111726]/80 p-8 rounded-3xl border border-slate-805 space-y-6">
-            <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-              <h3 className="text-sm font-extrabold text-white flex items-center gap-2">
-                <Bell className="w-5 h-5 text-red-500" /> Active Price Sourcing Threshold Alerts ({priceAlerts.length})
+          <div className="bg-white p-8 rounded-3xl border border-slate-200 space-y-6 shadow-xs">
+            <div className="flex items-center justify-between border-b border-slate-150 pb-3">
+              <h3 className="text-sm font-extrabold text-slate-900 flex items-center gap-2">
+                <Bell className="w-5 h-5 text-red-650" /> Active Price Sourcing Threshold Alerts ({priceAlerts.length})
               </h3>
-              <span className="text-[10px] text-slate-500 font-mono font-medium">Auto-scanned</span>
+              <span className="text-[10px] text-slate-400 font-mono font-medium">Auto-scanned</span>
             </div>
 
             {priceAlerts.length === 0 ? (
-              <div className="p-12 text-center text-slate-500 text-xs font-bold font-sans">
+              <div className="p-12 text-center text-slate-400 text-xs font-bold font-sans">
                 No active Price Alert thresholds configured. Tap the Bell icon on any Property Card to monitor limits.
               </div>
             ) : (
@@ -457,23 +456,23 @@ export function InvestorPortfolio({
                   if (!property) return null;
 
                   return (
-                    <div key={alert.id} className="bg-slate-950/70 p-4.5 rounded-2xl border border-slate-850 flex items-center justify-between text-xs transition-colors hover:border-slate-800 gap-4">
+                    <div key={alert.id} className="bg-slate-55/60 p-4.5 rounded-2xl border border-slate-200 flex items-center justify-between text-xs transition-colors hover:border-slate-300 gap-4">
                       <div className="flex gap-3 items-center">
-                        <div className="p-2 bg-red-955/15 rounded-lg border border-red-900/30 text-red-400">
+                        <div className="p-2 bg-red-50 rounded-lg border border-red-100 text-red-650">
                           <Bell className="w-4 h-4" />
                         </div>
                         <div>
-                          <h4 className="font-bold text-slate-100">{property.title}</h4>
-                          <p className="text-[10px] text-slate-400">
-                            Current Standard Price: <strong className="font-mono">₹{property.minInvestment}L+</strong> &middot; Target Warning Limit: <strong className="text-emerald-450 font-mono">₹{alert.targetPrice}L</strong>
+                          <h4 className="font-bold text-slate-800">{property.title}</h4>
+                          <p className="text-[10px] text-slate-500">
+                            Current Standard Price: <strong className="font-mono">₹{property.minInvestment}L+</strong> &middot; Target Warning Limit: <strong className="text-emerald-600 font-mono">₹{alert.targetPrice}L</strong>
                           </p>
-                          <span className="text-[9px] text-slate-500 font-mono">Recipient: {alert.email}</span>
+                          <span className="text-[9px] text-slate-400 font-mono">Recipient: {alert.email}</span>
                         </div>
                       </div>
 
                       <button
                         onClick={() => onRemoveAlert(alert.id)}
-                        className="p-2 hover:bg-red-955/35 text-slate-400 hover:text-red-400 rounded-lg transition-colors border border-slate-850 hover:border-red-900/30 cursor-pointer"
+                        className="p-2 hover:bg-red-50 text-slate-400 hover:text-red-600 rounded-lg transition-colors border border-slate-250 hover:border-red-100 cursor-pointer"
                         title="Remove price limit alarm"
                       >
                         <Trash2 className="w-4 h-4" />

@@ -176,20 +176,20 @@ If you require instant premium assistance, please tap the button below to route 
 
       {/* 2. CHAT PANEL INTERFACE */}
       {isOpen && (
-        <div className="bg-[#070b13] border border-slate-800 rounded-2xl shadow-2xl w-[90vw] sm:w-[420px] h-[550px] flex flex-col justify-between overflow-hidden animate-in slide-in-from-bottom duration-300">
+        <div className="bg-white border border-slate-200 rounded-2xl shadow-2xl w-[90vw] sm:w-[420px] h-[550px] flex flex-col justify-between overflow-hidden animate-in slide-in-from-bottom duration-300">
           
           {/* HEADER BAR */}
-          <div className="bg-[#111726] border-b border-slate-800 p-4 shrink-0 flex items-center justify-between">
+          <div className="bg-slate-50 border-b border-slate-200 p-4 shrink-0 flex items-center justify-between">
             <div className="flex items-center gap-2.5">
-              <div className="p-2 bg-red-955/20 text-red-500 rounded-xl border border-red-905/30">
+              <div className="p-2 bg-red-50 text-red-650 rounded-xl border border-red-100">
                 <Bot className="w-5 h-5 stroke-2" />
               </div>
               <div>
-                <h3 className="font-extrabold text-white text-xs flex items-center gap-1">
+                <h3 className="font-extrabold text-slate-900 text-xs flex items-center gap-1">
                   AdvisorJi Sourcing AI
-                  <Sparkles className="w-3.5 h-3.5 text-red-500 fill-red-500" />
+                  <Sparkles className="w-3.5 h-3.5 text-red-650 fill-red-650" />
                 </h3>
-                <span className="text-[10px] text-emerald-450 font-mono font-medium flex items-center gap-1">
+                <span className="text-[10px] text-emerald-700 font-mono font-semibold flex items-center gap-1">
                   <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full animate-ping"></span>
                   RERA Knowledge Engine
                 </span>
@@ -202,7 +202,7 @@ If you require instant premium assistance, please tap the button below to route 
                   onOpenConsultation("Chat initiated: requesting live desk voice routing.");
                   onNotify("Requested voice callback. An advisor will contact you shortly.", "success");
                 }}
-                className="p-1 px-2.5 bg-red-955 hover:bg-slate-900 border border-red-900/30 text-red-400 hover:text-white rounded-lg text-[10px] font-bold transition-all flex items-center gap-1"
+                className="p-1 px-2.5 bg-red-50 hover:bg-red-100 border border-red-100 text-red-650 rounded-lg text-[10px] font-bold transition-all flex items-center gap-1"
                 title="Direct voice request"
               >
                 <PhoneCall className="w-3 h-3" />
@@ -211,7 +211,7 @@ If you require instant premium assistance, please tap the button below to route 
               
               <button
                 onClick={handleToggleOpen}
-                className="p-1.5 hover:bg-slate-900 text-slate-400 hover:text-red-400 rounded-lg transition-colors cursor-pointer"
+                className="p-1.5 hover:bg-slate-100 text-slate-400 hover:text-red-650 rounded-lg transition-colors cursor-pointer"
               >
                 <X className="w-4.5 h-4.5" />
               </button>
@@ -219,7 +219,7 @@ If you require instant premium assistance, please tap the button below to route 
           </div>
 
           {/* CHAT WINDOW / MESSAGE COLUMN */}
-          <div className="flex-grow p-4 overflow-y-auto space-y-4 bg-slate-950/40 text-xs text-slate-200">
+          <div className="flex-grow p-4 overflow-y-auto space-y-4 bg-slate-50/50 text-xs text-slate-800">
             {messages.map(m => {
               const isUser = m.sender === 'user';
               return (
@@ -227,26 +227,26 @@ If you require instant premium assistance, please tap the button below to route 
                   key={m.id} 
                   className={`flex ${isUser ? 'justify-end' : 'justify-start'} animate-in fade-in duration-200`}
                 >
-                  <div className={`max-w-[85%] rounded-2xl p-3.5 leading-relaxed border ${
+                  <div className={`max-w-[85%] rounded-2xl p-3.5 leading-relaxed border shadow-xs ${
                     isUser 
-                      ? 'bg-red-650/15 border-red-900/30 text-slate-100 rounded-br-none' 
-                      : 'bg-[#111726]/80 border-slate-805 text-slate-200 rounded-bl-none'
+                      ? 'bg-red-50 border-red-100 text-slate-800 rounded-br-none' 
+                      : 'bg-white border-slate-200 text-slate-800 rounded-bl-none'
                   }`}>
                     {/* Render basic Markdown headings and bullet points natively */}
                     <div className="space-y-2 whitespace-pre-wrap select-text markdown-body">
                       {m.text.split('\n').map((line, linIdx) => {
                         if (line.startsWith('### ')) {
-                          return <h4 key={linIdx} className="font-extrabold text-white text-xs mt-2 border-b border-slate-800 pb-0.5">{line.replace('### ', '')}</h4>;
+                          return <h4 key={linIdx} className="font-extrabold text-slate-900 text-xs mt-2 border-b border-slate-100 pb-0.5">{line.replace('### ', '')}</h4>;
                         }
                         if (line.startsWith('- ') || line.startsWith('* ')) {
-                          return <div key={linIdx} className="pl-3.5 relative flex items-start gap-1 text-slate-300 font-medium my-0.5">
+                          return <div key={linIdx} className="pl-3.5 relative flex items-start gap-1 text-slate-600 font-medium my-0.5">
                             <span className="text-red-500 shrink-0 select-none">•</span>
                             <span>{line.replace('- ', '').replace('* ', '')}</span>
                           </div>;
                         }
                         if (line.match(/^\d+\.\s/)) {
-                          return <div key={linIdx} className="pl-3.5 relative flex items-start gap-1 text-slate-300 font-medium my-0.5">
-                            <span className="text-red-400 shrink-0 font-mono font-bold select-none">{line.match(/^\d+\./)?.[0]}</span>
+                          return <div key={linIdx} className="pl-3.5 relative flex items-start gap-1 text-slate-600 font-medium my-0.5">
+                            <span className="text-red-500 shrink-0 font-mono font-bold select-none">{line.match(/^\d+\./)?.[0]}</span>
                             <span>{line.replace(/^\d+\.\s/, '')}</span>
                           </div>;
                         }
@@ -254,13 +254,13 @@ If you require instant premium assistance, please tap the button below to route 
                         if (line.includes('**')) {
                           const parts = line.split('**');
                           return <p key={linIdx} className="font-medium">
-                            {parts.map((p, pIdx) => pIdx % 2 === 1 ? <strong key={pIdx} className="font-extrabold text-[#D4AF37]">{p}</strong> : p)}
+                            {parts.map((p, pIdx) => pIdx % 2 === 1 ? <strong key={pIdx} className="font-extrabold text-amber-700">{p}</strong> : p)}
                           </p>;
                         }
-                        return <p key={linIdx} className="font-medium text-slate-300">{line}</p>;
+                        return <p key={linIdx} className="font-medium text-slate-600">{line}</p>;
                       })}
                     </div>
-                    <span className="text-[8px] text-slate-500 font-mono block text-right mt-1.5 select-none">
+                    <span className="text-[8px] text-slate-400 font-mono block text-right mt-1.5 select-none">
                       {m.timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
                     </span>
                   </div>
@@ -271,8 +271,8 @@ If you require instant premium assistance, please tap the button below to route 
             {/* TYPING LOADER */}
             {loading && (
               <div className="flex justify-start animate-pulse">
-                <div className="bg-[#111726]/80 p-3.5 border border-slate-800 rounded-2xl rounded-bl-none text-slate-400 flex items-center gap-2">
-                  <Loader2 className="w-3.5 h-3.5 animate-spin text-red-500" />
+                <div className="bg-white p-3.5 border border-slate-200 rounded-2xl rounded-bl-none text-slate-500 flex items-center gap-2">
+                  <Loader2 className="w-3.5 h-3.5 animate-spin text-red-650" />
                   <span className="font-mono text-[10px] uppercase font-bold">AdvisorJi is calculating...</span>
                 </div>
               </div>
@@ -283,12 +283,12 @@ If you require instant premium assistance, please tap the button below to route 
 
           {/* QUICK PROMPTS STRIP */}
           {messages.length < 5 && (
-            <div className="p-2 border-t border-slate-900 bg-slate-950/70 shrink-0 flex gap-2 overflow-x-auto whitespace-nowrap scrollbar-none scroll-smooth">
+            <div className="p-2 border-t border-slate-100 bg-slate-50/70 shrink-0 flex gap-2 overflow-x-auto whitespace-nowrap scrollbar-none scroll-smooth">
               {quickPrompts.map((qp, idx) => (
                 <button
                   key={idx}
                   onClick={() => handleSendMessage(qp.text)}
-                  className="bg-[#111726]/85 hover:bg-red-955/30 border border-slate-850 hover:border-red-900/40 text-[9px] text-slate-300 hover:text-white px-2.5 py-1.5 rounded-lg transition-all font-bold cursor-pointer"
+                  className="bg-white hover:bg-red-50 border border-slate-200 hover:border-red-200 text-[9px] text-slate-700 hover:text-red-650 px-2.5 py-1.5 rounded-lg transition-all font-bold cursor-pointer shadow-xs"
                 >
                   {qp.label}
                 </button>
@@ -302,11 +302,11 @@ If you require instant premium assistance, please tap the button below to route 
               e.preventDefault();
               handleSendMessage(input);
             }} 
-            className="p-3 border-t border-slate-800 bg-[#111726] shrink-0 flex gap-2 items-center"
+            className="p-3 border-t border-slate-200 bg-slate-50 shrink-0 flex gap-2 items-center"
           >
             <input
               type="text"
-              className="bg-slate-950 border border-slate-800 text-slate-100 px-3 py-2.5 rounded-xl text-xs outline-none focus:border-red-650 transition-all flex-grow font-semibold"
+              className="bg-white border border-slate-200 text-slate-800 px-3 py-2.5 rounded-xl text-xs outline-none focus:border-red-500 transition-all flex-grow font-semibold placeholder-slate-450 shadow-xs"
               placeholder="Ask about properties, legal audits, yields..."
               value={input}
               onChange={(e) => setInput(e.target.value)}

@@ -229,60 +229,60 @@ export function SeoLander({
   };
 
   return (
-    <div className="space-y-10 animate-fade-in text-slate-100 pb-16 font-sans">
+    <div className="space-y-10 animate-fade-in text-slate-800 pb-16 font-sans">
 
-      {/* 1. SEO METRICS INDEX & GOOGLE METADATA MONITORING TOOL PANEL (DARK MODE) */}
-      <div className="bg-[#111726]/90 text-slate-300 border border-slate-800 p-5 rounded-3xl space-y-3 font-mono">
-        <div className="flex items-center justify-between border-b border-slate-800 pb-3">
+      {/* 1. SEO METRICS INDEX & GOOGLE METADATA MONITORING TOOL PANEL (LIGHT THEME) */}
+      <div className="bg-slate-50 text-slate-700 border border-slate-200 p-5 rounded-3xl space-y-3 font-mono shadow-xs">
+        <div className="flex items-center justify-between border-b border-slate-200 pb-3">
           <div className="flex items-center gap-2">
-            <Globe className="w-5 h-5 text-red-500" />
-            <span className="text-xs font-bold text-slate-200 uppercase tracking-wider">
+            <Globe className="w-5 h-5 text-red-650" />
+            <span className="text-xs font-bold text-slate-800 uppercase tracking-wider font-sans">
               Google SEO Indexing & Metadata Monitor
             </span>
           </div>
-          <span className="text-[10px] bg-red-955/40 text-red-400 border border-red-900/30 px-2.5 py-0.5 rounded font-bold uppercase">
+          <span className="text-[10px] bg-red-50 text-red-650 border border-red-100 px-2.5 py-0.5 rounded font-bold uppercase">
             Active / Indexed
           </span>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs font-sans">
           <div className="space-y-1">
-            <span className="text-slate-400 text-[10px] uppercase font-bold block font-mono">Google SERP Header Title:</span>
-            <div className="bg-slate-950 p-2.5 rounded-lg border border-slate-850 text-red-400 font-bold leading-relaxed whitespace-pre-line text-[11px]">
+            <span className="text-slate-500 text-[10px] uppercase font-bold block font-mono">Google SERP Header Title:</span>
+            <div className="bg-white p-2.5 rounded-lg border border-slate-200 text-red-650 font-bold leading-relaxed whitespace-pre-line text-[11px] shadow-xs">
               {currentLander.title}
             </div>
           </div>
           <div className="space-y-1">
-            <span className="text-slate-400 text-[10px] uppercase font-bold block font-mono">Meta Description:</span>
-            <div className="bg-slate-950 p-2.5 rounded-lg border border-slate-850 text-slate-300 leading-normal text-[10px]">
+            <span className="text-slate-500 text-[10px] uppercase font-bold block font-mono">Meta Description:</span>
+            <div className="bg-white p-2.5 rounded-lg border border-slate-200 text-slate-600 leading-normal text-[10px] shadow-xs">
               {currentLander.description}
             </div>
           </div>
         </div>
 
-        <div className="flex flex-wrap items-center justify-between text-[10px] text-slate-500 pt-1.5 gap-2 border-t border-slate-800">
+        <div className="flex flex-wrap items-center justify-between text-[10px] text-slate-500 pt-1.5 gap-2 border-t border-slate-200">
           <div>
-            <strong>Sitemap Element URL:</strong> <span className="bg-slate-950 px-2 py-0.5 rounded border border-slate-850 text-slate-300 font-sans">{currentLander.url}</span>
+            <strong>Sitemap Element URL:</strong> <span className="bg-white px-2 py-0.5 rounded border border-slate-200 text-slate-700 font-sans">{currentLander.url}</span>
           </div>
-          <div className="text-red-400 font-bold">
+          <div className="text-red-650 font-bold">
             ⚡ Structured JSON-LD schema generated for 2026 indexing queues
           </div>
         </div>
       </div>
 
       {/* 2. MAIN HEADER & INTRODUCTORY COPY (RESEARCH POWERED) */}
-      <div className="bg-[#111726]/80 border border-slate-800 p-8 md:p-12 rounded-3xl space-y-6 relative overflow-hidden">
-        <div className="absolute top-0 right-0 w-80 h-80 bg-red-955/10 rounded-full blur-3xl pointer-events-none"></div>
+      <div className="bg-white border border-slate-200/80 p-8 md:p-12 rounded-3xl space-y-6 relative overflow-hidden shadow-xs">
+        <div className="absolute top-0 right-0 w-80 h-80 bg-red-50/50 rounded-full blur-3xl pointer-events-none"></div>
         
-        <div className="inline-flex items-center gap-2 bg-red-955/20 border border-red-900/40 px-4 py-1.5 rounded-full text-[10px] font-bold text-red-400 uppercase tracking-wider">
-          <Award className="w-4 h-4 text-[#D4AF37]" /> {currentLander.filterCity ? `Verified Deals in ${currentLander.filterCity}` : "Institutional Real Estate Directory"}
+        <div className="inline-flex items-center gap-2 bg-red-50 border border-red-100/65 px-4 py-1.5 rounded-full text-[10px] font-bold text-red-655 uppercase tracking-wider">
+          <Award className="w-4 h-4 text-amber-500" /> {currentLander.filterCity ? `Verified Deals in ${currentLander.filterCity}` : "Institutional Real Estate Directory"}
         </div>
 
-        <h1 className="text-2xl md:text-4xl font-black text-white leading-tight font-display tracking-tight">
+        <h1 className="text-2xl md:text-4xl font-extrabold text-slate-900 leading-tight font-display tracking-tight">
           {currentLander.heading}
         </h1>
 
-        <div className="text-slate-300 text-xs md:text-sm leading-relaxed border-l-4 border-red-650 pl-4 bg-slate-950/40 p-4 rounded-r-xl">
+        <div className="text-slate-600 text-xs md:text-sm leading-relaxed border-l-4 border-red-650 pl-4 bg-slate-50 p-4 rounded-r-xl">
           {currentLander.introParagraph}
         </div>
       </div>
@@ -292,8 +292,8 @@ export function SeoLander({
         
         {/* Left Side: Property Listings */}
         <div className="lg:col-span-2 space-y-6">
-          <div className="flex items-center justify-between border-b border-slate-800 pb-3">
-            <h3 className="font-extrabold text-white font-display text-sm">
+          <div className="flex items-center justify-between border-b border-slate-200 pb-3">
+            <h3 className="font-extrabold text-slate-900 font-display text-sm">
               Pre-Screened RERA Registered Sourced Matches ({matchingProperties.length})
             </h3>
             <span className="text-xs text-slate-400 font-mono">2026 Live Audits</span>
@@ -317,7 +317,7 @@ export function SeoLander({
           </div>
 
           {matchingProperties.length === 0 && (
-            <div className="p-12 bg-slate-950 border border-slate-850 rounded-3xl text-center text-slate-400 font-bold text-xs space-y-4">
+            <div className="p-12 bg-slate-50 border border-slate-200 rounded-3xl text-center text-slate-500 font-bold text-xs space-y-4">
               <p>No immediate properties matching this specific category listed in this region.</p>
               <button 
                 onClick={() => onNavigateToTab('listings')}
@@ -329,20 +329,20 @@ export function SeoLander({
           )}
 
           {/* Lander FAQ segment */}
-          <div className="bg-[#111726]/80 border border-slate-850 p-6 rounded-2xl space-y-4">
-            <h4 className="text-xs text-white uppercase font-bold tracking-widest block flex items-center gap-1.5 border-b border-slate-800 pb-2">
-              <HelpCircle className="w-4 h-4 text-red-500" /> Regional Legal & Sourcing FAQ
+          <div className="bg-slate-50 border border-slate-200 p-6 rounded-2xl space-y-4">
+            <h4 className="text-xs text-slate-800 uppercase font-bold tracking-widest block flex items-center gap-1.5 border-b border-slate-200 pb-2">
+              <HelpCircle className="w-4 h-4 text-red-650" /> Regional Legal & Sourcing FAQ
             </h4>
             <div className="space-y-4 text-xs font-medium">
               {currentLander.faqs.map((faq, idx) => (
                 <div key={idx} className="space-y-1.5">
-                  <strong className="text-slate-100 block font-semibold">Q: {faq.q}</strong>
-                  <p className="text-slate-400 leading-relaxed pl-4 border-l-2 border-slate-800">{faq.a}</p>
+                  <strong className="text-slate-800 block font-semibold">Q: {faq.q}</strong>
+                  <p className="text-slate-600 leading-relaxed pl-4 border-l-2 border-slate-200">{faq.a}</p>
                 </div>
               ))}
               <div className="space-y-1.5">
-                <strong className="text-slate-100 block font-semibold">Q: How does the InvestorJi Score™ prevent capital traps?</strong>
-                <p className="text-slate-400 leading-relaxed pl-4 border-l-2 border-slate-800">
+                <strong className="text-slate-800 block font-semibold">Q: How does the InvestorJi Score™ prevent capital traps?</strong>
+                <p className="text-slate-600 leading-relaxed pl-4 border-l-2 border-slate-200">
                   We audit each builder balance sheet to measure construction velocity and liquidity reserves. Our weighted algorithm provides clean, unbiased parameters on safe opportunities.
                 </p>
               </div>
@@ -354,94 +354,94 @@ export function SeoLander({
         <div className="space-y-6">
           
           {/* A. Dynamic Rating Score Box (Required Field: Section 3) */}
-          <div className="bg-[#111726]/80 border border-slate-805 p-6 rounded-2xl space-y-5">
-            <div className="text-center bg-slate-950 p-4 rounded-xl border border-slate-850">
-              <span className="text-[10px] text-slate-450 uppercase font-black block tracking-widest">
+          <div className="bg-white border border-slate-200 p-6 rounded-2xl space-y-5 shadow-xs">
+            <div className="text-center bg-slate-50 p-4 rounded-xl border border-slate-200">
+              <span className="text-[10px] text-slate-500 uppercase font-black block tracking-widest">
                 InvestorJi Category Score™
               </span>
-              <div className="text-4xl font-extrabold text-white font-display mt-1">
-                {currentLander.scores.overall} <span className="text-slate-500 text-xs font-mono font-medium">/10</span>
+              <div className="text-4xl font-extrabold text-slate-900 font-display mt-1">
+                {currentLander.scores.overall} <span className="text-slate-400 text-xs font-mono font-medium">/10</span>
               </div>
-              <span className="text-[10px] bg-emerald-955/40 text-emerald-450 border border-emerald-900/40 px-3 py-1 rounded-full font-bold inline-block mt-2">
+              <span className="text-[10px] bg-emerald-50 text-emerald-700 border border-emerald-100 px-3 py-1 rounded-full font-bold inline-block mt-2">
                 ★ Excellent Investment Opportunity
               </span>
             </div>
 
             <div className="space-y-3">
-              <strong className="text-[11px] text-slate-200 uppercase font-bold tracking-wider block">
+              <strong className="text-[11px] text-slate-800 uppercase font-bold tracking-wider block">
                 Asset Health Parameters:
               </strong>
               
               <div className="space-y-2 text-xs">
                 {/* Location */}
                 <div className="flex items-center justify-between">
-                  <span className="text-slate-400 font-semibold">Location Quality</span>
+                  <span className="text-slate-500 font-semibold">Location Quality</span>
                   <div className="flex text-yellow-500">
                     {Array.from({ length: 5 }).map((_, i) => (
-                      <Star key={i} className={`w-3.5 h-3.5 ${i < currentLander.scores.location ? 'fill-yellow-500 text-yellow-500' : 'text-slate-800'}`} />
+                      <Star key={i} className={`w-3.5 h-3.5 ${i < currentLander.scores.location ? 'fill-yellow-500 text-yellow-500' : 'text-slate-200'}`} />
                     ))}
                   </div>
                 </div>
 
                 {/* Builder Reputation */}
                 <div className="flex items-center justify-between">
-                  <span className="text-slate-400 font-semibold">Builder Reputation</span>
+                  <span className="text-slate-500 font-semibold">Builder Reputation</span>
                   <div className="flex text-yellow-500">
                     {Array.from({ length: 5 }).map((_, i) => (
-                      <Star key={i} className={`w-3.5 h-3.5 ${i < currentLander.scores.builder ? 'fill-yellow-500 text-yellow-500' : 'text-slate-800'}`} />
+                      <Star key={i} className={`w-3.5 h-3.5 ${i < currentLander.scores.builder ? 'fill-yellow-500 text-yellow-500' : 'text-slate-200'}`} />
                     ))}
                   </div>
                 </div>
 
                 {/* Rental Potential */}
                 <div className="flex items-center justify-between">
-                  <span className="text-slate-400 font-semibold">Rental Potential</span>
+                  <span className="text-slate-500 font-semibold">Rental Potential</span>
                   <div className="flex text-yellow-500">
                     {Array.from({ length: 5 }).map((_, i) => (
-                      <Star key={i} className={`w-3.5 h-3.5 ${i < currentLander.scores.rental ? 'fill-yellow-500 text-yellow-500' : 'text-slate-800'}`} />
+                      <Star key={i} className={`w-3.5 h-3.5 ${i < currentLander.scores.rental ? 'fill-yellow-500 text-yellow-500' : 'text-slate-200'}`} />
                     ))}
                   </div>
                 </div>
 
                 {/* Future Growth */}
                 <div className="flex items-center justify-between">
-                  <span className="text-slate-400 font-semibold">Future Growth Rating</span>
+                  <span className="text-slate-500 font-semibold">Future Growth Rating</span>
                   <div className="flex text-yellow-500">
                     {Array.from({ length: 5 }).map((_, i) => (
-                      <Star key={i} className={`w-3.5 h-3.5 ${i < currentLander.scores.growth ? 'fill-yellow-500 text-yellow-500' : 'text-slate-800'}`} />
+                      <Star key={i} className={`w-3.5 h-3.5 ${i < currentLander.scores.growth ? 'fill-yellow-500 text-yellow-500' : 'text-slate-200'}`} />
                     ))}
                   </div>
                 </div>
 
                 {/* Liquidity */}
                 <div className="flex items-center justify-between">
-                  <span className="text-slate-400 font-semibold">Exit Liquidity</span>
+                  <span className="text-slate-500 font-semibold">Exit Liquidity</span>
                   <div className="flex text-yellow-500">
                     {Array.from({ length: 5 }).map((_, i) => (
-                      <Star key={i} className={`w-3.5 h-3.5 ${i < currentLander.scores.liquidity ? 'fill-yellow-500 text-yellow-500' : 'text-slate-800'}`} />
+                      <Star key={i} className={`w-3.5 h-3.5 ${i < currentLander.scores.liquidity ? 'fill-yellow-500 text-yellow-500' : 'text-slate-200'}`} />
                     ))}
                   </div>
                 </div>
               </div>
             </div>
 
-            <div className="text-[10px] text-slate-500 leading-relaxed border-t border-slate-800 pt-3">
+            <div className="text-[10px] text-slate-400 leading-relaxed border-t border-slate-100 pt-3">
               ★ Score computed dynamically using 2026 micro-market transactions and RERA compliance data.
             </div>
           </div>
 
           {/* B. Specific Lander Sourcing Lead Funnel */}
-          <div className="bg-slate-950 border border-red-955/25 text-white p-6 rounded-2xl shadow-xl relative overflow-hidden">
-            <div className="absolute top-0 right-0 w-24 h-24 bg-red-950/20 rounded-full blur-xl pointer-events-none"></div>
+          <div className="bg-red-50/50 border border-red-100 text-slate-800 p-6 rounded-2xl shadow-xs relative overflow-hidden">
+            <div className="absolute top-0 right-0 w-24 h-24 bg-red-100/30 rounded-full blur-xl pointer-events-none"></div>
             
-            <h4 className="text-xs font-bold text-[#D4AF37] mb-2 uppercase tracking-wider flex items-center gap-1.5 font-mono">
-              <Download className="w-4 h-4 text-red-500" /> Download Free PDF Report
+            <h4 className="text-xs font-bold text-amber-600 mb-2 uppercase tracking-wider flex items-center gap-1.5 font-mono">
+              <Download className="w-4 h-4 text-red-650" /> Download Free PDF Report
             </h4>
-            <div className="text-white font-display font-semibold text-xs leading-snug mb-4">
+            <div className="text-slate-900 font-display font-semibold text-xs leading-snug mb-4">
               "Top 25 High-Growth Sourcing Locations in {currentLander.filterCity || 'India'}"
             </div>
 
-            <form onSubmit={handleLeadSubmit} className="space-y-3 text-slate-100 text-xs font-semibold">
+            <form onSubmit={handleLeadSubmit} className="space-y-3 text-slate-700 text-xs font-semibold">
               <div>
                 <input 
                   type="text" 
@@ -449,7 +449,7 @@ export function SeoLander({
                   required
                   value={leadName}
                   onChange={(e) => setLeadName(e.target.value)}
-                  className="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 outline-none focus:border-[#D4AF37] placeholder-slate-500 text-slate-100 transition-colors"
+                  className="w-full bg-white border border-slate-200 rounded-lg p-2.5 outline-none focus:border-red-500 placeholder-slate-400 text-slate-800 transition-colors shadow-xs"
                 />
               </div>
 
@@ -460,7 +460,7 @@ export function SeoLander({
                   required
                   value={leadMobile}
                   onChange={(e) => setLeadMobile(e.target.value)}
-                  className="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 outline-none focus:border-[#D4AF37] placeholder-slate-500 text-slate-100 transition-colors"
+                  className="w-full bg-white border border-slate-200 rounded-lg p-2.5 outline-none focus:border-red-500 placeholder-slate-400 text-slate-800 transition-colors shadow-xs"
                 />
               </div>
 
@@ -471,7 +471,7 @@ export function SeoLander({
                   required
                   value={leadEmail}
                   onChange={(e) => setLeadEmail(e.target.value)}
-                  className="w-full bg-slate-900 border border-slate-800 rounded-lg p-2.5 outline-none focus:border-[#D4AF37] placeholder-slate-500 text-slate-100 transition-colors"
+                  className="w-full bg-white border border-slate-200 rounded-lg p-2.5 outline-none focus:border-red-500 placeholder-slate-400 text-slate-800 transition-colors shadow-xs"
                 />
               </div>
 

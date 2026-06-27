@@ -94,8 +94,8 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
       onMouseMove={handleMouseMove}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={handleMouseLeave}
-      className={`bg-[#111726] border border-slate-800 rounded-3xl h-[420px] flex flex-col justify-between overflow-hidden cursor-pointer select-none relative ${
-        isHovered ? 'z-10' : 'z-0'
+      className={`bg-white border rounded-3xl h-[420px] flex flex-col justify-between overflow-hidden cursor-pointer select-none relative transition-all duration-300 ${
+        isHovered ? 'z-10 shadow-xl border-red-500/80' : 'z-0 border-slate-200/80 shadow-xs'
       }`}
       style={{
         transform: isHovered && !showPriceAlertForm
@@ -104,15 +104,14 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
         transition: isHovered 
           ? 'transform 0.05s ease-out, border-color 0.2s ease, box-shadow 0.2s ease' 
           : 'transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.4s ease',
-        borderColor: isHovered ? '#d92228' : '#334155', // crimson vs slate-700
         boxShadow: isHovered 
-          ? '0 0 25px 4px rgba(217, 34, 40, 0.45), 0 4px 10px rgba(0, 0, 0, 0.5)' 
-          : '0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -4px rgba(0, 0, 0, 0.3)',
+          ? '0 12px 30px rgba(217, 34, 40, 0.12), 0 4px 12px rgba(0, 0, 0, 0.05)' 
+          : '0 2px 8px rgba(0, 0, 0, 0.02)',
       }}
     >
       
       {/* 1. Header Media Component - Normalized Aspect Ratio (h-40) */}
-      <div className="relative h-40 bg-slate-950 overflow-hidden shrink-0">
+      <div className="relative h-40 bg-slate-100 overflow-hidden shrink-0">
         <img 
           src={property.image} 
           alt={property.title} 
@@ -121,12 +120,12 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
         />
         
         {/* Absolute Linear Image Shade to emphasize text badges */}
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/20 to-black/30 pointer-events-none" />
-
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-900/60 via-transparent to-black/10 pointer-events-none" />
+Logic can continue below
         {/* Top-Left Score badge with a micro glow-pulse on hover */}
-        <div className={`absolute top-3.5 left-3.5 bg-slate-900/90 text-white backdrop-blur-md px-2.5 py-1 rounded-full text-[10px] font-bold flex items-center gap-1 shadow-md transition-all duration-300 ${isHovered ? 'bg-[#0f172a] shadow-red-500/20 shadow-md transform -translate-y-0.5' : ''}`}>
+        <div className={`absolute top-3.5 left-3.5 bg-white/95 text-slate-800 backdrop-blur-md px-2.5 py-1 rounded-full text-[10px] font-bold flex items-center gap-1 shadow-md border border-slate-200/60 transition-all duration-300 ${isHovered ? 'shadow-red-500/10 transform -translate-y-0.5' : ''}`}>
           <Star className="w-3.5 h-3.5 fill-[#D4AF37] text-[#D4AF37] animate-pulse" />
-          <span>Ji Score: <strong className="font-display font-extrabold text-[#D4AF37]">{property.investorJiScore || '9.0'}</strong></span>
+          <span>Ji Score: <strong className="font-display font-extrabold text-slate-900">{property.investorJiScore || '9.0'}</strong></span>
         </div>
 
         {/* Top-Right Side-by-Side Utilities (Favorite Heart & Compare button & Bell Icon) */}
@@ -144,7 +143,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
               className={`p-1.5 rounded-full text-xs font-bold transition-all duration-200 border cursor-pointer flex items-center justify-center ${
                 isFavorited 
                   ? 'bg-red-650 text-white border-red-650 shadow-md' 
-                  : 'bg-slate-900/85 text-slate-300 border-slate-705 hover:bg-slate-800'
+                  : 'bg-white/90 text-slate-700 border-slate-200 hover:bg-slate-100'
               }`}
               title={isFavorited ? "Remove Favorite" : "Favorite Bookmark"}
             >
@@ -164,7 +163,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
               className={`p-1.5 rounded-full text-xs font-bold transition-all duration-200 border cursor-pointer flex items-center justify-center ${
                 showPriceAlertForm 
                   ? 'bg-amber-500 text-slate-950 border-amber-500 shadow-md' 
-                  : 'bg-slate-900/85 text-slate-300 border-slate-705 hover:bg-slate-850'
+                  : 'bg-white/90 text-slate-700 border-slate-200 hover:bg-slate-100'
               }`}
               title="Set Price Sourcing Alert Trigger"
             >
@@ -183,7 +182,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
               className={`px-2 py-1 rounded-full text-[9px] font-bold flex items-center gap-1 transition-all duration-200 border cursor-pointer ${
                 isComparing 
                   ? 'bg-red-650 text-white border-red-650 shadow-md' 
-                  : 'bg-slate-900/85 text-slate-300 border-slate-705 hover:bg-slate-800'
+                  : 'bg-white/90 text-slate-700 border-slate-200 hover:bg-slate-100'
               }`}
             >
               <Scale className="w-3 h-3" />
@@ -195,7 +194,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
 
         {/* Bottom-Right Verified RERA badge */}
         {property.isVerified && (
-          <div className="absolute bottom-3 right-3 bg-red-650 text-white border border-red-500/30 px-2.5 py-0.5 rounded-full text-[9px] font-bold flex items-center gap-1 shadow-lg backdrop-blur-xs leading-none">
+          <div className="absolute bottom-3 right-3 bg-red-650 text-white border border-red-500/30 px-2.5 py-0.5 rounded-full text-[9px] font-bold flex items-center gap-1 shadow-md backdrop-blur-xs leading-none">
             <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
             <span>Verified RERA</span>
           </div>
@@ -206,30 +205,30 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
       {showPriceAlertForm ? (
         <div 
           onClick={(e) => e.stopPropagation()} 
-          className="p-5 flex-grow flex flex-col justify-between bg-slate-950/95 border-b border-slate-850 animate-in slide-in-from-top duration-250 z-30"
+          className="p-5 flex-grow flex flex-col justify-between bg-white border-b border-slate-200 animate-in slide-in-from-top duration-250 z-30"
         >
           <div className="space-y-2">
-            <h4 className="font-extrabold text-amber-500 text-xs uppercase tracking-wide flex items-center gap-1.5">
+            <h4 className="font-extrabold text-amber-600 text-xs uppercase tracking-wide flex items-center gap-1.5">
               <Bell className="w-4 h-4" /> Set Price Sourcing Alarm
             </h4>
-            <p className="text-[10px] text-slate-400 font-sans leading-normal">
+            <p className="text-[10px] text-slate-500 font-sans leading-normal">
               Receive a live simulation warning email if price of <strong>{property.title}</strong> matches or drops below your target.
             </p>
 
             <form onSubmit={handleAlertSubmit} className="space-y-2 text-xs">
               <div className="grid grid-cols-2 gap-2">
                 <div className="space-y-0.5">
-                  <span className="text-[8px] text-slate-500 font-bold uppercase block">Current Min Price</span>
-                  <strong className="text-white font-mono text-xs">₹{property.minInvestment}L+</strong>
+                  <span className="text-[8px] text-slate-400 font-bold uppercase block">Current Min Price</span>
+                  <strong className="text-slate-850 font-mono text-xs">₹{property.minInvestment}L+</strong>
                 </div>
                 <div className="space-y-0.5">
-                  <span className="text-[8px] text-slate-500 font-bold uppercase block">Target Price (Lakhs)</span>
+                  <span className="text-[8px] text-slate-400 font-bold uppercase block">Target Price (Lakhs)</span>
                   <input 
                     type="number" 
                     required
                     max={property.minInvestment}
                     min="1"
-                    className="bg-slate-900 border border-slate-800 rounded font-bold font-mono p-1 text-white w-full text-[11px]"
+                    className="bg-slate-50 border border-slate-200 rounded font-bold font-mono p-1 text-slate-850 w-full text-[11px] focus:outline-red-500"
                     value={alertTargetPrice}
                     onChange={(e) => setAlertTargetPrice(Number(e.target.value))}
                   />
@@ -237,12 +236,12 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
               </div>
 
               <div className="space-y-1">
-                <span className="text-[8px] text-slate-500 font-bold uppercase block">Subscriber Email</span>
+                <span className="text-[8px] text-slate-400 font-bold uppercase block">Subscriber Email</span>
                 <input 
                   type="email" 
                   required
                   placeholder="name@domain.com"
-                  className="bg-slate-900 border border-slate-800 rounded p-1 text-slate-200 w-full text-[10px] font-semibold"
+                  className="bg-slate-50 border border-slate-200 rounded p-1 text-slate-700 w-full text-[10px] font-semibold focus:outline-red-500"
                   value={alertEmail}
                   onChange={(e) => setAlertEmail(e.target.value)}
                 />
@@ -251,14 +250,14 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
               <div className="flex gap-2 pt-1 font-bold">
                 <button
                   type="submit"
-                  className="flex-grow bg-amber-500 hover:bg-slate-900 text-slate-950 hover:text-white transition-all py-1.5 rounded text-[10px]"
+                  className="flex-grow bg-amber-500 hover:bg-amber-600 text-slate-950 transition-all py-1.5 rounded text-[10px]"
                 >
                   Confirm Sourcing Alert
                 </button>
                 <button
                   type="button"
                   onClick={(e) => { e.stopPropagation(); setShowPriceAlertForm(false); }}
-                  className="bg-slate-900 border border-slate-800 text-slate-400 hover:text-white py-1.5 px-2.5 rounded text-[10px]"
+                  className="bg-slate-100 text-slate-600 hover:text-slate-800 py-1.5 px-2.5 rounded text-[10px]"
                 >
                   Cancel
                 </button>
@@ -271,40 +270,40 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
           
           {/* Meta Line */}
           <div className="space-y-1">
-            <div className="flex items-center gap-1.5 text-slate-400 text-[9px] font-mono font-bold uppercase tracking-wider">
+            <div className="flex items-center gap-1.5 text-slate-500 text-[9px] font-mono font-bold uppercase tracking-wider">
               <MapPin className="w-3.5 h-3.5 text-red-500 shrink-0" />
-              <span className="truncate">{property.location}, {property.city}</span>
+              <span className="truncate text-slate-600">{property.location}, {property.city}</span>
             </div>
             
-            <h4 className="font-black text-slate-100 leading-snug font-display text-sm line-clamp-1 hover:text-red-400 transition-colors">
+            <h4 className="font-black text-slate-900 leading-snug font-display text-sm line-clamp-1 hover:text-red-650 transition-colors">
               {property.title}
             </h4>
-            <span className="text-[8px] bg-slate-900 text-slate-300 border border-slate-800 px-2 py-0.5 rounded font-bold uppercase font-sans tracking-wide inline-block shrink-0">
+            <span className="text-[8px] bg-slate-100 text-slate-700 border border-slate-200 px-2 py-0.5 rounded font-bold uppercase font-sans tracking-wide inline-block shrink-0">
               {categoryLabel}
             </span>
           </div>
 
           {/* Clamped Description, guaranteeing accurate row lines */}
-          <p className="text-[11px] text-slate-300 font-medium leading-relaxed line-clamp-2 h-9 overflow-hidden">
+          <p className="text-[11px] text-slate-600 font-medium leading-relaxed line-clamp-2 h-9 overflow-hidden">
             {property.description}
           </p>
 
           {/* Financial Metrics Grid - Strict standard alignment */}
-          <div className="grid grid-cols-3 gap-1 bg-slate-950/45 p-2.5 rounded-2xl text-center border border-slate-800/80 shrink-0">
+          <div className="grid grid-cols-3 gap-1 bg-slate-50 p-2.5 rounded-2xl text-center border border-slate-150 shrink-0">
             <div>
-              <span className="text-[8px] uppercase font-bold text-slate-400 block tracking-normal">Min Invest</span>
-              <strong className="text-white text-[11px] font-mono font-extrabold block mt-0.5">₹{property.minInvestment}L+</strong>
+              <span className="text-[8px] uppercase font-bold text-slate-500 block tracking-normal">Min Invest</span>
+              <strong className="text-slate-900 text-[11px] font-mono font-extrabold block mt-0.5">₹{property.minInvestment}L+</strong>
             </div>
             <div>
               {property.isPlot ? (
                 <>
-                  <span className="text-[8px] uppercase font-bold text-slate-400 block tracking-normal">YOY Growth</span>
-                  <strong className="text-emerald-450 text-[11px] font-mono font-extrabold block mt-0.5">+{property.appreciationRate}%</strong>
+                  <span className="text-[8px] uppercase font-bold text-slate-500 block tracking-normal">YOY Growth</span>
+                  <strong className="text-emerald-600 text-[11px] font-mono font-extrabold block mt-0.5">+{property.appreciationRate}%</strong>
                 </>
               ) : (
                 <>
-                  <span className="text-[8px] uppercase font-bold text-slate-400 block tracking-normal">Proj. ROI</span>
-                  <strong className="text-emerald-450 text-[11px] font-mono font-extrabold block mt-0.5">{property.projectedROI}%</strong>
+                  <span className="text-[8px] uppercase font-bold text-slate-500 block tracking-normal">Proj. ROI</span>
+                  <strong className="text-emerald-600 text-[11px] font-mono font-extrabold block mt-0.5">{property.projectedROI}%</strong>
                 </>
               )}
             </div>
@@ -312,12 +311,12 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
               {property.isPlot ? (
                 <>
                   <span className="text-[8px] uppercase font-bold text-slate-400 block tracking-normal font-sans">Comp. Year</span>
-                  <strong className="text-red-400 text-[11px] font-mono font-extrabold block mt-0.5">{property.completionYear}</strong>
+                  <strong className="text-red-600 text-[11px] font-mono font-extrabold block mt-0.5">{property.completionYear}</strong>
                 </>
               ) : (
                 <>
-                  <span className="text-[8px] uppercase font-bold text-slate-400 block tracking-normal font-medium">Lease Yield</span>
-                  <strong className="text-amber-500 text-[11px] font-mono font-extrabold block mt-0.5">{property.rentalYield ?? 6.0}%</strong>
+                  <span className="text-[8px] uppercase font-bold text-slate-500 block tracking-normal font-medium">Lease Yield</span>
+                  <strong className="text-amber-600 text-[11px] font-mono font-extrabold block mt-0.5">{property.rentalYield ?? 6.0}%</strong>
                 </>
               )}
             </div>
@@ -327,8 +326,8 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
       )}
 
       {/* 3. Footer Elements with absolute uniform vertical limits */}
-      <div className="px-5 py-3 border-t border-slate-800/80 bg-slate-900/40 flex items-center justify-between text-xs font-bold shrink-0">
-        <span className="text-red-400 hover:text-red-300 transition-colors flex items-center gap-1 truncate max-w-[45%]">
+      <div className="px-5 py-3 border-t border-slate-100 bg-slate-50/50 flex items-center justify-between text-xs font-bold shrink-0">
+        <span className="text-red-650 hover:text-red-700 transition-colors flex items-center gap-1 truncate max-w-[45%]">
           {btnText} &rarr;
         </span>
         
@@ -340,13 +339,13 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({
               e.preventDefault();
               onContactBuilder(property, e);
             }}
-            className="bg-red-650 hover:bg-[#b0171d] text-white px-2.5 py-1.5 rounded-xl text-[10px] transition-all flex items-center gap-1 font-sans font-black shadow-md cursor-pointer shrink-0"
+            className="bg-red-650 hover:bg-red-700 text-white px-2.5 py-1.5 rounded-xl text-[10px] transition-all flex items-center gap-1 font-sans font-black shadow-xs cursor-pointer shrink-0"
           >
             <MessageSquare className="w-3 h-3 text-white" />
             <span>Contact Builder</span>
           </button>
         ) : (
-          <span className="text-[9px] text-slate-500 font-mono font-medium tracking-wide uppercase">
+          <span className="text-[9px] text-slate-400 font-mono font-medium tracking-wide uppercase">
             #{property.reraId.split('-')[1] || 'RERA-2K26'}
           </span>
         )}
