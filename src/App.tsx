@@ -34,7 +34,8 @@ import {
   Sliders,
   Filter,
   Check,
-  AlertTriangle
+  AlertTriangle,
+  Menu
 } from 'lucide-react';
 
 import { Property, Lead } from './types';
@@ -54,14 +55,92 @@ export default function App() {
   // Website Menu / Routing State
   const [activeMenu, setActiveMenu] = useState<'home' | 'investments' | 'properties' | 'commercial' | 'plots' | 'blogs' | 'calculators' | 'about' | 'contact' | 'marketplace' | 'leads' | 'portfolio' | 'admin'>('home');
   
+  // Dynamic Custom Cities state synchronized with localStorage
+  const [customCities, setCustomCities] = useState<string[]>(() => {
+    const saved = localStorage.getItem('custom_cities');
+    if (saved) {
+      try { return JSON.parse(saved); } catch (e) {}
+    }
+    return [];
+  });
+
+  useEffect(() => {
+    const handleUpdate = () => {
+      const saved = localStorage.getItem('custom_cities');
+      if (saved) {
+        try {
+          setCustomCities(JSON.parse(saved));
+        } catch (e) {}
+      }
+    };
+    window.addEventListener('custom_cities_updated', handleUpdate);
+    return () => window.removeEventListener('custom_cities_updated', handleUpdate);
+  }, []);
+
   // SEO Lander active path. If set, we render the SEO Landing Page component instead of standard activeMenu!
   const [activeSeoPath, setActiveSeoPath] = useState<string | null>(null);
 
   const [selectedProperty, setSelectedProperty] = useState<Property | null>(null);
   
+  // Helper functions to clean and sanitize property fields, avoiding third-party listing portal mentions
+  const sanitizeProperty = (p: Property): Property => {
+    if (!p) return p;
+    const clean = (txt: string): string => {
+      if (!txt) return txt;
+      return txt
+        .replace(/sourced from latest 99acres open portal directories/gi, 'sourced from verified national regulatory indexes')
+        .replace(/on active 99acres portal/gi, 'on verified national RERA registry')
+        .replace(/99acres/gi, 'National Pre-Vetted Registry')
+        .replace(/MagicBricks/gi, 'Regulatory Registry')
+        .replace(/Housing\.com/gi, 'Official Registry');
+    };
+    return {
+      ...p,
+      title: clean(p.title),
+      tagline: clean(p.tagline),
+      description: clean(p.description),
+    };
+  };
+
+  const sanitizePropertiesList = (list: Property[]): Property[] => {
+    if (!Array.isArray(list)) return [];
+    return list.map(sanitizeProperty);
+  };
+
   // Real-time reactive properties and leads state allowing adding/deleting/updating
-  const [propertiesList, setPropertiesList] = useState<Property[]>(PROPERTIES);
-  const [leadsList, setLeadsList] = useState<Lead[]>(AGENT_LEADS);
+  const [propertiesList, setPropertiesList] = useState<Property[]>(() => {
+    const saved = localStorage.getItem('investor_properties');
+    if (saved) {
+      try {
+        const parsed = JSON.parse(saved);
+        return sanitizePropertiesList(parsed);
+      } catch (e) {
+        console.error("Error reading properties from localStorage", e);
+      }
+    }
+    return sanitizePropertiesList(PROPERTIES);
+  });
+
+  const [leadsList, setLeadsList] = useState<Lead[]>(() => {
+    const saved = localStorage.getItem('investor_leads');
+    if (saved) {
+      try {
+        return JSON.parse(saved);
+      } catch (e) {
+        console.error("Error reading leads from localStorage", e);
+      }
+    }
+    // Remove all the demo leads by default as requested!
+    return [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem('investor_properties', JSON.stringify(propertiesList));
+  }, [propertiesList]);
+
+  useEffect(() => {
+    localStorage.setItem('investor_leads', JSON.stringify(leadsList));
+  }, [leadsList]);
 
   // Favorited properties and price threshold alert states
   const [favoritedIds, setFavoritedIds] = useState<string[]>(['prop-1', 'prop-3', 'prop-7']);
@@ -100,6 +179,9 @@ export default function App() {
   const [contactPhone, setContactPhone] = useState('');
   const [contactMessage, setContactMessage] = useState('');
   const [contactEmail, setContactEmail] = useState('');
+  const [contactCity, setContactCity] = useState('Delhi NCR');
+  const [contactBudget, setContactBudget] = useState('₹1.5 Cr - ₹3 Cr');
+  const [contactPropertyType, setContactPropertyType] = useState('Premium Residential');
   const [showInquireDialog, setShowInquireDialog] = useState(false);
 
   // SEO dropdown menu state for live preview
@@ -109,6 +191,7 @@ export default function App() {
   const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
   const [isResourcesOpen, setIsResourcesOpen] = useState(false);
   const [isPartnerOpen, setIsPartnerOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   // Guided Tour / Onboarding Wizard states
   const [wizardStep, setWizardStep] = useState<number>(1);
@@ -151,12 +234,63 @@ export default function App() {
     }, 4500);
   };
 
+  const handleAddLiveLead = (name: string, phone: string, email: string, queryMessage: string, details?: Partial<Lead>) => {
+    const cleanedPhone = phone.trim();
+    let prefix = "+91 ";
+    let suffix = "";
+    if (cleanedPhone.includes(' ') || cleanedPhone.includes('-')) {
+      prefix = cleanedPhone.split(/[\s-]+/)[0] || "+91";
+      suffix = cleanedPhone.replace(prefix, '').trim();
+    } else if (cleanedPhone.length > 5) {
+      prefix = cleanedPhone.substring(0, cleanedPhone.length - 4);
+      suffix = "•••• •" + cleanedPhone.substring(cleanedPhone.length - 3);
+    } else {
+      prefix = cleanedPhone;
+    }
+
+    const newLead: Lead = {
+      id: 'lead-' + Date.now() + '-' + Math.floor(Math.random() * 1000),
+      buyerName: name,
+      phonePrefix: prefix,
+      phoneSuffix: suffix || '•••• •••',
+      fullPhone: cleanedPhone,
+      email: email,
+      query: queryMessage,
+      city: details?.city || 'Delhi NCR',
+      targetLocation: details?.targetLocation || queryMessage || 'Direct Portal Sourcing Contact',
+      budget: details?.budget || '₹1.5 Cr - ₹3 Cr',
+      propertyType: details?.propertyType || 'Premium Residential',
+      timeframe: details?.timeframe || 'Immediate Buying Intent (within 15 days)',
+      score: Math.floor(Math.random() * 15) + 85, // Highly qualified lead score 85-99
+      isVerified: true,
+      price: details?.price || 999,
+      isPurchased: false,
+      dateAdded: 'Just Now',
+    };
+
+    setLeadsList(prev => [newLead, ...prev]);
+  };
+
   const handleReportSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!reportName || !reportMobile || !reportEmail) {
       triggerNotification('Please provide a valid name, email, and mobile number.', 'error');
       return;
     }
+    
+    // Dynamically insert active live lead to pool!
+    handleAddLiveLead(
+      reportName, 
+      reportMobile, 
+      reportEmail, 
+      `Requested PDF: "Top 25 Sourcing Locations Guide"`,
+      {
+        propertyType: 'Research & High-Growth Lands',
+        budget: '₹2 Cr - ₹5 Cr',
+        city: 'All India Sourcing'
+      }
+    );
+
     triggerNotification(`Success! The PDF "Top 25 High-Growth Sourcing Locations in India Guide" has been dispatched to ${reportEmail}! Aligned with dynamic 2026-2030 research metrics.`, 'success');
     setReportName('');
     setReportMobile('');
@@ -169,12 +303,30 @@ export default function App() {
       triggerNotification('Please provide your name and phone number to schedule your slot.', 'error');
       return;
     }
+
+    // Dynamically insert active live lead to pool!
+    handleAddLiveLead(
+      contactName, 
+      contactPhone, 
+      contactEmail || 'N/A', 
+      contactMessage || 'Registered Direct Sourcing Allocation Inquiry',
+      {
+        propertyType: selectedProperty ? selectedProperty.title : contactPropertyType,
+        budget: selectedProperty ? `₹${selectedProperty.minInvestment} Lakhs+` : contactBudget,
+        city: selectedProperty ? selectedProperty.city : contactCity
+      }
+    );
+
     triggerNotification(`Namaste! Sourcing reservation registered for ${contactName}. An executive HNI wealth advisor will ring you on ${contactPhone} within 15 minutes.`, 'success');
     setShowInquireDialog(false);
     setContactName('');
     setContactPhone('');
     setContactEmail('');
     setContactMessage('');
+    // Reset defaults
+    setContactCity('Delhi NCR');
+    setContactBudget('₹1.5 Cr - ₹3 Cr');
+    setContactPropertyType('Premium Residential');
   };
 
   // Switch tab utility
@@ -182,6 +334,7 @@ export default function App() {
     setActiveSeoPath(null);
     setSelectedProperty(null);
     setActiveMenu(tab);
+    setMobileMenuOpen(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -189,6 +342,7 @@ export default function App() {
   const handleNavigateToSeoPage = (path: string) => {
     setActiveSeoPath(path);
     setSelectedProperty(null);
+    setMobileMenuOpen(false);
     window.scrollTo({ top: 0, behavior: 'smooth' });
     setSeoMenuOpen(false);
     triggerNotification(`SEO Indexed Page simulation loaded: ${path}`, 'success');
@@ -239,11 +393,16 @@ export default function App() {
   };
 
   const handleAddProperty = (newProp: Property) => {
-    setPropertiesList([newProp, ...propertiesList]);
+    setPropertiesList([sanitizeProperty(newProp), ...propertiesList]);
   };
 
   const handleUpdateProperty = (id: string, updatedFields: Partial<Property>) => {
-    setPropertiesList(propertiesList.map(p => p.id === id ? { ...p, ...updatedFields } : p));
+    setPropertiesList(propertiesList.map(p => {
+      if (p.id === id) {
+        return sanitizeProperty({ ...p, ...updatedFields });
+      }
+      return p;
+    }));
   };
 
   const handleDeleteProperty = (id: string) => {
@@ -354,18 +513,18 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
           
           {/* Logo & Brand Identity */}
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between w-full lg:w-auto">
             <div 
               onClick={() => handleNavigateToTab('home')}
               className="cursor-pointer flex items-center gap-2 group select-none"
             >
               <div className="w-10 h-10 bg-red-50 border border-red-200/50 flex items-center justify-center rounded-xl shadow-xs transition-all group-hover:bg-red-100/50">
-                <Building className="text-red-650 w-5 h-5 stroke-2" />
+                <Building className="text-red-655 w-5 h-5 stroke-2" />
               </div>
               <div>
                 <span className="text-xl font-black text-slate-900 tracking-tight flex items-center gap-1.5 font-display">
                   InvestorJi
-                  <span className="text-[9px] bg-red-650 text-white px-2 py-0.5 rounded-md font-bold shadow-xs">RERA ACTIVE</span>
+                  <span className="text-[9px] bg-red-655 text-white px-2 py-0.5 rounded-md font-bold shadow-xs">RERA ACTIVE</span>
                 </span>
                 <span className="text-[9px] text-red-600 block uppercase font-bold tracking-widest mt-0.5 font-mono">
                   No-Brokerage Real Estate Portal ⚡
@@ -373,20 +532,31 @@ export default function App() {
               </div>
             </div>
 
-            {/* Inquire direct button on mobile */}
-            <button 
-              onClick={() => {
-                setContactMessage("Drafting sourcing request for the Executive portfolio circle.");
-                setShowInquireDialog(true);
-              }}
-              className="lg:hidden text-[10px] bg-red-650 hover:bg-red-700 text-white px-3.5 py-2 rounded-lg font-bold transition-all shadow-md"
-            >
-              Consult Desk
-            </button>
+            {/* Mobile Interaction Cluster */}
+            <div className="flex items-center gap-2 lg:hidden">
+              <button 
+                onClick={() => {
+                  setContactMessage("Drafting sourcing request for the Executive portfolio circle.");
+                  setShowInquireDialog(true);
+                }}
+                className="text-[10px] bg-red-655 hover:bg-red-700 text-white px-3 py-2 rounded-lg font-bold transition-all shadow-md"
+              >
+                Consult Desk
+              </button>
+              
+              {/* Mobile Hamburger menu */}
+              <button
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="p-2 text-slate-600 hover:text-red-655 hover:bg-slate-100 rounded-xl transition-all border border-slate-200 cursor-pointer"
+                aria-label="Toggle menu"
+              >
+                {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              </button>
+            </div>
           </div>
 
-          {/* WEBSITE MENU (Consolidated & Organized into Dropdowns to prevent visual overload) */}
-          <div className="flex flex-wrap items-center gap-1.5 text-xs font-bold font-sans">
+          {/* DESKTOP-ONLY WEBSITE MENU (Hidden on mobile to prevent clutter and enable one-view understanding) */}
+          <div className="hidden lg:flex flex-wrap items-center gap-1.5 text-xs font-bold font-sans">
             <button 
               onClick={() => {
                 handleNavigateToTab('home');
@@ -586,8 +756,8 @@ export default function App() {
             </div>
           </div>
 
-          {/* DYNAMIC SEO LANDING PAGES PREVIEW DROPDOWN */}
-          <div className="relative">
+          {/* DYNAMIC SEO LANDING PAGES PREVIEW DROPDOWN (DESKTOP ONLY) */}
+          <div className="hidden lg:block relative">
             <button
               onClick={() => setSeoMenuOpen(!seoMenuOpen)}
               className="w-full lg:w-auto bg-red-50 hover:bg-red-100/50 text-red-650 transition-all text-xs font-bold px-4 py-2.5 rounded-xl flex items-center justify-between gap-1.5 shadow-xs cursor-pointer border border-red-200/50 whitespace-nowrap"
@@ -624,6 +794,145 @@ export default function App() {
             )}
           </div>
 
+          {/* MOBILE SLIDE-DOWN NAVIGATION DRAWER PANEL (For pristine responsive clarity) */}
+          {mobileMenuOpen && (
+            <div className="lg:hidden w-full mt-2 border-t border-slate-100 pt-4 pb-3 space-y-4 animate-fade-in text-slate-800 font-sans">
+              <div className="grid grid-cols-2 gap-2 text-center">
+                <button 
+                  onClick={() => handleNavigateToTab('home')}
+                  className={`py-3 px-4 rounded-xl font-bold text-xs transition-all ${activeMenu === 'home' && !activeSeoPath ? 'bg-red-50 text-red-655 border border-red-100 shadow-xs' : 'bg-slate-50 text-slate-700 hover:bg-slate-100'}`}
+                >
+                  🏠 Home
+                </button>
+                <button 
+                  onClick={() => handleNavigateToTab('investments')}
+                  className={`py-3 px-4 rounded-xl font-bold text-xs transition-all ${activeMenu === 'investments' && !activeSeoPath ? 'bg-red-50 text-red-655 border border-red-100 shadow-xs' : 'bg-slate-50 text-slate-700 hover:bg-slate-100'}`}
+                >
+                  📈 Investments
+                </button>
+                <button 
+                  onClick={() => handleNavigateToTab('calculators')}
+                  className={`py-3 px-4 rounded-xl font-bold text-xs transition-all ${activeMenu === 'calculators' && !activeSeoPath ? 'bg-red-50 text-red-655 border border-red-100 shadow-xs' : 'bg-slate-50 text-slate-700 hover:bg-slate-100'}`}
+                >
+                  🧮 Calculators
+                </button>
+                <button 
+                  onClick={() => handleNavigateToTab('portfolio')}
+                  className={`py-3 px-4 rounded-xl font-bold text-xs transition-all ${activeMenu === 'portfolio' && !activeSeoPath ? 'bg-red-50 text-red-655 border border-red-100 shadow-xs' : 'bg-slate-50 text-slate-700 hover:bg-slate-100'}`}
+                >
+                  🎒 My Portfolio
+                </button>
+              </div>
+
+              {/* Sourcing Categories Segment */}
+              <div className="border border-slate-150 rounded-2xl p-3 bg-slate-50/50">
+                <div className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-2 px-1">
+                  🏢 Sourcing Categories
+                </div>
+                <div className="grid grid-cols-1 gap-1">
+                  <button 
+                    onClick={() => handleNavigateToTab('properties')}
+                    className={`text-left py-2 px-3 rounded-lg text-xs font-semibold ${activeMenu === 'properties' ? 'bg-white text-red-650 font-bold shadow-xs' : 'text-slate-700 hover:bg-slate-100'}`}
+                  >
+                    🏠 Property Listings
+                  </button>
+                  <button 
+                    onClick={() => handleNavigateToTab('commercial')}
+                    className={`text-left py-2 px-3 rounded-lg text-xs font-semibold ${activeMenu === 'commercial' ? 'bg-white text-red-650 font-bold shadow-xs' : 'text-slate-700 hover:bg-slate-100'}`}
+                  >
+                    🏢 Commercial Suites
+                  </button>
+                  <button 
+                    onClick={() => handleNavigateToTab('plots')}
+                    className={`text-left py-2 px-3 rounded-lg text-xs font-semibold ${activeMenu === 'plots' ? 'bg-white text-red-650 font-bold shadow-xs' : 'text-slate-700 hover:bg-slate-100'}`}
+                  >
+                    🌳 Plots & Townships
+                  </button>
+                  <button 
+                    onClick={() => handleNavigateToTab('marketplace')}
+                    className={`text-left py-2 px-3 rounded-lg text-xs font-bold ${activeMenu === 'marketplace' ? 'bg-white text-red-655 shadow-xs' : 'text-red-600 hover:bg-red-50'}`}
+                  >
+                    🧱 Wholesale Store
+                  </button>
+                </div>
+              </div>
+
+              {/* Resources & Guides Segment */}
+              <div className="border border-slate-150 rounded-2xl p-3 bg-slate-50/50">
+                <div className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-2 px-1">
+                  📚 Resources & Guides
+                </div>
+                <div className="grid grid-cols-3 gap-1.5 text-center">
+                  <button 
+                    onClick={() => handleNavigateToTab('blogs')}
+                    className="py-2.5 px-2 bg-white border border-slate-150 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50"
+                  >
+                    📝 Blogs
+                  </button>
+                  <button 
+                    onClick={() => handleNavigateToTab('about')}
+                    className="py-2.5 px-2 bg-white border border-slate-150 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50"
+                  >
+                    ✨ Manifesto
+                  </button>
+                  <button 
+                    onClick={() => handleNavigateToTab('contact')}
+                    className="py-2.5 px-2 bg-white border border-slate-150 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50"
+                  >
+                    📞 Helpdesk
+                  </button>
+                </div>
+              </div>
+
+              {/* Partner Portals Segment */}
+              <div className="border border-slate-150 rounded-2xl p-3 bg-slate-50/50">
+                <div className="text-[10px] font-extrabold text-slate-400 uppercase tracking-widest mb-2 px-1">
+                  🔑 Partner Portals
+                </div>
+                <div className="grid grid-cols-2 gap-2 text-center">
+                  <button 
+                    onClick={() => handleNavigateToTab('leads')}
+                    className="py-2.5 px-2 bg-white border border-slate-150 rounded-xl text-xs font-bold text-slate-700 hover:bg-slate-50"
+                  >
+                    🎯 Broker CRM
+                  </button>
+                  <button 
+                    onClick={() => handleNavigateToTab('admin')}
+                    className="py-2.5 px-2 bg-amber-50 border border-amber-150 rounded-xl text-xs font-bold text-amber-700 hover:bg-amber-100"
+                  >
+                    🔑 Owner Admin
+                  </button>
+                </div>
+              </div>
+
+              {/* Property Sourcing Hubs (11) Segment */}
+              <div className="border border-slate-150 rounded-2xl p-3 bg-red-50/10">
+                <div className="text-[10px] font-extrabold text-red-655 uppercase tracking-widest mb-2 px-1 flex items-center gap-1">
+                  <Globe className="w-3.5 h-3.5" /> Property Sourcing Hubs (11)
+                </div>
+                <div className="grid grid-cols-1 gap-2 text-left">
+                  <div className="text-[9px] text-slate-400 uppercase font-black tracking-widest px-1">Categories</div>
+                  <div className="grid grid-cols-1 gap-1">
+                    <button onClick={() => handleNavigateToSeoPage('/commercial-property-india')} className="text-left py-2 px-3 rounded-lg text-xs font-semibold text-slate-700 bg-white border border-slate-100 hover:bg-slate-50">🏢 Commercial</button>
+                    <button onClick={() => handleNavigateToSeoPage('/residential-property-india')} className="text-left py-2 px-3 rounded-lg text-xs font-semibold text-slate-700 bg-white border border-slate-100 hover:bg-slate-50">🏠 Residential</button>
+                    <button onClick={() => handleNavigateToSeoPage('/plots-for-sale-india')} className="text-left py-2 px-3 rounded-lg text-xs font-semibold text-slate-700 bg-white border border-slate-100 hover:bg-slate-50">🌳 Plots & Land</button>
+                    <button onClick={() => handleNavigateToSeoPage('/investment-property-india')} className="text-left py-2 px-3 rounded-lg text-xs font-semibold text-slate-700 bg-white border border-slate-100 hover:bg-slate-50">💰 Investment</button>
+                    <button onClick={() => handleNavigateToSeoPage('/rental-income-properties')} className="text-left py-2 px-3 rounded-lg text-xs font-semibold text-slate-700 bg-white border border-slate-100 hover:bg-slate-50">💸 Rental Income</button>
+                  </div>
+                  
+                  <div className="text-[9px] text-slate-400 uppercase font-black tracking-widest mt-1 px-1">City Guides</div>
+                  <div className="grid grid-cols-2 gap-1.5">
+                    <button onClick={() => handleNavigateToSeoPage('/property-in-vrindavan')} className="text-left py-1.5 px-2 rounded-lg text-[11px] font-medium text-slate-600 bg-white border border-slate-100 hover:bg-slate-50">• Vrindavan</button>
+                    <button onClick={() => handleNavigateToSeoPage('/property-in-gurgaon')} className="text-left py-1.5 px-2 rounded-lg text-[11px] font-medium text-slate-600 bg-white border border-slate-100 hover:bg-slate-50">• Gurgaon</button>
+                    <button onClick={() => handleNavigateToSeoPage('/property-in-noida')} className="text-left py-1.5 px-2 rounded-lg text-[11px] font-medium text-slate-600 bg-white border border-slate-100 hover:bg-slate-50">• Noida</button>
+                    <button onClick={() => handleNavigateToSeoPage('/property-in-delhi')} className="text-left py-1.5 px-2 rounded-lg text-[11px] font-medium text-slate-600 bg-white border border-slate-100 hover:bg-slate-50">• Delhi</button>
+                    <button onClick={() => handleNavigateToSeoPage('/property-in-faridabad')} className="text-left py-1.5 px-2 rounded-lg text-[11px] font-medium text-slate-600 bg-white border border-slate-100 hover:bg-slate-50">• Faridabad</button>
+                    <button onClick={() => handleNavigateToSeoPage('/property-in-mathura')} className="text-left py-1.5 px-2 rounded-lg text-[11px] font-medium text-slate-600 bg-white border border-slate-100 hover:bg-slate-50">• Mathura</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
         </div>
       </nav>
 
@@ -644,6 +953,9 @@ export default function App() {
             onOpenConsultation={(msg) => {
               setContactMessage(msg);
               setShowInquireDialog(true);
+            }}
+            onAddLead={(name, phone, email, source, details) => {
+              handleAddLiveLead(name, phone, email, source, details);
             }}
             compareIds={compareIds}
             onCompareToggle={handleCompareToggle}
@@ -945,11 +1257,11 @@ export default function App() {
                               if (wizardGoal === 'invest') {
                                 handleNavigateToTab('investments');
                                 if (wizardBudget === 'under_50') {
-                                  setBracketFilter('Under 50 Lakhs');
+                                  setBracketFilter('under_50');
                                 } else if (wizardBudget === '50_100') {
-                                  setBracketFilter('50 Lakhs - 1 Crore');
+                                  setBracketFilter('50_100');
                                 } else if (wizardBudget === 'above_100') {
-                                  setBracketFilter('Above 1 Crore');
+                                  setBracketFilter('above_100');
                                 } else {
                                   setBracketFilter('All');
                                 }
@@ -1096,7 +1408,7 @@ export default function App() {
                     </p>
                   </div>
 
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  <div className="grid grid-cols-2 lg:grid-cols-3 gap-3 md:gap-6">
                     {/* Points list */}
                     {[
                       { t: "Verified Investment Opportunities", d: "100% indexed listings undergo strict Title audits and active Maha RERA / HRERA verification loops before listing." },
@@ -1106,14 +1418,16 @@ export default function App() {
                       { t: "Builder Due Diligence", d: "We examine builder balance sheets to measure construction velocity and structural reserves of the developer." },
                       { t: "Free Investment Guidance", d: "Direct zero-brokerage schedules, detailed PDF prospectus downloads, and real-time support from accredited wealth desks." }
                     ].map((pt, i) => (
-                      <div key={i} className="bg-slate-50/60 border border-slate-200 p-6 rounded-2xl space-y-2.5 hover:border-red-500/50 hover:bg-white transition-all duration-350">
-                        <div className="w-8 h-8 rounded-lg bg-red-50 text-red-600 border border-red-200/50 font-extrabold flex items-center justify-center text-xs">
-                          {i + 1}
+                      <div key={i} className="bg-slate-50/60 border border-slate-200 p-3.5 md:p-6 rounded-2xl space-y-2 hover:border-red-500/50 hover:bg-white transition-all duration-350 flex flex-col justify-between">
+                        <div>
+                          <div className="w-6 h-6 md:w-8 md:h-8 rounded-lg bg-red-50 text-red-600 border border-red-200/50 font-extrabold flex items-center justify-center text-[10px] md:text-xs mb-2">
+                            {i + 1}
+                          </div>
+                          <h4 className="font-bold text-slate-900 font-display text-xs md:text-sm tracking-tight leading-snug">
+                            {pt.t}
+                          </h4>
                         </div>
-                        <h4 className="font-bold text-slate-900 font-display text-sm">
-                          {pt.t}
-                        </h4>
-                        <p className="text-slate-600 text-xs leading-relaxed font-medium">
+                        <p className="text-slate-600 text-[10px] md:text-xs leading-normal md:leading-relaxed font-medium mt-1">
                           {pt.d}
                         </p>
                       </div>
@@ -1430,21 +1744,70 @@ export default function App() {
                         className="w-full text-xs font-bold bg-white text-slate-800 border border-slate-200 p-3 rounded-xl outline-none focus:border-red-600 transition-colors cursor-pointer shadow-xs"
                       >
                         <option value="All">All Cities (Pan India Portfolio)</option>
-                        <option value="Dholera SIR">Dholera SIR (Smart Investment Region)</option>
-                        <option value="Gurgaon">Gurgaon (High-yield Hub)</option>
-                        <option value="Vrindavan">Vrindavan (Heritage freehold)</option>
-                        <option value="Noida">Noida (Industrial & IT)</option>
-                        <option value="Mumbai">Mumbai (Financial Capital)</option>
-                        <option value="Bengaluru">Bengaluru (Silicon Valley Tech-Hub)</option>
-                        <option value="Pune">Pune (Automobile & Tech Sector)</option>
-                        <option value="Hyderabad">Hyderabad (Cyberabad IT Hub)</option>
-                        <option value="Chennai">Chennai (South Auto & SaaS Hub)</option>
-                        <option value="Kolkata">Kolkata (East Corporate Hub)</option>
-                        <option value="Ahmedabad">Ahmedabad (GIFT City FinTech)</option>
-                        <option value="Goa">Goa (Leisure Luxury Yield)</option>
-                        <option value="Delhi">Delhi NCR (Capital Region)</option>
-                        <option value="Faridabad">Faridabad (Industrial sector)</option>
-                        <option value="Mathura">Mathura (Temple Freehold)</option>
+                        {(() => {
+                          const defaultCitiesList = [
+                            { value: "Dholera SIR", label: "Dholera SIR (Smart Investment Region)" },
+                            { value: "Gurgaon", label: "Gurgaon (High-yield Hub)" },
+                            { value: "Vrindavan", label: "Vrindavan (Heritage freehold)" },
+                            { value: "Noida", label: "Noida (Industrial & IT)" },
+                            { value: "Mumbai", label: "Mumbai (Financial Capital)" },
+                            { value: "Bengaluru", label: "Bengaluru (Silicon Valley Tech-Hub)" },
+                            { value: "Pune", label: "Pune (Automobile & Tech Sector)" },
+                            { value: "Hyderabad", label: "Hyderabad (Cyberabad IT Hub)" },
+                            { value: "Chennai", label: "Chennai (South Auto & SaaS Hub)" },
+                            { value: "Kolkata", label: "Kolkata (East Corporate Hub)" },
+                            { value: "Ahmedabad", label: "Ahmedabad (GIFT City FinTech)" },
+                            { value: "Goa", label: "Goa (Leisure Luxury Yield)" },
+                            { value: "Delhi", label: "Delhi NCR (Capital Region)" },
+                            { value: "Faridabad", label: "Faridabad (Industrial sector)" },
+                            { value: "Mathura", label: "Mathura (Temple Freehold)" },
+                            { value: "Lucknow", label: "Lucknow (Heritage & Tech Capital)" },
+                            { value: "Jaipur", label: "Jaipur (Pink City Growth Zone)" },
+                            { value: "Chandigarh", label: "Chandigarh (Modern Organized Zone)" },
+                            { value: "Indore", label: "Indore (Swachh Growth Corridor)" },
+                            { value: "Bhopal", label: "Bhopal (Capital Investment Belt)" },
+                            { value: "Kochi", label: "Kochi (Port & Logistics Corridor)" },
+                            { value: "Dehradun", label: "Dehradun (Himalayan Valley Hub)" },
+                            { value: "Patna", label: "Patna (Heritage Growth Belt)" },
+                            { value: "Rishikesh", label: "Rishikesh (Spiritual Freehold)" },
+                            { value: "Haridwar", label: "Haridwar (Ganga Estate Corridor)" },
+                            { value: "Kanpur", label: "Kanpur (Industrial Leather Zone)" },
+                            { value: "Ghaziabad", label: "Ghaziabad (NCR Commercial Sector)" },
+                            { value: "Nagpur", label: "Nagpur (Orange City Cargo Hub)" },
+                            { value: "Visakhapatnam", label: "Visakhapatnam (Coastline SEZ Zone)" },
+                            { value: "Coimbatore", label: "Coimbatore (Textile IT Corridor)" },
+                            { value: "Surat", label: "Surat (Diamond City Industrial)" },
+                            { value: "Thane", label: "Thane (Mumbai Lake District)" },
+                            { value: "Navi Mumbai", label: "Navi Mumbai (Aerocity & Ports)" }
+                          ];
+
+                          const mergedCities = [
+                            ...defaultCitiesList,
+                            ...customCities.filter(c => !defaultCitiesList.some(d => d.value.toLowerCase() === c.toLowerCase())).map(c => ({
+                              value: c,
+                              label: `${c} (Custom Sourced Corridor)`
+                            })),
+                            ...propertiesList.filter(p => !defaultCitiesList.some(d => d.value.toLowerCase() === p.city.toLowerCase()) && !customCities.some(c => c.toLowerCase() === p.city.toLowerCase())).map(p => ({
+                              value: p.city,
+                              label: `${p.city} (Sourced Active Zone)`
+                            }))
+                          ];
+
+                          // De-duplicate final set
+                          const finalCities: Array<{ value: string; label: string }> = [];
+                          const seen = new Set();
+                          mergedCities.forEach(c => {
+                            const key = c.value.toLowerCase();
+                            if (!seen.has(key)) {
+                              seen.add(key);
+                              finalCities.push(c);
+                            }
+                          });
+
+                          return finalCities.map(c => (
+                            <option key={c.value} value={c.value}>{c.label}</option>
+                          ));
+                        })()}
                       </select>
                     </div>
 
@@ -1984,6 +2347,54 @@ export default function App() {
                         />
                       </div>
 
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                        <div>
+                          <label className="block text-slate-600 mb-1.5">Target Sourcing City</label>
+                          <select
+                            value={contactCity}
+                            onChange={(e) => setContactCity(e.target.value)}
+                            className="w-full bg-white text-stone-900 border border-slate-250 p-2.5 rounded-xl outline-none focus:border-[#d92228] font-bold cursor-pointer"
+                          >
+                            <option value="Delhi NCR">Delhi NCR</option>
+                            <option value="Gurgaon">Gurgaon</option>
+                            <option value="Noida">Noida</option>
+                            <option value="Mumbai">Mumbai</option>
+                            <option value="Bengaluru">Bengaluru</option>
+                            <option value="Pune">Pune</option>
+                            <option value="Vrindavan">Vrindavan</option>
+                            <option value="Faridabad">Faridabad</option>
+                          </select>
+                        </div>
+                        <div>
+                          <label className="block text-slate-600 mb-1.5">Budget Allocation Range</label>
+                          <select
+                            value={contactBudget}
+                            onChange={(e) => setContactBudget(e.target.value)}
+                            className="w-full bg-white text-stone-900 border border-slate-250 p-2.5 rounded-xl outline-none focus:border-[#d92228] font-bold cursor-pointer"
+                          >
+                            <option value="₹50 Lakhs - ₹1.5 Cr">₹50 Lakhs - ₹1.5 Cr</option>
+                            <option value="₹1.5 Cr - ₹3 Cr">₹1.5 Cr - ₹3 Cr</option>
+                            <option value="₹3 Cr - ₹5 Cr">₹3 Cr - ₹5 Cr</option>
+                            <option value="₹5 Cr - ₹10 Cr">₹5 Cr - ₹10 Cr</option>
+                            <option value="₹10 Cr+">₹10 Cr+</option>
+                          </select>
+                        </div>
+                        <div>
+                          <label className="block text-slate-600 mb-1.5 font-sans">Asset Class Strategy Focus</label>
+                          <select
+                            value={contactPropertyType}
+                            onChange={(e) => setContactPropertyType(e.target.value)}
+                            className="w-full bg-white text-stone-900 border border-slate-250 p-2.5 rounded-xl outline-none focus:border-[#d92228] font-bold cursor-pointer"
+                          >
+                            <option value="Premium Residential">Premium Residential</option>
+                            <option value="Grade-A Multi-Tenant Commercial">Grade-A Multi-Tenant Commercial</option>
+                            <option value="Co-Living Fractional Space">Co-Living Fractional Space</option>
+                            <option value="Yamuna Expressway Gated Plot">Yamuna Expressway Gated Plot</option>
+                            <option value="Pre-Leased Retail Showroom">Pre-Leased Retail Showroom</option>
+                          </select>
+                        </div>
+                      </div>
+
                       <div>
                         <label className="block text-slate-600 mb-1.5">Draft special allocation limitations</label>
                         <textarea 
@@ -2038,7 +2449,17 @@ export default function App() {
             {/* INTEGRATION VIEW: AGENCY LEADS LOCKBOARD */}
             {activeMenu === 'leads' && (
               <div className="animate-fade-in">
-                <AgentLeads onNotify={triggerNotification} />
+                <AgentLeads 
+                  leads={leadsList}
+                  onUpdateLead={handleUpdateLead}
+                  onNotify={triggerNotification}
+                  onNavigateToTab={(tab) => handleNavigateToTab(tab)}
+                  onLoginAsAdmin={() => {
+                    setAdminEmail('mtlentertainmentindia@gmail.com');
+                    setIsAdminLoggedIn(true);
+                    handleNavigateToTab('admin');
+                  }}
+                />
               </div>
             )}
 
@@ -2173,6 +2594,15 @@ export default function App() {
                       onDeleteProperty={handleDeleteProperty}
                       leads={leadsList}
                       onUpdateLead={handleUpdateLead}
+                      onAddLead={(lead) => setLeadsList(prev => [lead, ...prev])}
+                      onClearLeads={() => {
+                        setLeadsList([]);
+                        triggerNotification("All buyer leads have been cleared successfully.", "success");
+                      }}
+                      onResetLeads={() => {
+                        setLeadsList(AGENT_LEADS);
+                        triggerNotification("Demo leads restored for administrative evaluation.", "success");
+                      }}
                       priceAlerts={priceAlerts}
                       onNotify={triggerNotification}
                     />
@@ -2551,6 +2981,58 @@ export default function App() {
                   className="w-full bg-slate-950 text-slate-100 border border-slate-805 p-2.5 rounded-xl outline-none focus:border-[#D4AF37] placeholder-slate-600 transition-colors"
                 />
               </div>
+
+              {!selectedProperty && (
+                <div className="space-y-3">
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="block text-slate-400 mb-1">Target Sourcing City</label>
+                      <select
+                        value={contactCity}
+                        onChange={(e) => setContactCity(e.target.value)}
+                        className="w-full bg-slate-950 text-slate-100 border border-slate-805 p-2 rounded-xl outline-none focus:border-[#D4AF37] transition-colors font-bold cursor-pointer"
+                      >
+                        <option value="Delhi NCR">Delhi NCR</option>
+                        <option value="Gurgaon">Gurgaon</option>
+                        <option value="Noida">Noida</option>
+                        <option value="Mumbai">Mumbai</option>
+                        <option value="Bengaluru">Bengaluru</option>
+                        <option value="Pune">Pune</option>
+                        <option value="Vrindavan">Vrindavan</option>
+                        <option value="Faridabad">Faridabad</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="block text-slate-400 mb-1">Budget Range</label>
+                      <select
+                        value={contactBudget}
+                        onChange={(e) => setContactBudget(e.target.value)}
+                        className="w-full bg-slate-950 text-slate-100 border border-slate-805 p-2 rounded-xl outline-none focus:border-[#D4AF37] transition-colors font-bold cursor-pointer"
+                      >
+                        <option value="₹50 Lakhs - ₹1.5 Cr">₹50 Lakhs - ₹1.5 Cr</option>
+                        <option value="₹1.5 Cr - ₹3 Cr">₹1.5 Cr - ₹3 Cr</option>
+                        <option value="₹3 Cr - ₹5 Cr">₹3 Cr - ₹5 Cr</option>
+                        <option value="₹5 Cr - ₹10 Cr">₹5 Cr - ₹10 Cr</option>
+                        <option value="₹10 Cr+">₹10 Cr+</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-slate-400 mb-1">Asset Class Strategy Focus</label>
+                    <select
+                      value={contactPropertyType}
+                      onChange={(e) => setContactPropertyType(e.target.value)}
+                      className="w-full bg-slate-950 text-slate-100 border border-slate-805 p-2 rounded-xl outline-none focus:border-[#D4AF37] transition-colors font-bold cursor-pointer"
+                    >
+                      <option value="Premium Residential">Premium Residential</option>
+                      <option value="Grade-A Multi-Tenant Commercial">Grade-A Multi-Tenant Commercial</option>
+                      <option value="Co-Living Fractional Space">Co-Living Fractional Space</option>
+                      <option value="Yamuna Expressway Gated Plot">Yamuna Expressway Gated Plot</option>
+                      <option value="Pre-Leased Retail Showroom">Pre-Leased Retail Showroom</option>
+                    </select>
+                  </div>
+                </div>
+              )}
 
               <div>
                 <label className="block text-slate-400 mb-1">Draft special allocation parameters</label>

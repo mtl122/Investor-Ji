@@ -28,6 +28,7 @@ interface SeoLanderProps {
   onOpenConsultation: (message: string) => void;
   compareIds?: string[];
   onCompareToggle?: (id: string) => void;
+  onAddLead?: (name: string, phone: string, email: string, source: string, details?: any) => void;
 }
 
 export function SeoLander({ 
@@ -38,7 +39,8 @@ export function SeoLander({
   onNotify,
   onOpenConsultation,
   compareIds = [],
-  onCompareToggle
+  onCompareToggle,
+  onAddLead
 }: SeoLanderProps) {
 
   // Lead capture slider inside landing page
@@ -221,6 +223,20 @@ export function SeoLander({
     if (!leadName || !leadMobile || !leadEmail) {
       onNotify('Please complete all form fields to request the specific prospectus guides.', 'error');
       return;
+    }
+    if (onAddLead) {
+      onAddLead(
+        leadName,
+        leadMobile,
+        leadEmail,
+        `Requested Exclusive Sourcing Prospectus on SEO Landing Page: ${currentLander.title}`,
+        {
+          city: currentLander.filterCity || 'Delhi NCR',
+          propertyType: currentLander.filterType || (currentLander.filterPlot ? 'Yamuna Expressway Gated Plot' : 'Premium Commercial Sourcing'),
+          targetLocation: currentLander.title || 'SEO Sourcing Zone',
+          budget: currentLander.filterPlot ? '₹80 Lakhs - ₹1.5 Cr' : '₹2 Cr - ₹5 Cr'
+        }
+      );
     }
     onNotify(`Success! Exclusive PDF "Top 25 High-Growth Sourcing Locations" configured specifically for ${currentLander.filterCity || 'India'} has been dispatched to ${leadEmail}! Our officer will contact you on ${leadMobile}.`, 'success');
     setLeadName('');

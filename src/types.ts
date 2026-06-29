@@ -54,6 +54,9 @@ export interface Lead {
   buyerName: string;
   phonePrefix: string;
   phoneSuffix: string; // obfuscated for non-buyers
+  fullPhone?: string;
+  email?: string;
+  query?: string;
   city: string;
   targetLocation: string;
   budget: string;
@@ -64,6 +67,28 @@ export interface Lead {
   price: number; // lead purchase price
   isPurchased: boolean;
   dateAdded: string;
+}
+
+export interface Broker {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  agencyName?: string;
+  password?: string;
+  walletBalance: number;
+  unlockedLeads: string[]; // array of lead IDs
+}
+
+export interface PaymentRequest {
+  id: string;
+  brokerId: string;
+  brokerName: string;
+  brokerEmail: string;
+  amount: number;
+  utrNumber: string;
+  status: 'pending' | 'approved' | 'rejected';
+  dateRequested: string;
 }
 
 export interface Testimonial {

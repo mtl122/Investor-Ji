@@ -304,8 +304,37 @@ export function RegionalGrowthHeatmap({
   const [minAppreciation, setMinAppreciation] = useState<number>(10);
   const [highlightHighGrowth, setHighlightHighGrowth] = useState<boolean>(false);
 
+  const [width, setWidth] = useState<number>(500);
+
   const svgRef = useRef<SVGSVGElement | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
+
+  // Set up ResizeObserver to handle container size changes responsively and meet platform guidelines
+  useEffect(() => {
+    if (!containerRef.current) return;
+    
+    let timeoutId: any = null;
+    const observer = new ResizeObserver((entries) => {
+      if (!entries || entries.length === 0) return;
+      const entry = entries[0];
+      const clientWidth = entry.contentRect.width;
+      
+      // Debounce the state update to avoid rendering lag during rapid resizing
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+      timeoutId = setTimeout(() => {
+        setWidth(clientWidth || 500);
+      }, 100);
+    });
+    
+    observer.observe(containerRef.current);
+    
+    return () => {
+      observer.disconnect();
+      if (timeoutId) clearTimeout(timeoutId);
+    };
+  }, []);
 
   // Filter hotspots based on currently selected city and minimum appreciation slider
   const currentHotspots = HOTSPOT_DATA.filter(
@@ -323,11 +352,21 @@ export function RegionalGrowthHeatmap({
   useEffect(() => {
     if (!svgRef.current || !containerRef.current) return;
 
-    // Get real container width for responsive scaling
-    const containerWidth = containerRef.current.clientWidth || 500;
-    const height = 280;
-    const margin = { top: 20, right: 20, bottom: 40, left: 20 };
-    const width = containerWidth - margin.left - margin.right;
+    // Use responsive width state
+    const containerWidth = width;
+    
+    const data = currentHotspots;
+    if (data.length === 0) return;
+
+    // Heatmap cell layout sizing - 1 column on mobile, max 3 on desktop to prevent squishing
+    const colsCount = containerWidth < 500 ? 1 : Math.min(data.length, 3);
+    const rowsCount = Math.ceil(data.length / colsCount);
+    
+    const cellHeight = containerWidth < 500 ? 68 : 65;
+    const margin = { top: 15, right: 15, bottom: 45, left: 15 };
+    const innerWidth = containerWidth - margin.left - margin.right;
+    const innerHeight = rowsCount * cellHeight;
+    const height = innerHeight + margin.top + margin.bottom;
 
     // Clear previous SVG contents
     const svg = d3.select(svgRef.current);
@@ -340,15 +379,7 @@ export function RegionalGrowthHeatmap({
       .append('g')
       .attr('transform', `translate(${margin.left}, ${margin.top})`);
 
-    const data = currentHotspots;
-    if (data.length === 0) return;
-
-    // Heatmap cell layout sizing
-    const colsCount = Math.min(data.length, 3);
-    const rowsCount = Math.ceil(data.length / colsCount);
-    
-    const cellWidth = width / colsCount;
-    const cellHeight = (height - margin.top - margin.bottom) / rowsCount;
+    const cellWidth = innerWidth / colsCount;
 
     // Setup color interpolation scale for appreciation values
     // Using an elegant premium gradient from deep charcoal slate to golden amber and vibrant red
@@ -429,12 +460,15 @@ export function RegionalGrowthHeatmap({
       .style('font-weight', 'bold')
       .style('font-size', '11px')
       .style('font-family', 'Inter, sans-serif')
-      .text((d) => d.name.length > 22 ? d.name.substring(0, 20) + '...' : d.name);
+      .text((d) => {
+        const maxLen = containerWidth < 500 ? 35 : 22;
+        return d.name.length > maxLen ? d.name.substring(0, maxLen - 2) + '...' : d.name;
+      });
 
     // 2. Appreciation percentage rate
     cells.append('text')
       .attr('x', 14)
-      .attr('y', cellHeight - 22)
+      .attr('y', cellHeight - 20)
       .attr('fill', (d) => {
         const passesFilter = d.appreciation >= minAppreciation && (!highlightHighGrowth || d.appreciation >= 15);
         if (!passesFilter) return '#94a3b8';
@@ -445,7 +479,7 @@ export function RegionalGrowthHeatmap({
       .style('font-weight', 'bold')
       .text((d) => `Appreciation: +${d.appreciation}% YOY`);
 
-  }, [selectedCity, minAppreciation, highlightHighGrowth, hoveredHotspot, selectedHotspot]);
+  }, [selectedCity, minAppreciation, highlightHighGrowth, hoveredHotspot, selectedHotspot, width]);
 
   // Handle matching properties search
   const propertiesMatchingCity = properties.filter(
@@ -543,19 +577,19 @@ export function RegionalGrowthHeatmap({
           {/* D3 Heatmap Drawing Stage Container */}
           <div 
             ref={containerRef} 
-            className="w-full bg-slate-50/50 rounded-2xl border border-slate-200 p-4 flex items-center justify-center min-h-[290px] relative overflow-hidden"
+            className="w-full bg-slate-50/50 rounded-2xl border border-slate-200 p-4 pb-14 flex items-center justify-center min-h-[180px] md:min-h-[290px] relative overflow-hidden"
           >
             <svg ref={svgRef} className="w-full block"></svg>
 
             {/* Heatmap Bottom Legend */}
-            <div className="absolute bottom-3 left-4 right-4 flex items-center justify-between text-[10px] font-bold text-slate-500 font-mono">
-              <div className="flex items-center gap-1.5">
-                <span>Appreciation Scale:</span>
-                <div className="flex h-3 w-28 rounded overflow-hidden border border-slate-200 bg-linear-to-r from-amber-100 via-orange-400 to-red-600"></div>
+            <div className="absolute bottom-2.5 left-3.5 right-3.5 flex flex-wrap items-center justify-between gap-2 text-[9px] sm:text-[10px] font-bold text-slate-500 font-mono">
+              <div className="flex items-center gap-1.5 shrink-0">
+                <span className="hidden xs:inline">Appreciation:</span>
+                <div className="flex h-2.5 w-20 sm:w-28 rounded overflow-hidden border border-slate-200 bg-linear-to-r from-amber-100 via-orange-400 to-red-600"></div>
                 <span className="text-slate-800">8% &rarr; 25% YOY</span>
               </div>
-              <div className="text-[9px] text-slate-400">
-                ⚡ Click a sector to filter the listings below
+              <div className="text-[9px] text-slate-400 shrink-0">
+                ⚡ Click sector to filter
               </div>
             </div>
           </div>

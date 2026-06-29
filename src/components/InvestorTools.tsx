@@ -180,6 +180,8 @@ export function InvestorTools({ properties, onSelectProperty }: ToolsProps) {
 
   // Indian Growth Regions Map Data
   const REGIONAL_HEATMAP_DATA = [
+    { city: 'Dholera SIR', area: 'Activation Area Phase 1 Zone A', growthYOY: '+22.5%', metric: 'Sovereign Smart City Driver', index: '9.7/10', color: 'text-rose-600 bg-rose-50 border-rose-200' },
+    { city: 'Dholera SIR', area: 'High-Speed Rail Corridor Metro Hub', growthYOY: '+24.8%', metric: 'Hyper-Growth Transit Corridor', index: '9.6/10', color: 'text-rose-500 bg-rose-50 border-rose-200' },
     { city: 'Delhi NCR', area: 'Golf Course Extension, Ch-54', growthYOY: '+14.8%', metric: 'Extremely Bullish', index: '9.4/10', color: 'text-emerald-500 bg-emerald-50 border-emerald-200' },
     { city: 'Delhi NCR', area: 'Noida Expressway Cluster', growthYOY: '+11.2%', metric: 'Steady Appreciation', index: '8.2/10', color: 'text-teal-600 bg-teal-50 border-teal-200' },
     { city: 'Mumbai', area: 'Worli Sea Face Premium Tier 1', growthYOY: '+16.5%', metric: 'Unprecedented Luxury Surge', index: '9.8/10', color: 'text-emerald-500 bg-emerald-50 border-emerald-200' },
@@ -187,8 +189,11 @@ export function InvestorTools({ properties, onSelectProperty }: ToolsProps) {
     { city: 'Bengaluru', area: 'Whitefield Smart IT corridor', growthYOY: '+13.2%', metric: 'Bullish Commercial Rent', index: '9.1/10', color: 'text-emerald-500 bg-emerald-50 border-emerald-200' },
     { city: 'Bengaluru', area: 'Outer Ring Road (ORR) Retail', growthYOY: '+9.8%', metric: 'Stable Rental Hub', index: '7.9/10', color: 'text-teal-600 bg-teal-50 border-teal-200' },
     { city: 'Pune', area: 'Chakan Logistics Phase II', growthYOY: '+12.1%', metric: 'High-Demand Cargo Hub', index: '8.7/10', color: 'text-teal-600 bg-teal-50 border-teal-200' },
-    { city: 'Pune', area: 'Hinjewadi Tech Corridor II', growthYOY: '+8.4%', metric: 'Moderately Stable', index: '7.1/10', color: 'text-amber-600 bg-amber-50 border-amber-200' },
     { city: 'Goa', area: 'Candolim Coastline Premium Strip', growthYOY: '+18.9%', metric: 'Hyper Growth Holiday Spike', index: '9.6/10', color: 'text-emerald-500 bg-emerald-50 border-emerald-200' },
+    { city: 'Hyderabad', area: 'Gachibowli Financial District', growthYOY: '+14.2%', metric: 'Tech Corporate Demand Pool', index: '9.2/10', color: 'text-emerald-500 bg-emerald-50 border-emerald-200' },
+    { city: 'Chennai', area: 'OMR IT Expressway Hub', growthYOY: '+13.5%', metric: 'SaaS Expansion Node', index: '9.0/10', color: 'text-emerald-600 bg-emerald-50 border-emerald-200' },
+    { city: 'Kolkata', area: 'Sector V Tech Sourcing Zone', growthYOY: '+12.8%', metric: 'Eastern Corporate Epicenter', index: '8.9/10', color: 'text-teal-600 bg-teal-50 border-teal-200' },
+    { city: 'Ahmedabad', area: 'GIFT City FinTech Core', growthYOY: '+16.5%', metric: 'Offshore IFSC Growth Hub', index: '9.6/10', color: 'text-rose-600 bg-rose-50 border-rose-200' }
   ];
 
   const filteredHeatmap = REGIONAL_HEATMAP_DATA.filter(item => 
@@ -866,7 +871,7 @@ export function InvestorTools({ properties, onSelectProperty }: ToolsProps) {
               </div>
 
               <div className="flex flex-wrap gap-1">
-                {['All', 'Delhi NCR', 'Mumbai', 'Bengaluru', 'Pune', 'Goa'].map(city => (
+                {['All', 'Dholera SIR', 'Delhi NCR', 'Mumbai', 'Bengaluru', 'Pune', 'Goa', 'Hyderabad', 'Chennai', 'Kolkata', 'Ahmedabad'].map(city => (
                   <button
                     key={city}
                     onClick={() => setHeatmapCity(city)}
